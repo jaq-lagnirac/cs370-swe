@@ -8,6 +8,7 @@ Database installation steps:
 
 Inside the database:
 Create a user "grant all on *.* to 'admin' identified by 'admin' with grant option;" (create a generic admin user)
+List users with "select user from mysql.user;"
 Create a new database named test "create database test;"
 Switch to that database "use test;"
 Create a table in that database "create table MyTable (MyColumn int primary key);"
