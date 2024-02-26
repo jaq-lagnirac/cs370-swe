@@ -49,4 +49,4 @@ def remove(val, db):
 	return f"Deleted {val}"
 
 
-app.run(debug=True, reloader=True)
+app.run(host="0.0.0.0", port="8080", debug=True, reloader=True)
