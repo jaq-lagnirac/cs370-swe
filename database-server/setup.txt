@@ -1,0 +1,24 @@
+Database installation steps:
+1. sudo apt install mariadb-server
+2. "sudo systemctl enable mariadb" if you want it to start automatically at boot, otherwise disable 
+3. sudo systemctl start mariadb
+4. systemctl status mariadb (check that it's working)
+5. sudo mysql_secure_installation (go through this installation process)
+6. sudo mysql (to enter the database)
+
+Inside the database:
+Create a user "grant all on *.* to 'admin' identified by 'admin' with grant option;" (create a generic admin user)
+Create a new database named test "create database test;"
+Switch to that database "use test;"
+Create a table in that database "create table MyTable (MyColumn int primary key);"
+Leave with "quit" or "exit"
+
+python setup:
+pip install bottle
+pip install bottle-sqlalchemy
+pip install mysqlclient
+
+I ran into an issue with mysqlclient,
+	fixed by first running "sudo apt-get install python3-dev default-libmysqlclient-dev build-essential"
+
+now you should be able to run server.py and add and remove integers using the test database
