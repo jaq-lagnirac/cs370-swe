@@ -4,6 +4,13 @@ Database installation steps:
 3. sudo systemctl start mariadb
 4. systemctl status mariadb (check that it's working)
 5. sudo mysql_secure_installation (go through this installation process)
+	-Enter the current password for root: (just press enter)
+	-Switch to unix_socket authentication: n
+	-Change the root password?: n
+	-Remove anonymous users?: y
+	-Disallow root login remotely?: y
+	-Remove test database and access to it?: y
+	-Reload privilege tables now?: y
 6. sudo mysql (to enter the database)
 
 Inside the database:
@@ -15,11 +22,14 @@ Create a table in that database "create table MyTable (MyColumn int primary key)
 Leave with "quit" or "exit"
 
 python setup:
-pip install bottle
-pip install bottle-sqlalchemy
-pip install mysqlclient
+Required packages (You may already have some of these):
+sudo apt install python3 python3-pip build-essential pkg-config python3-dev default-libmysqlclient-dev
 
-I ran into an issue with mysqlclient,
-	fixed by first running "sudo apt-get install python3-dev default-libmysqlclient-dev build-essential"
+pip install bottle bottle-sqlalchemy mysqlclient
+(mysqlclient may fail a few times as it finds the correct version, my Ubuntu VM installed version 2.1.1)
 
-now you should be able to run server.py and add and remove integers using the test database
+now you should be able to run the test server and add and remove integers using the test database
+http://127.0.0.1:8080/			Get the table in JSON format
+http://127.0.0.1:8080/add/1		Add the number 1 to the table
+http://127.0.0.1:8080/delete/1	Delete 1 from the table
+Note: Duplicates are not allowed in this case because the number is the primary key of the table
