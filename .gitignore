@@ -4,3 +4,6 @@
 /lib
 /lib64
 pyvenv.cfg
+
+# to suppress uncommitted messages for specific venv
+swe-env/
