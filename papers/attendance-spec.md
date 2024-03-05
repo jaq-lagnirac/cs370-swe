@@ -1,4 +1,6 @@
 # Attendance Feature Specification
+Version: 1.0.1
+
 The purpose of the attendance feature is to support tracking of club members' attendance
 of club events, and use this data to (1) classify members by activity, (2) semi-
 automatically drop inactive members from email lists, and (3) view attendance data for
@@ -15,7 +17,7 @@ feature.
 because we haven't determined it yet. If you are architecting the database and make
 a decision about something left vague below, please update this document accordingly.
 
-### Attendogenesis
+### Event Creation
 [
 When the calendar feature is implemented, attendance will be tied to event creation.
 
