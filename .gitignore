@@ -7,3 +7,7 @@ pyvenv.cfg
 
 # to suppress uncommitted messages for specific venv
 swe-env/
+
+# to ignore environment variables
+.env
+credentials.json
