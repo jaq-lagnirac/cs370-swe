@@ -26,7 +26,7 @@ Now we have to configure the database to correspond with what `server.py` is exp
 
 ## Python Setup
 1. Install all required dependencies using ```sudo apt install python3 python3-pip build-essential pkg-config python3-dev default-libmysqlclient-dev```
-2. Install required pip packages ```pip install bottle bottle-sqlalchemy mysqlclient```
+2. Install required pip packages ```pip install bottle bottle-sqlalchemy sqlalchemy-utils mysqlclient```
     - Note that mysqlclient may fail a few times as it finds the correct version. My system used version 2.1.1
 
 ## Running the Server
