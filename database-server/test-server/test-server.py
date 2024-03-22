@@ -1,13 +1,13 @@
 #!/bin/python3
 
-from bottle import Bottle, get, post, delete, request
+from bottle import Bottle, get, post, put, delete, request, abort
 from bottle.ext import sqlalchemy
 from sqlalchemy import create_engine, Column, Integer
 from sqlalchemy.orm import declarative_base
 from sqlalchemy_utils import database_exists, create_database, drop_database
 
 base = declarative_base()
-engine = create_engine("mysql://admin:admin@localhost/roster")
+engine = create_engine("mysql://admin:admin@localhost/test_roster")
 app = Bottle()
 plugin = sqlalchemy.Plugin(engine, keyword='db')
 app.install(plugin)
@@ -32,19 +32,42 @@ def get_test_table(db):
 	results = []
 	for x in test_table_data:
 		results.append(x.test_column)
-	return {"test_table" : results}
+	return {"test_column" : results}
 
 @app.post("/")
 def post_test_table(db):
-	value = int(request.json["value"])
+	value = None
+	try:
+		value = request.json["value"]
+	except:
+		abort(400, "Invalid JSON")
+
+	if type(value) != type(1):
+		abort(400, "value is type int")
+
+	if db.query(test_table).filter_by(test_column = value).all() != []:
+		abort(409, "A row with this primary key already exists")
+
 	new_row = test_table(test_column = value)
 	db.add(new_row)
 	db.commit()
 	return get_test_table(db)
 
+@app.put("/")
+def put_test_table(db):
+	abort(405, "Use POST with the test server. There is nothing to update.")
+
 @app.delete("/")
 def delete_test_table(db):
-	value = int(request.json["value"])
+	value = None
+	try:
+		value = request.json["value"]
+	except:
+		abort(400, "Invalid JSON")
+
+	if type(value) != type(1):
+		abort(400, "value is type int")
+
 	db.query(test_table).filter_by(test_column = value).delete()
 	db.commit()
 	return get_test_table(db)

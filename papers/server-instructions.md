@@ -20,12 +20,9 @@ For MySQL we will use mariadb, which is a newer opensource fork of MySQL but sti
 ## Database Setup
 Now we have to configure the database to correspond with what `server.py` is expecting. This part will change with future versions. For now, follow these steps:
 
-1. With mariadb running, enter the database using ```sudo mysql```
+1. With mariadb running, enter the database as root using ```sudo mysql```
 2. Create a user called 'admin' with password 'admin' ```grant all on *.* to 'admin' identified by 'admin' with grant option;```
-3. Create a new database called 'test' ```create database test;```
-4. Switch into that database ```use test;```
-5. Create a table called 'MyTable' with a single integer column called 'MyColumn' ```create table MyTable (MyColumn int primary key);```
-6. Exit MySQL using ```quit``` or ```exit```
+3. Exit MySQL using ```quit``` or ```exit```
 
 ## Python Setup
 1. Install all required dependencies using ```sudo apt install python3 python3-pip build-essential pkg-config python3-dev default-libmysqlclient-dev```
@@ -33,6 +30,4 @@ Now we have to configure the database to correspond with what `server.py` is exp
     - Note that mysqlclient may fail a few times as it finds the correct version. My system used version 2.1.1
 
 ## Running the Server
-You should now have everything required to run `server.py`. With the server running, you can connect to it using `http://127.0.0.1:8080/`. This should return the current state of the table MyTable.
-- You may add an integer to the table using `/add/x`
-- You may delete an integer from the table using `/delete/x`
+You should now have everything required to run `test-server.py`. With the server running, you can connect to it using `http://127.0.0.1:8080/`. This should return the current state of the test_table.
