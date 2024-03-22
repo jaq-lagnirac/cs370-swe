@@ -3,10 +3,13 @@
 # A function which organizes and implements Gmail API calls to send emails
 
 # Email Libraries
+import os
 import base64
 from email.mime.text import MIMEText
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
 from requests import HTTPError
 
 # Multithreading Libraries
@@ -101,22 +104,40 @@ def send_email_driver(recipients, subject, body):
     SCOPES = [
         "https://www.googleapis.com/auth/gmail.send"
     ]
-    # extracts client secrets for use with scope
-    flow = InstalledAppFlow.from_client_secrets_file(
-        'credentials.json', SCOPES
-    )
-    # runs local server to validate credentials
-    credentials = flow.run_local_server(port = 0)
-    # builds Gmail call with attached credentials
-    service = build('gmail', 'v1', credentials = credentials)
 
-    # keeps attempting to send emails until stopped
+    credentials = None
+    # The file token.json stores the user's access and refresh tokens, and is
+    # created automatically when the authorization flow completes for the first
+    # time.
+    if os.path.exists('token.json'):
+        credentials = Credentials.from_authorized_user_file('token.json', SCOPES)
+    # If there are no (valid) credentials available, let the user log in.
+    if not credentials or not credentials.valid:
+        if credentials and credentials.expired and credentials.refresh_token:
+            credentials.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'credentials.json', SCOPES)
+            # keeps attempting to form the connection while empty
+            while credentials == None:
+                try:
+                    credentials = flow.run_local_server(port=0)
+                except:
+                    print('Failed to generate server.')
+        # Save the credentials for the next run
+        with open('token.json', 'w') as token:
+            token.write(credentials.to_json())
+
+    # keeps attempting to send emails until max attempts reached
     successful_auth = False
     for attempt in range(1, MAX_ATTEMPTS + 1):
         try:
+            # builds Gmail call with attached credentials
+            service = build('gmail', 'v1', credentials = credentials)
+            # sends emails to a given email list
             sends_emails_to_list(service, recipients, subject, body)
             successful_auth = True
-            print('Successful authentication.')
+            print('Successfully sent emails.')
             break
         except:
             print(f'Attempt {attempt} failed. Error in authenticating into Google API.')
@@ -125,10 +146,12 @@ def send_email_driver(recipients, subject, body):
         print('Authentication into Google API unsuccessful.')
 
 if __name__ == '__main__':
-    recipients = ['jac5566@truman.edu',
-                  'jaw6642@truman.edu',
-                  'abr8115@truman.edu',
-                  'an2713@truman.edu']
+    recipients = [
+        'jac5566@truman.edu',
+        'jaw6642@truman.edu',
+        'abr8115@truman.edu',
+        'an2713@truman.edu'
+        ]
     subject = 'this is a test subject for cs370'
     body = 'this is a test body for cs370'
     send_email_driver(recipients, subject, body)
