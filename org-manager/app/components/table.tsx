@@ -1,30 +1,43 @@
+import React from 'react';
+
 interface TableProps {
   columns: string[];
-  members: { name: string; email: string; id: number }[];
+  members: {[key: string]: any}[];
+  keyName?: string;
 }
 
-const Table: React.FC<TableProps> = ({columns, members}) => {
-  return (
-    <table className="table table-bordered">
+// Only name non-key columns in the columns array
+// The key column is last
+const Table: React.FC<TableProps> = ({columns, members, keyName})  => {
+  let table = [
     <thead>
       <tr>
-        {columns.map((column: string, index: number) => (
-          <th key={index} scope="col">
-            {column}
-          </th>
-        ))}
+        {columns.map((column: string, index:number) => {
+          return <th key={index} scope="col">{column}</th>
+        })}
+        <th scope="col">{"Key"}</th>
       </tr>
     </thead>
-    <tbody>
-      {members.map((member, index) => (
-        <tr key={index}>
-          <td scope="row">{member.name}</td>
-          <td>{member.email}</td>
-          <td>{member.id}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+  ];
+  for (let i = 0; i < members.length; i++) {
+    let td: React.ReactNode[] = [];
+    for (let j = 0; j < columns.length; j++) {
+      td.push(
+        <td>
+          {members[i][columns[j]]}
+        </td>
+      )
+    }
+    table.push(
+      <tr>
+        {td}
+      </tr>
+    )
+  }
+  return (
+    <table className="table table-bordered">
+      {table}
+    </table>
   );
 };
 
