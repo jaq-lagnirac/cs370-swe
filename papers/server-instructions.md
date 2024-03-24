@@ -18,7 +18,7 @@ For MySQL we will use mariadb, which is a newer opensource fork of MySQL but sti
     - Reload privilege tables now?: y
 
 ## Database Setup
-Now we have to configure the database to correspond with what `server.py` is expecting. This part will change with future versions. For now, follow these steps:
+Now we have to configure the database to correspond with what the server is expecting:
 
 1. With mariadb running, enter the database as root using ```sudo mysql```
 2. Create a user called 'admin' with password 'admin' ```grant all on *.* to 'admin' identified by 'admin' with grant option;```
@@ -30,4 +30,4 @@ Now we have to configure the database to correspond with what `server.py` is exp
     - Note that mysqlclient may fail a few times as it finds the correct version. My system used version 2.1.1
 
 ## Running the Server
-You should now have everything required to run `test-server.py`. With the server running, you can connect to it using `http://127.0.0.1:8080/`. This should return the current state of the test_table.
+You should now have everything required to run `test-server.py`. With the server running, you can connect to it using `http://127.0.0.1:8080/`. This should return the current state of the test_table. 
