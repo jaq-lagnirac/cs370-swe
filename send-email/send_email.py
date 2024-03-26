@@ -13,13 +13,14 @@ from google.oauth2.credentials import Credentials
 from requests import HTTPError
 
 # Multithreading Libraries
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor
 import multiprocessing
 
 # Constants
 MAX_ATTEMPTS = 10
 DESCRIPTION = """Hello!
-Welcome to send_email.py"""
+Welcome to send_email.py
+"""
 
 
 # Functions
@@ -93,12 +94,22 @@ def sends_emails_to_list(service, recipients, subject, body):
                 except:
                     errors.append(recipient)
 
+    return
+
 
 def send_email_driver(recipients, subject, body):
     """ Driver function to handle OAuth
 
     A function which handles the OAuth into the Google API for Gmail
     and sends the emails
+
+    Args:
+        recipients (list): A list of email address strings
+        subject (str): A string containing the subject header for the email
+        body (str): A string containing the raw body text for the email
+
+    Returns:
+        None
     """
     # sets scopes for use with Google API
     SCOPES = [
@@ -145,13 +156,37 @@ def send_email_driver(recipients, subject, body):
     if not successful_auth:
         print('Authentication into Google API unsuccessful.')
 
+    return
+
+
+def test_driver():
+    """Dummy main program to test functionality"""
+    
+    # input_file_path = 'cs370_class_list.txt'
+    input_file_path = 'small_test_list.txt'
+
+    emails = []
+    with open(input_file_path, 'r') as input_file:
+        # the first line of the text file is the subject line
+        # the second line of the text file is the body
+        # the remaining parts of the file are the emails
+        # which will receive the formatted email
+
+        subject = input_file.readline().strip()
+        body = input_file.readline().strip()
+
+        for line in input_file:
+            email = line.strip()
+            emails.append(email)
+
+    # prints status update
+    print(subject)
+    print(body)
+    print(emails)
+    # executes exposed function
+    send_email_driver(emails, subject, body)
+
+
 if __name__ == '__main__':
-    recipients = [
-        'jac5566@truman.edu',
-        'jaw6642@truman.edu',
-        'abr8115@truman.edu',
-        'an2713@truman.edu'
-        ]
-    subject = 'this is a test subject for cs370'
-    body = 'this is a test body for cs370'
-    send_email_driver(recipients, subject, body)
+    print(DESCRIPTION)
+    test_driver()
