@@ -73,6 +73,7 @@ export default function Email() {
     <>
       <h1>Send Emails</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
+        {/* <label>*To</label> */}
         <Select {...register("Title")}
           placeholder="*To"
           defaultValue={filteredMembers.map(member => ({ value: member.name, label: member.name }))}
@@ -83,9 +84,11 @@ export default function Email() {
           classNamePrefix="select"
         />
 
+        {/* <label>*Email Subject</label> */}
         <input type="text" {...register("subject")} placeholder="*Email Subject"/>
         <p style={{color:'#F76262'}}>{errors.subject?.message}</p>
 
+        {/* <label>*Email Message</label> */}
         <textarea {...register("message")} placeholder="*Email Message"/>
         <p style={{color:'#F76262'}}>{errors.message?.message}</p>
 
