@@ -1,30 +1,44 @@
+/* eslint-disable react/jsx-key */
+import React from 'react';
+
 interface TableProps {
   columns: string[];
-  members: { name: string; email: string; id: number }[];
+  members: {[key: string]: any}[];
 }
 
-const Table: React.FC<TableProps> = ({columns, members}) => {
-  return (
-    <table className="table table-bordered">
+// The key column is last
+// N
+const Table: React.FC<TableProps> = ({columns, members})  => {
+  let table = [
     <thead>
-      <tr>
-        {columns.map((column: string, index: number) => (
-          <th key={index} scope="col">
-            {column}
-          </th>
-        ))}
+      <tr key="Header">
+        {columns.map((column: string, index:number) => {
+          return <th key={column} scope="col">{column}</th>
+        })}
       </tr>
     </thead>
-    <tbody>
-      {members.map((member, index) => (
-        <tr key={index}>
-          <td scope="row">{member.name}</td>
-          <td>{member.email}</td>
-          <td>{member.id}</td>
+  ];
+  for (let i = 0; i < members.length; i++) {
+    let td: React.ReactNode[] = [];
+    for (let j = 0; j < columns.length; j++) {
+      td.push(
+        <td key={columns[i] + members[i][columns[columns.length - 1]]}>
+          {members[i][columns[j]]}
+        </td>
+      )
+    }
+    table.push(
+      <tbody>
+        <tr key={members[i][columns[columns.length - 1]]}>
+          {td}
         </tr>
-      ))}
-    </tbody>
-  </table>
+      </tbody>
+    )
+  }
+  return (
+    <table className="table table-bordered">
+      {table}
+    </table>
   );
 };
 
