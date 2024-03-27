@@ -22,15 +22,15 @@ export default function Email() {
   //test members only
   // TODO: integrate into SQL database
   const members = [
-    {name: "Andrew Ruff", email: "aruff@gmail.com", id: 111111111, role: "exec"},
-    {name: "Julian Williams", email: "jwilliams@gmail.com", id: 22222222, role: "member"},
-    {name: "Justin Caringal", email: "jcaringal@gmail.com", id: 333333333, role: "president"},
+    {"Name": "Andrew Ruff", "Email": "aruff@gmail.com", "Banner ID": 111111111, "Role": "exec"},
+    {"Name": "Julian Williams", "Email": "jwilliams@gmail.com", "Banner ID": 22222222, "Role": "member"},
+    {"Name": "Justin Caringal", "Email": "jcaringal@gmail.com", "Banner ID": 333333333, "Role": "president"},
   ];
 
   //change this array based on intended recipients
   const [filteredMembers, setFilteredMembers] = useState([
-    {name: "Julian Williams", email: "jwilliams@gmail.com", id: 22222222, role: "member"},
-    {name: "Justin Caringal", email: "jcaringal@gmail.com", id: 333333333, role: "president"}
+    {"Name": "Julian Williams", "Email": "jwilliams@gmail.com", "Banner ID": 22222222, "Role": "member"},
+    {"Name": "Justin Caringal", "Email": "jcaringal@gmail.com", "Banner ID": 333333333, "Role": "president"}
   ]);
 
     const schema = yup.object({
@@ -76,10 +76,10 @@ export default function Email() {
         {/* <label>*To</label> */}
         <Select {...register("Title")}
           placeholder="*To"
-          defaultValue={filteredMembers.map(member => ({ value: member.name, label: member.name }))}
+          defaultValue={filteredMembers.map(member => ({ value: member.Name, label: member.Name }))}
           isMulti
           name="name"
-          options={members.map(member => ({ value: member.name, label: member.name }))}
+          options={members.map(member => ({ value: member.Name, label: member.Name }))}
           className="pb-3 basic-multi-select"
           classNamePrefix="select"
         />

@@ -3,11 +3,11 @@ import RootLayout from './layout';
 import Table from './components/table';
 
 export default function Roster() {
-  const columns: string[] = ["name", "email", "banner ID"];
+  const columns: string[] = ["Name", "Email", "Banner ID"];
   const members = [
-    {name: "Andrew Ruff", email: "aruff@gmail.com", "banner ID": 111111111, role: "exec"},
-    {name: "Julian Williams", email: "jwilliams@gmail.com", "banner ID": 22222222, role: "member"},
-    {name: "Justin Caringal", email: "jcaringal@gmail.com", "banner ID": 333333333,  role: "president"},
+    {"Name": "Andrew Ruff", "Email": "aruff@gmail.com", "Banner ID": 111111111, "Role": "exec"},
+    {"Name": "Julian Williams", "Email": "jwilliams@gmail.com", "Banner ID": 22222222, "Role": "member"},
+    {"Name": "Justin Caringal", "Email": "jcaringal@gmail.com", "Banner ID": 333333333,  "Role": "president"},
   ];
   return (
     <>

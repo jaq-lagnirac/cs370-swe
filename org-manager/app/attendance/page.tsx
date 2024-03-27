@@ -19,14 +19,18 @@ export default function Attendance() {
   return (
     <div>
       <h1>Attendance</h1>
-      <button className="attendance-button" onClick={showQRCOde}>Create Session</button>
+      <button className="attendance-button mb-4" onClick={showQRCOde}>Create Session</button>
       {showQR ? (
         <>
-          <p>Here is a test QR code download.</p>
-          <ImgDl></ImgDl>
-          <Table columns={columns} members={members} />
+          <p className="mb-2">Here is a test QR code download.</p>
+          <div className="mb-5">
+            <ImgDl/>
+          </div>
         </>
       ) : ( <></> )}
+      <div className="mb-3">
+        <Table columns={columns} members={members} />
+      </div>
     </div>
   );
 }
