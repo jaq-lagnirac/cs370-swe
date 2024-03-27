@@ -4,7 +4,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Typeahead } from 'react-bootstrap-typeahead';
+import Select from 'react-select';
 import * as yup from "yup"
 
 // type Inputs = {
@@ -19,12 +19,23 @@ import * as yup from "yup"
 // }
 
 export default function Email() {
-  const [emails, setEmails] = useState(["this is a email"]);
-  const sample = useState(["aj@gmail.com", "aaaa@gmail.com", "akjsdha@gmail.com"]);
+  //test members only
+  // TODO: integrate into SQL database
+  const members = [
+    {name: "Andrew Ruff", email: "aruff@gmail.com", id: 111111111, role: "exec"},
+    {name: "Julian Williams", email: "jwilliams@gmail.com", id: 22222222, role: "member"},
+    {name: "Justin Caringal", email: "jcaringal@gmail.com", id: 333333333, role: "president"},
+  ];
+
+  //change this array based on intended recipients
+  const [filteredMembers, setFilteredMembers] = useState([
+    {name: "Julian Williams", email: "jwilliams@gmail.com", id: 22222222, role: "member"},
+    {name: "Justin Caringal", email: "jcaringal@gmail.com", id: 333333333, role: "president"}
+  ]);
 
     const schema = yup.object({
-      subject: yup.string().required(),
-      message: yup.string().required(),
+      subject: yup.string().required("Email subject required."),
+      message: yup.string().required("Email message required."),
     }).required();
 
   const {
@@ -60,32 +71,25 @@ export default function Email() {
 
   return (
     <>
-      <h1>Email</h1>
-      <p>This is the Email page.</p>
-
+      <h1>Send Emails</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        
-        {/* <Typeahead
-          id="basic-typeahead-multiple"
-          labelKey="label"
-          multiple
-          onChange={setEmails}
-          // onChange={(emails: string[]) => setEmails(handleEmailChange)}
-          // onChange={(selected) => {
-          //    handleEmailChange({selected});
-          // }}
-          options={sample}
-          placeholder="Choose emails"
-          selected={emails}
-        /> */}
+        <Select {...register("Title")}
+          placeholder="*To"
+          defaultValue={filteredMembers.map(member => ({ value: member.name, label: member.name }))}
+          isMulti
+          name="name"
+          options={members.map(member => ({ value: member.name, label: member.name }))}
+          className="pb-3 basic-multi-select"
+          classNamePrefix="select"
+        />
 
-        <input {...register("subject")} />
-        <p>{errors.subject?.message}</p>
+        <input type="text" {...register("subject")} placeholder="*Email Subject"/>
+        <p style={{color:'#F76262'}}>{errors.subject?.message}</p>
 
-        <input {...register("message")} />
-        <p>{errors.message?.message}</p>
+        <textarea {...register("message")} placeholder="*Email Message"/>
+        <p style={{color:'#F76262'}}>{errors.message?.message}</p>
 
-        <input type="submit" />
+        <button type="submit" style={{float: 'right'}}>Send Email</button>
       </form>
     </>
   );
