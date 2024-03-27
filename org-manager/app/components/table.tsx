@@ -36,7 +36,7 @@ const Table: React.FC<TableProps> = ({columns, members})  => {
     )
   }
   return (
-    <table className="table table-bordered">
+    <table className="table table-bordered table-hover">
       {table}
     </table>
   );
