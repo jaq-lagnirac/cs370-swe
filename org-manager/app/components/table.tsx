@@ -1,21 +1,20 @@
+/* eslint-disable react/jsx-key */
 import React from 'react';
 
 interface TableProps {
   columns: string[];
   members: {[key: string]: any}[];
-  keyName?: string;
 }
 
-// Only name non-key columns in the columns array
 // The key column is last
-const Table: React.FC<TableProps> = ({columns, members, keyName})  => {
+// N
+const Table: React.FC<TableProps> = ({columns, members})  => {
   let table = [
     <thead>
-      <tr>
+      <tr key="Header">
         {columns.map((column: string, index:number) => {
-          return <th key={index} scope="col">{column}</th>
+          return <th key={column} scope="col">{column}</th>
         })}
-        <th scope="col">{"Key"}</th>
       </tr>
     </thead>
   ];
@@ -23,15 +22,17 @@ const Table: React.FC<TableProps> = ({columns, members, keyName})  => {
     let td: React.ReactNode[] = [];
     for (let j = 0; j < columns.length; j++) {
       td.push(
-        <td>
+        <td key={columns[i] + members[i][columns[columns.length - 1]]}>
           {members[i][columns[j]]}
         </td>
       )
     }
     table.push(
-      <tr>
-        {td}
-      </tr>
+      <tbody>
+        <tr key={members[i][columns[columns.length - 1]]}>
+          {td}
+        </tr>
+      </tbody>
     )
   }
   return (
