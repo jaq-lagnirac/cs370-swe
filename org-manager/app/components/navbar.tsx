@@ -1,22 +1,36 @@
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Navbar = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   const toggleTheme = () => {
-    setDarkMode(!darkMode);
-  }
+    const root = document.documentElement;
 
-  // document.getElementById('focusmeplease').focus();
+    if (!darkMode) {
+      setDarkMode(true);
+      root.style.setProperty('--bg-color', '#2D283E');
+      root.style.setProperty('--text-color', '#FFFDF3');
+      root.style.setProperty('--secondary-text-color', 'white');
+      root.style.setProperty('--nav-color', '#FFFDF3');
+      root.style.setProperty('--active-nav-color', 'white');
+    } else {
+      setDarkMode(false);
+      root.style.setProperty('--bg-color', '#FFFDF3');
+      root.style.setProperty('--text-color', '#6C43B1');
+      root.style.setProperty('--secondary-text-color', 'black');
+      root.style.setProperty('--nav-color', '#8D6BC7');
+      root.style.setProperty('--active-nav-color', '#6C43B1');
+    }
+  }
 
   return (
     <div className="row nav-container">
     <nav className="navbar navbar-expand-sm pb-2 col-10">
       <ul className="navbar-nav">
         <li className="nav-item">
-          <Link className="nav-link" href="/" id="focusmeplease">Roster Manager</Link>
+          <Link className="nav-link" href="/">Roster Manager</Link>
         </li>
         {/* <li className="nav-item">
           <Link className="nav-link" href="/calendar">Calendar</Link>
@@ -32,7 +46,6 @@ const Navbar = () => {
 
     <label className="col-2 toggleThing">
       <input
-          id="themeSwitch"
           type="checkbox"
           name="checkbox"
           className="toggle-checkbox"
