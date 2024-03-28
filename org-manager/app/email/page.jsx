@@ -22,15 +22,20 @@ export default function Email() {
   //test members only
   // TODO: integrate into SQL database
   const members = [
-    {"Name": "Andrew Ruff", "Email": "aruff@gmail.com", "Banner ID": 111111111, "Role": "exec"},
-    {"Name": "Julian Williams", "Email": "jwilliams@gmail.com", "Banner ID": 22222222, "Role": "member"},
-    {"Name": "Justin Caringal", "Email": "jcaringal@gmail.com", "Banner ID": 333333333, "Role": "president"},
+    {"Name": "Andrew Ruff", "Email": "acr9932@truman.edu", "Banner ID": 102344322, "Role": "exec"},
+    {"Name": "Julian Williams", "Email": "jww1111@truman.edu", "Banner ID": 103422344, "Role": "member"},
+    {"Name": "Justin Caringal", "Email": "jac5566@truman.edu", "Banner ID": 1011113456, "Role": "president"},
+    {"Name": "Akansha Negi", "Email": "an2713@truman.edu", "Banner ID": 1011234567, "Role": "exec"},
+    {"Name": "Halma Ruthie", "Email": "ruthie@truman.edu", "Banner ID": 105464445, "Role": "member"},
+    {"Name": "Kafi Rahman", "Email": "kir2311@truman.edu", "Banner ID": 102042342, "Role": "member"},
+    {"Name": "Ting Cao", "Email": "tac3912@truman.edu", "Banner ID": 102342332, "Role": "member"},
   ];
 
   //change this array based on intended recipients
   const [filteredMembers, setFilteredMembers] = useState([
-    {"Name": "Julian Williams", "Email": "jwilliams@gmail.com", "Banner ID": 22222222, "Role": "member"},
-    {"Name": "Justin Caringal", "Email": "jcaringal@gmail.com", "Banner ID": 333333333, "Role": "president"}
+    {"Name": "Andrew Ruff", "Email": "acr9932@truman.edu", "Banner ID": 102344322, "Role": "exec"},
+    {"Name": "Akansha Negi", "Email": "an2713@truman.edu", "Banner ID": 1011234567, "Role": "exec"},
+    {"Name": "Justin Caringal", "Email": "jac5566@truman.edu", "Banner ID": 1011113456, "Role": "president"},
   ]);
 
     const schema = yup.object({
@@ -86,11 +91,11 @@ export default function Email() {
 
         {/* <label>*Email Subject</label> */}
         <input type="text" {...register("subject")} placeholder="*Email Subject"/>
-        <p style={{color:'#F76262'}}>{errors.subject?.message}</p>
+        <p className="red-text">{errors.subject?.message}</p>
 
         {/* <label>*Email Message</label> */}
         <textarea {...register("message")} placeholder="*Email Message"/>
-        <p style={{color:'#F76262'}}>{errors.message?.message}</p>
+        <p className="red-text">{errors.message?.message}</p>
 
         <button type="submit" style={{float: 'right'}}>Send Email</button>
       </form>

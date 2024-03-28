@@ -3,12 +3,12 @@ import React from 'react';
 
 interface TableProps {
   columns: string[];
-  members: {[key: string]: any}[];
+  tableData: {[key: string]: any}[];
 }
 
 // The key column is last
 // N
-const Table: React.FC<TableProps> = ({columns, members})  => {
+const Table: React.FC<TableProps> = ({columns, tableData})  => {
   let table = [
     <thead>
       <tr key="Header">
@@ -18,18 +18,18 @@ const Table: React.FC<TableProps> = ({columns, members})  => {
       </tr>
     </thead>
   ];
-  for (let i = 0; i < members.length; i++) {
+  for (let i = 0; i < tableData.length; i++) {
     let td: React.ReactNode[] = [];
     for (let j = 0; j < columns.length; j++) {
       td.push(
-        <td key={columns[i] + members[i][columns[columns.length - 1]]}>
-          {members[i][columns[j]]}
+        <td key={columns[i] + tableData[i][columns[columns.length - 1]]}>
+          {tableData[i][columns[j]]}
         </td>
       )
     }
     table.push(
       <tbody>
-        <tr key={members[i][columns[columns.length - 1]]}>
+        <tr key={tableData[i][columns[columns.length - 1]]}>
           {td}
         </tr>
       </tbody>
