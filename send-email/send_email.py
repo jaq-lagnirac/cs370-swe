@@ -92,13 +92,16 @@ def sends_emails_to_list(service, recipients, subject, body):
     """
     # processes tasks using ThreadPoolExecutor
     global errors
-    threading_errors = []
-    with ThreadPoolExecutor(max_workers = multiprocessing.cpu_count()) as executor:
-            for recipient in recipients:
-                try:
-                    executor.submit(send_email, service, recipient, subject, body)
-                except:
-                    errors.append(threading_errors)
+    # threading_errors = []
+    # with ThreadPoolExecutor(max_workers = multiprocessing.cpu_count()) as executor:
+    #         for recipient in recipients:
+    #             try:
+    #                 executor.submit(send_email, service, recipient, subject, body)
+    #             except:
+    #                 errors.append(threading_errors)
+
+    for recipient in recipients:
+        send_email(service, recipient, subject, body)
 
     print(errors)
     return
