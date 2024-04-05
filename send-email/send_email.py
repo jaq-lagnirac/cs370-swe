@@ -107,7 +107,7 @@ def sends_emails_to_list(service, recipients, subject, body):
     return
 
 
-def send_email_driver(recipients, subject, body):
+def auth_into_email(recipients, subject, body):
     """ Driver function to handle OAuth
 
     A function which handles the OAuth into the Google API for Gmail
@@ -195,7 +195,7 @@ def test_driver():
     # print(body)
     # print(emails)
     # executes exposed function
-    send_email_driver(emails, subject, body)
+    auth_into_email(emails, subject, body)
 
 
 if __name__ == '__main__':
