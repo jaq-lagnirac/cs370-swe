@@ -22,6 +22,8 @@ DESCRIPTION = """Hello!
 Welcome to send_email.py
 """
 
+# Global variables for errors
+errors = []
 
 # Functions
 
@@ -51,6 +53,7 @@ def send_email(service, recipient, subject, body):
         'raw' : base64.urlsafe_b64encode(message.as_bytes()).decode()
     }
 
+    global errors
     try:
         message = (
             service
@@ -62,9 +65,11 @@ def send_email(service, recipient, subject, body):
         print(f'Sent message to {recipient}')
     except HTTPError:
         print(f'An HTTP error occured with {recipient}')
+        errors.append(recipient)
         message = None
     except Exception as error:
         print(f'An unknown error occured with {recipient}\n{error}')
+        errors.append(recipient)
         message = None
 
     return message
@@ -86,14 +91,16 @@ def sends_emails_to_list(service, recipients, subject, body):
         None
     """
     # processes tasks using ThreadPoolExecutor
-    errors = []
+    global errors
+    threading_errors = []
     with ThreadPoolExecutor(max_workers = multiprocessing.cpu_count()) as executor:
             for recipient in recipients:
                 try:
                     executor.submit(send_email, service, recipient, subject, body)
                 except:
-                    errors.append(recipient)
+                    errors.append(threading_errors)
 
+    print(errors)
     return
 
 
@@ -163,7 +170,8 @@ def test_driver():
     """Dummy main program to test functionality"""
     
     # input_file_path = 'cs370_class_list.txt'
-    input_file_path = 'small_test_list.txt'
+    # input_file_path = 'small_test_list.txt'
+    input_file_path = 'dummy_emails.txt'
 
     emails = []
     with open(input_file_path, 'r') as input_file:
@@ -180,9 +188,9 @@ def test_driver():
             emails.append(email)
 
     # prints status update
-    print(subject)
-    print(body)
-    print(emails)
+    # print(subject)
+    # print(body)
+    # print(emails)
     # executes exposed function
     send_email_driver(emails, subject, body)
 
