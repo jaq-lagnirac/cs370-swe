@@ -201,16 +201,14 @@ def send_email_from_json(json_path):
         print('Non-JSON file inputted.')
         return
     
-    expected_keys = [SUBJECT_KEY, BODY_KEY, EMAILS_KEY]
-    expected_keys.sort()
+    expected_keys = {SUBJECT_KEY, BODY_KEY, EMAILS_KEY} # set
     with open(json_path, 'r') as input:
 
         # loads JSON into dict
         email_request = json.load(input)
         
         # ensures required keys are listed
-        received_keys = list(email_request.keys())
-        received_keys.sort()
+        received_keys = set(email_request.keys())
         if received_keys != expected_keys:
             print('Inputted JSON file does not have the required keys.')
             return
