@@ -12,3 +12,7 @@ swe-env/
 .env
 credentials.json
 token.json
+
+# to ignore react node modules
+node_modules/
+pnpm-lock.yaml
