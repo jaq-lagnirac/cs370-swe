@@ -38,11 +38,30 @@ if not database_exists(engine.url):
 
 #Helper functions
 def validate_content_type():
+	"""
+	A simple function that checks the content_type, and aborts if it's incorrect.
+
+	Args: None
+	Returns: void
+	"""
 	if request.content_type != "application/json":
 		abort(400, "content-type not equal to application/json")
 	return
 
 def read_json(names, types):
+	"""
+	A function that automates reading from request.json.
+	Provided variable names and expected datatypes,
+	it will return the data or error as needed.
+
+	Args:
+		names (list): A list of variable names
+		types (list): A list of datatypes corresponding to the variable names.
+			These two lists should be the same length
+
+	Returns:
+		A tuple containing your variables in the same order as listed
+	"""
 	validate_content_type()
 	ret = []
 	for i in range(len(names)):
@@ -61,6 +80,10 @@ def read_json(names, types):
 #Define access methods
 @app.get("/api/members")
 def get_members(db):
+	"""
+	Queries the members table and returns the data in a dict.
+	Dicts are automatically converted to JSON by Bottle
+	"""
 	table_data = db.query(members)
 	results = []
 	for x in table_data:
@@ -69,6 +92,11 @@ def get_members(db):
 
 @app.post("/api/members")
 def post_members(db):
+	"""
+	Adds a new row to the members table.
+	Another member with the same banner id cannot already exist in the system
+	Returns the updated table by calling get_members
+	"""
 	id, name, email, role, note = read_json(["id", "name", "email", "role", "note"], [int, str, str, int, str])
 	if db.query(members).filter_by(id = id).all() != []:
 		abort(409, f"A row with primary key {id} already exists. Use PUT to update a row")
@@ -79,6 +107,10 @@ def post_members(db):
 
 @app.put("/api/members")
 def put_members(db):
+	"""
+	Update an existing row in the members table with new data.
+	Returns the updated table by calling get_members
+	"""
 	id, name, email, role, note = read_json(["id", "name", "email", "role", "note"], [int, str, str, int, str])
 	if db.query(members).filter_by(id = id).all() == []:
 		abort(409, f"A row with primary key {id} does not exist. Use POST to add a new row")
@@ -89,6 +121,10 @@ def put_members(db):
 
 @app.delete("/api/members")
 def delete_members(db):
+	"""
+	Delete a row from the members table.
+	Returns the updated table by calling get_members
+	"""
 	id = read_json(["id"], [int])
 	db.query(members).filter_by(id = id).delete()
 	db.commit()
@@ -97,6 +133,9 @@ def delete_members(db):
 
 @app.get("/api/attendance")
 def get_attendance(db):
+	"""
+	Queries the attendance table and returns the data in JSON
+	"""
 	table_data = db.query(attendance)
 	results = []
 	for x in table_data:
@@ -105,6 +144,12 @@ def get_attendance(db):
 
 @app.post("/api/attendance")
 def post_attendance(db):
+	"""
+	Adds a new row to the attendance table.
+	No data is needed for this POST request,
+	the time stamp is calculated by the server itself.
+	Returns the updated table by calling get_attendance
+	"""
 	new_row = attendance()
 	db.add(new_row)
 	db.commit()
@@ -112,6 +157,12 @@ def post_attendance(db):
 
 @app.delete("/api/attendance")
 def delete_attendance(db):
+	"""
+	Remove an entry from the attendance table
+	The date type is passed in JSON as a string.
+	The string should be the same as what's returned by calling get_attendance
+	Returns the updated table
+	"""
 	date = read_json(["date"], [str])
 	db.query(attendance).filter_by(date = date).delete()
 	db.commit()
