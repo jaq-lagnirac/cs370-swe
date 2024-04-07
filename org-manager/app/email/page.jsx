@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
 // import jsonMemberData from './data.json';
+import EmailButton from '../components/email-button';
 import Select from 'react-select';
 import * as yup from "yup"
 
@@ -91,7 +92,9 @@ export default function Email() {
   return (
     <>
       <h1>Send Emails</h1>
-
+      <EmailButton iconSrc="/icons/light-email.png" buttonText={"Send Email To All Exec"}/>
+      {/* <EmailButton buttonText={"Send Email To All Exec"}/>
+      <EmailButton buttonText={"Send Email To All Exec"}/> */}
 
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* <label>*To</label> */}
