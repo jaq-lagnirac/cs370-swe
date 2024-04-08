@@ -4,11 +4,12 @@ import React from 'react';
 interface TableProps {
   columns: string[];
   tableData: {[key: string]: any}[];
+  colorCoded?: boolean;
 }
 
 // The key column is last
 // N
-const Table: React.FC<TableProps> = ({columns, tableData})  => {
+const Table: React.FC<TableProps> = ({columns, tableData, colorCoded})  => {
   let table = [
     <thead>
       <tr key="Header">
