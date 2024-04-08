@@ -27,9 +27,14 @@ class members(base):
 	role = Column(Integer)
 	note = Column(String(NOTE_LENGTH))
 
+class dates(base):
+	__tablename__ = "dates"
+	date = Column(DateTime(timezone=True), server_default=func.now(), primary_key=True)
+
 class attendance(base):
 	__tablename__ = "attendance"
-	date = Column(DateTime(timezone=True), server_default=func.now(), primary_key=True)
+	date = Column(DateTime(timezone=True), primary_key=True)
+	id = Column(Integer, primary_key=True)
 
 #If the roster database does not yet exist, create it now
 if not database_exists(engine.url):
@@ -39,7 +44,7 @@ if not database_exists(engine.url):
 #Helper functions
 def validate_content_type():
 	"""
-	A simple function that checks the content_type, and aborts if it's incorrect.
+	A simple function that checks the content_type and aborts if it's incorrect.
 
 	Args: None
 	Returns: void
@@ -61,6 +66,10 @@ def read_json(names, types):
 
 	Returns:
 		A tuple containing your variables in the same order as listed
+
+	Example:
+		id, name = read_json(["id", "name"], [int, str])
+
 	"""
 	validate_content_type()
 	ret = []
@@ -134,7 +143,7 @@ def delete_members(db):
 @app.get("/api/attendance")
 def get_attendance(db):
 	"""
-	Queries the attendance table and returns the data in JSON
+	Queries the dates/attendance tables and returns the data in JSON
 	"""
 	table_data = db.query(attendance)
 	results = []
@@ -145,12 +154,32 @@ def get_attendance(db):
 @app.post("/api/attendance")
 def post_attendance(db):
 	"""
-	Adds a new row to the attendance table.
+	Adds a new date to the dates table.
 	No data is needed for this POST request,
 	the time stamp is calculated by the server itself.
-	Returns the updated table by calling get_attendance
+	Returns by calling get_attendance
 	"""
-	new_row = attendance()
+	new_row = dates()
+	db.add(new_row)
+	db.commit()
+	return get_attendance(db)
+
+@app.put("/api/attendance")
+def put_attendance(db):
+	"""
+	Add a new attendance record to the attendance table (ie an ID paired with a date)
+	The date and id must already exist
+	Returns by calling get_attendance
+	"""
+	date, id = read_json(["date", "id"], [str, int])
+
+	if db.query(dates).filter_by(date=date).all() == []:
+		abort(409, f"A row with primary key {date} does not exist. Use POST to add a new row")
+
+	if db.query(members).filter_by(id=id).all() == []:
+		abort(409, f"ID {id} does not exist in the members table")
+
+	new_row = attendance(date=date, id=id)
 	db.add(new_row)
 	db.commit()
 	return get_attendance(db)
@@ -158,16 +187,40 @@ def post_attendance(db):
 @app.delete("/api/attendance")
 def delete_attendance(db):
 	"""
-	Remove an entry from the attendance table
+	Remove a date and/or id from the dates/attendance tables
 	The date type is passed in JSON as a string.
 	The string should be the same as what's returned by calling get_attendance
 	Returns the updated table
 	"""
-	date = read_json(["date"], [str])
-	db.query(attendance).filter_by(date = date).delete()
+	date = id = None
+	try:
+		date = request.json["date"]
+		date = read_json(["date"], [str])
+	except:
+		pass
+
+	try:
+		id = request.json["id"]
+		id = read_json(["id"], [int])
+	except:
+		pass
+
+	if date == None and id == None:
+		abort(400, "Unable to parse date or id")
+
+	dates_query = db.query(dates)
+	attendance_query = db.query(attendance)
+
+	if date == None:
+		attendance_query.filter_by(id=id).delete()
+	else if id == None:
+		dates_query.filter_by(date=date).delete()
+		attendance_query.filter_by(date=date).delete()
+	else:
+		attendance_query.filter_by(id=id, date=date).delete()
+
 	db.commit()
 	return get_attendance(db)
-
 
 
 app.run(host="0.0.0.0", port=PORT)
