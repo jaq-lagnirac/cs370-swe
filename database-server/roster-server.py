@@ -7,7 +7,7 @@ NOTE_LENGTH = 500
 
 from bottle import Bottle, get, post, put, delete, request, abort
 from bottle.ext import sqlalchemy
-from sqlalchemy import create_engine, Column, Integer, String, DateTime
+from sqlalchemy import create_engine, Column, BigInteger, SmallInteger, String, DateTime
 from sqlalchemy.sql import func
 from sqlalchemy.orm import declarative_base
 from sqlalchemy_utils import database_exists, create_database
@@ -21,10 +21,10 @@ app.install(plugin)
 #Define the tables in the database
 class members(base):
 	__tablename__ = "members"
-	id = Column(Integer, primary_key=True)
+	id = Column(BigInteger(), primary_key=True)
 	name = Column(String(STRING_LENGTH))
 	email = Column(String(STRING_LENGTH))
-	role = Column(Integer)
+	role = Column(SmallInteger())
 	note = Column(String(NOTE_LENGTH))
 
 class dates(base):
@@ -34,7 +34,7 @@ class dates(base):
 class attendance(base):
 	__tablename__ = "attendance"
 	date = Column(DateTime(timezone=True), primary_key=True)
-	id = Column(Integer, primary_key=True)
+	id = Column(BigInteger(), primary_key=True)
 
 #If the roster database does not yet exist, create it now
 if not database_exists(engine.url):
@@ -145,10 +145,16 @@ def get_attendance(db):
 	"""
 	Queries the dates/attendance tables and returns the data in JSON
 	"""
-	table_data = db.query(attendance)
-	results = []
-	for x in table_data:
-		results.append({ "date":str(x.date) })
+	dates_data = db.query(dates)
+	attendance_data = db.query(attendance)
+	results = list()
+
+	for i in dates_data:
+		ids = list()
+		for j in attendance_data.filter_by(date=i.date):
+			ids.append(j.id)
+		results.append({ "date":str(i.date), "ids":ids })
+
 	return {"attendance" : results}
 
 @app.post("/api/attendance")
@@ -179,6 +185,9 @@ def put_attendance(db):
 	if db.query(members).filter_by(id=id).all() == []:
 		abort(409, f"ID {id} does not exist in the members table")
 
+	if db.query(attendance).filter_by(date=date, id=id).all() == []:
+		abort(409, f"Attendance for ID {id} on {date} has already been recorded")
+
 	new_row = attendance(date=date, id=id)
 	db.add(new_row)
 	db.commit()
@@ -189,7 +198,10 @@ def delete_attendance(db):
 	"""
 	Remove a date and/or id from the dates/attendance tables
 	The date type is passed in JSON as a string.
-	The string should be the same as what's returned by calling get_attendance
+
+	If only an ID or date is provided, all rows associated with that ID or date will be deleted
+	If both an ID and date are provided, only that one row that matches both will be deleted
+
 	Returns the updated table
 	"""
 	date = id = None
@@ -213,7 +225,7 @@ def delete_attendance(db):
 
 	if date == None:
 		attendance_query.filter_by(id=id).delete()
-	else if id == None:
+	elif id == None:
 		dates_query.filter_by(date=date).delete()
 		attendance_query.filter_by(date=date).delete()
 	else:
