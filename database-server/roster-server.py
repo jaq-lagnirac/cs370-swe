@@ -4,6 +4,7 @@
 PORT = 8080
 STRING_LENGTH = 50
 NOTE_LENGTH = 500
+LOCAL_ONLY = False
 
 from bottle import Bottle, get, post, put, delete, request, abort
 from bottle.ext import sqlalchemy
@@ -234,5 +235,4 @@ def delete_attendance(db):
 	db.commit()
 	return get_attendance(db)
 
-
-app.run(host="0.0.0.0", port=PORT)
+app.run(host = "127.0.0.1" if LOCAL_ONLY else "0.0.0.0", port=PORT)
