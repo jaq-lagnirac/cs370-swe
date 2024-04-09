@@ -88,6 +88,7 @@ export default function Roster() {
   setName("");
   setEmail("");
   setBannerId(0o0000000);
+  setRole(""); //this causes some issues
 
   {console.log("roster members", rosterMembers)}
   }

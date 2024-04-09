@@ -252,26 +252,27 @@ button {
 }
 
 .table > tbody > tr:nth-child(even) > td,
-.table > tbody > tr:nth-child(odd) > td
-{
-  background-color: #F2AD8B;
+.table > tbody > tr:nth-child(odd) > td {
+  background-color: transparent !important;
   color: white;
   border-width: 2px;
   border-color: var(--bg-color);
-  /* background-color: #6BC7B8;
-  background-color: #90BEE1; */
 }
 
 .tr-president {
-  background-color: #90BEE1;
+  background-color: #90BEE1 !important;
 }
 
 .tr-exec {
-  background-color: #6BC7B8; /* You can set the color for executives here */
+  background-color: #6BC7B8 !important;
 }
 
 .tr-member {
-  background-color: #F2AD8B; /* You can set the color for members here */
+  background-color: #F2AD8B !important;
+}
+
+.color-coded {
+  background-color: #90BEE1 !important;
 }
 
 /* modal */
