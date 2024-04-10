@@ -2,11 +2,8 @@
 import React from 'react';
 import ImgDl from '../components/img-dl';
 import Table from '../components/table';
-<<<<<<< HEAD
-import CopyText from '../components/copy-text';
-=======
 import Modal from '../components/modal';
->>>>>>> 5e2f5a3af14000e2608ee5f413f14dc729e562bf
+import CopyText from '../components/copy-text';
 import { useState } from 'react';
 import RootLayout from '../layout';
 
@@ -42,13 +39,8 @@ export default function Attendance() {
         </>
       ) : ( <></> )}
       <div className="mb-3">
-<<<<<<< HEAD
-        <Table columns={columns} tableData={tableData} />
-
-=======
-        <Table columns={columns} tableData={tableData} colorCoded={false}/>
+        <Table columns={columns} tableData={tableData} colorCoded={false} />
         <Modal modalTitle="Create New Attendance Session" addLink={addLink} addQR ={addQR} deleteButton={true} areYouSureTitle={"Are you sure you want to delete your session?"}/>
->>>>>>> 5e2f5a3af14000e2608ee5f413f14dc729e562bf
       </div>
     </div>
   );
