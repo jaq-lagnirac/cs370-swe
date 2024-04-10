@@ -1,24 +1,28 @@
 //Buttons listed on the email page
 //Made of email icon and select text
+import { useState, useEffect, useLayoutEffect } from 'react';
 import Image from 'next/image';
 
 interface TableProps {
-    iconSrc: string;
     buttonText: string;
+    onClick?: () => void;
+    darkMode: boolean;
   }
 
-const EmailButton: React.FC<TableProps> = ({iconSrc, buttonText})  => {
-//   let icon = "../icons/light-email.png"; 
-  let icon = "/light-email.svg"; // Adjust the path to match your directory structure
-  let darkIcon = "/test-qr.png";
+const EmailButton: React.FC<TableProps> = ({buttonText, onClick, darkMode})  => {
+  const [icon, setIcon] = useState(darkMode ? "/dark-email.svg" : "/light-email.svg");
+  // useEffect(() => {
+  //   const iconSrc = darkMode ? "/dark-email.svg" : "/light-email.svg";
+  //   setIcon(iconSrc);
+  // }, [darkMode]);
   return (
   <>
-    <button>
-        <div>
-            <Image src={icon} alt="Send Email" width={50} height={50} />
-        </div>
-        <div>{buttonText}</div>
-    </button>
+    <div onClick={onClick}>
+        <button className="email-button email-text">
+            <Image className="pe-3 mb-1" src={icon} alt="Send Email" width={80} height={60}/>
+            {buttonText}
+        </button>
+    </div>
   </>
   );
 };

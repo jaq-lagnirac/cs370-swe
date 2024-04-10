@@ -2,29 +2,12 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
-const Navbar = () => {
-  const [darkMode, setDarkMode] = useState(false);
+interface NavbarProps {
+  darkMode: boolean;
+  toggleTheme: () => void;
+}
 
-  const toggleTheme = () => {
-    const root = document.documentElement;
-
-    if (!darkMode) {
-      setDarkMode(true);
-      root.style.setProperty('--bg-color', '#2D283E');
-      root.style.setProperty('--text-color', '#FFFDF3');
-      root.style.setProperty('--secondary-text-color', 'white');
-      root.style.setProperty('--nav-color', '#FFFDF3');
-      root.style.setProperty('--active-nav-color', 'white');
-    } else {
-      setDarkMode(false);
-      root.style.setProperty('--bg-color', '#FFFDF3');
-      root.style.setProperty('--text-color', '#6C43B1');
-      root.style.setProperty('--secondary-text-color', 'black');
-      root.style.setProperty('--nav-color', '#8D6BC7');
-      root.style.setProperty('--active-nav-color', '#6C43B1');
-    }
-  }
-
+const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleTheme }) => {
   return (
     <div className="row nav-container">
     <nav className="navbar navbar-expand-sm pb-2 col-10">

@@ -4,42 +4,58 @@ import React from 'react';
 interface TableProps {
   columns: string[];
   tableData: {[key: string]: any}[];
+  colorCoded: boolean;
 }
 
 // The key column is last
 // N
-const Table: React.FC<TableProps> = ({columns, tableData})  => {
-  let table = [
-    <thead>
-      <tr key="Header">
-        {columns.map((column: string, index:number) => {
-          return <th key={column} scope="col">{column}</th>
-        })}
-      </tr>
-    </thead>
-  ];
-  for (let i = 0; i < tableData.length; i++) {
-    let td: React.ReactNode[] = [];
-    for (let j = 0; j < columns.length; j++) {
-      td.push(
-        <td key={columns[i] + tableData[i][columns[columns.length - 1]]}>
-          {tableData[i][columns[j]]}
-        </td>
-      )
+const RosterTable: React.FC<TableProps> = ({columns, tableData, colorCoded})  => {
+  const getRowClassName = (role: string) => {
+    if (colorCoded) {
+      switch (role) {
+        case 'president':
+          return 'tr-president';
+        case 'exec':
+          return 'tr-exec';
+        case 'member':
+          return 'tr-member';
+        default:
+          return '';
+      }
+    } else {
+      return 'color-coded';
     }
-    table.push(
-      <tbody>
-        <tr key={tableData[i][columns[columns.length - 1]]}>
-          {td}
-        </tr>
-      </tbody>
-    )
-  }
+  };
+
+  const tableRows = tableData.map((rowData, index) => {
+    const cells = columns.map((column, columnIndex) => (
+      <td key={`${column}-${index}`}>{rowData[column]}</td>
+    ));
+
+    const role = rowData['Role'];
+    const rowClassName = colorCoded ? getRowClassName(role) : '';
+
+    return (
+      <tr key={`row-${index}`} className={rowClassName}>
+        {cells}
+      </tr>
+    );
+  });
+
   return (
     <table className="table table-bordered table-hover">
-      {table}
+      <thead>
+        <tr>
+          {columns.map((column, index) => (
+            <th key={`header-${index}`} scope="col">{column}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {tableRows}
+      </tbody>
     </table>
   );
 };
 
-export default Table;
+export default RosterTable;
