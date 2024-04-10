@@ -136,15 +136,14 @@ export default function Roster() {
                 <option value="member">Member</option>
               </select>
               <p className="red-text">{errors.role?.message}</p>
+              <button className="purple-button" type="submit" style={{float: 'right'}} onClick={handleAddMember}>Save</button>
+              <button type="button" className="btn btn-default" style={{float: 'right'}} data-dismiss="modal">Close</button>
             </form>
           </>
         }
-        closeButton="Close"
-        saveButton="Save"
         toggleText="Add Member"
         toggleClass="large-purple-button"
         modalId="createMemberModal"
-        onClickSave={handleAddMember}
       />
 
       <Modal
