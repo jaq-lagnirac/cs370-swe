@@ -2,7 +2,7 @@
 # Justin Caringal
 # A function which organizes and implements Gmail API calls to send emails
 
-# Email Libraries
+# Gmail API Libraries
 import os
 import base64
 from email.mime.text import MIMEText
@@ -12,18 +12,25 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from requests import HTTPError
 
-# Multithreading Libraries
-from concurrent.futures import ThreadPoolExecutor
-import multiprocessing
+# JSON library
+import json
 
 # Constants
 MAX_ATTEMPTS = 10
 DESCRIPTION = """Hello!
-Welcome to send_email.py
-"""
+Welcome to send_email.py, a part of the CS 370 Software Engineering Project!
+Lead Developer: Justin Caringal
 
-# Global variables for errors
-errors = []
+"""
+EMAILS_KEY = 'recipients'
+SUBJECT_KEY = 'subject'
+BODY_KEY = 'body'
+EXT = '.json'
+
+
+# Global variables
+errors = [] # stores email addresses which produce errors
+
 
 # Functions
 
@@ -90,21 +97,14 @@ def sends_emails_to_list(service, recipients, subject, body):
     Returns:
         None
     """
-    # processes tasks using ThreadPoolExecutor
-    global errors
-    threading_errors = []
-    with ThreadPoolExecutor(max_workers = multiprocessing.cpu_count()) as executor:
-            for recipient in recipients:
-                try:
-                    executor.submit(send_email, service, recipient, subject, body)
-                except:
-                    errors.append(threading_errors)
 
-    print(errors)
+    for recipient in recipients:
+        send_email(service, recipient, subject, body)
+
     return
 
 
-def send_email_driver(recipients, subject, body):
+def auth_into_email(recipients, subject, body):
     """ Driver function to handle OAuth
 
     A function which handles the OAuth into the Google API for Gmail
@@ -166,35 +166,59 @@ def send_email_driver(recipients, subject, body):
     return
 
 
-def test_driver():
-    """Dummy main program to test functionality"""
+def send_email_from_json(json_path):
+    """Initiates sending email from JSON
     
-    # input_file_path = 'cs370_class_list.txt'
-    # input_file_path = 'small_test_list.txt'
-    input_file_path = 'dummy_emails.txt'
+    A function which extracts data relevant for an email
+    and sends it through the pipeline of functions which
+    results in emails being sent to a list of addresses.
+    
+    The top-level function which is exposed for use in other
+    functions.
+    
+    Args:
+        json_path (str): A path to a json file, expecting
+            certain keys
+    
+    Returns:
+        None
+    """
 
-    emails = []
-    with open(input_file_path, 'r') as input_file:
-        # the first line of the text file is the subject line
-        # the second line of the text file is the body
-        # the remaining parts of the file are the emails
-        # which will receive the formatted email
+    _, ext = os.path.splitext(json_path)
+    if ext != EXT:
+        print('Non-JSON file inputted.')
+        return
+    
+    expected_keys = {SUBJECT_KEY, BODY_KEY, EMAILS_KEY} # set
+    with open(json_path, 'r') as input:
 
-        subject = input_file.readline().strip()
-        body = input_file.readline().strip()
+        # loads JSON into dict
+        email_request = json.load(input)
+        
+        # ensures required keys are listed
+        received_keys = set(email_request.keys())
+        if received_keys != expected_keys:
+            print('Inputted JSON file does not have the required keys.')
+            return
+        
+        # extracts data
+        emails = email_request[EMAILS_KEY]
+        subject = email_request[SUBJECT_KEY]
+        body = email_request[BODY_KEY]
 
-        for line in input_file:
-            email = line.strip()
-            emails.append(email)
+    # validates types of extracted data
+    if type(emails) != list or \
+        type(subject) != str or \
+            type(body) != str:
+        print('Data types do not line up.')
+        return
 
-    # prints status update
-    # print(subject)
-    # print(body)
-    # print(emails)
     # executes exposed function
-    send_email_driver(emails, subject, body)
+    auth_into_email(emails, subject, body)
+
+    return
 
 
 if __name__ == '__main__':
     print(DESCRIPTION)
-    test_driver()
+    send_email_from_json('dummy_emails.json')

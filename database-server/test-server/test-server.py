@@ -42,7 +42,7 @@ def post_test_table(db):
 	except:
 		abort(400, "Invalid JSON")
 
-	if type(value) != type(1):
+	if type(value) != int:
 		abort(400, "value is type int")
 
 	if db.query(test_table).filter_by(test_column = value).all() != []:
@@ -65,7 +65,7 @@ def delete_test_table(db):
 	except:
 		abort(400, "Invalid JSON")
 
-	if type(value) != type(1):
+	if type(value) != int:
 		abort(400, "value is type int")
 
 	db.query(test_table).filter_by(test_column = value).delete()

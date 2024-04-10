@@ -2,7 +2,11 @@
 import React from 'react';
 import ImgDl from '../components/img-dl';
 import Table from '../components/table';
+<<<<<<< HEAD
 import CopyText from '../components/copy-text';
+=======
+import Modal from '../components/modal';
+>>>>>>> 5e2f5a3af14000e2608ee5f413f14dc729e562bf
 import { useState } from 'react';
 import RootLayout from '../layout';
 
@@ -12,6 +16,8 @@ export default function Attendance() {
     {Date: "1970-01-01", Time: "10:00-12:00", Attendees: 2}
   ];
   const [showQR, setShowQR] = useState(false);
+  const addLink = "";
+  const addQR = "";
 
   const showQRCOde = () => {
     setShowQR(!showQR);
@@ -24,7 +30,7 @@ export default function Attendance() {
   return (
     <div>
       <h1>Attendance</h1>
-      <button className="attendance-button mb-4" onClick={showQRCOde}>Create Session</button>
+      <button className="large-purple-button mb-4" onClick={showQRCOde}>Create Session</button>
       {showQR ? (
         <>
           <h2 className="mb-2">Here is a test QR code download.</h2>
@@ -36,8 +42,13 @@ export default function Attendance() {
         </>
       ) : ( <></> )}
       <div className="mb-3">
+<<<<<<< HEAD
         <Table columns={columns} tableData={tableData} />
 
+=======
+        <Table columns={columns} tableData={tableData} colorCoded={false}/>
+        <Modal modalTitle="Create New Attendance Session" addLink={addLink} addQR ={addQR} deleteButton={true} areYouSureTitle={"Are you sure you want to delete your session?"}/>
+>>>>>>> 5e2f5a3af14000e2608ee5f413f14dc729e562bf
       </div>
     </div>
   );
