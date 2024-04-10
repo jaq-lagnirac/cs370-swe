@@ -1,0 +1,32 @@
+{
+    "recipients" : [
+        "a12345@truman.edu",
+        "b12345@truman.edu",
+        "c12345@truman.edu",
+        "d12345@truman.edu",
+        "e12345@truman.edu",
+        "f12345@truman.edu",
+        "g12345@truman.edu",
+        "h12345@truman.edu",
+        "i12345@truman.edu",
+        "j12345@truman.edu",
+        "k12345@truman.edu",
+        "l12345@truman.edu",
+        "m12345@truman.edu",
+        "n12345@truman.edu",
+        "o12345@truman.edu",
+        "p12345@truman.edu",
+        "q12345@truman.edu",
+        "r12345@truman.edu",
+        "s12345@truman.edu",
+        "t12345@truman.edu",
+        "u12345@truman.edu",
+        "v12345@truman.edu",
+        "w12345@truman.edu",
+        "x12345@truman.edu",
+        "y12345@truman.edu",
+        "z12345@truman.edu"
+    ],
+    "subject" : "CS370 example header",
+    "body" : "This email was sent from a bot developed by Justin Caringal."
+}
