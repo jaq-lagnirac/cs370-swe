@@ -1,26 +1,22 @@
-/* IF YOU ARE USING THIS COMPONENT, YOU MUST ADD THE FOLLOWING CSS TO
-WHATEVER YOU WANT TO TOGGLE THE MODAL:
-data-toggle="modal" data-target="#largeModal"
-
-see page.tsx under layout.tsx for example
-*/
-
 import React from 'react';
 
 interface ModalProps {
     modalTitle: string;
     modalBody?: React.ReactNode;
-    closeButton?: boolean,
-    saveButton?: boolean,
-    deleteButton?: boolean,
+    closeButton?: string,
+    saveButton?: string,
+    deleteButton?: string,
     areYouSureTitle?: string,
     toggleText: string,
     toggleClass?: string,
-    toggleStyle?: string,
+    toggleOnClick?: () => void;
+    onClickSave?: () => void;
+    onClickDelete?: () => void;
+    onClickClose?: () => void;
     modalId: string,
   }
   
-  const Modal: React.FC<ModalProps> = ({ modalTitle, modalBody, closeButton, saveButton, deleteButton, areYouSureTitle, toggleText, toggleClass, modalId }) => {
+  const Modal: React.FC<ModalProps> = ({ modalTitle, modalBody, closeButton, saveButton, deleteButton, areYouSureTitle, toggleClass, toggleText, modalId, toggleOnClick, onClickDelete, onClickSave, onClickClose}) => {
     const handleDelete = () => {
         
     };
@@ -40,9 +36,9 @@ interface ModalProps {
             {modalBody}
         </div>
         <div className="modal-footer">
-            {closeButton && <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>}
-            {saveButton && <button className="large-purple-button">Save</button>}
-            {deleteButton && <button className="delete-button" onClick={handleDelete} data-toggle="modal" data-target="#basicModal">Delete</button>}
+            {closeButton && <button type="button" className="btn btn-default" data-dismiss="modal" onClick={onClickClose}>{closeButton}</button>}
+            {deleteButton && <button className="delete-button" onClick={onClickDelete} data-toggle="modal" data-target="#basicModal">{deleteButton}</button>}
+            {saveButton && <button className="large-purple-button" onClick={onClickSave}>{saveButton}</button>}
         </div>
         </div>
     </div>
@@ -61,8 +57,8 @@ interface ModalProps {
             </div>
         </div>
     </div>
-    <button className={toggleClass} data-toggle="modal" data-target={'#' + modalId} style={{float: 'right'}}>{toggleText}</button>
     </> }
+    <button className={toggleClass} onClick={toggleOnClick} data-toggle="modal" data-target={'#' + modalId}>{toggleText}</button>
     </>
   );
 };

@@ -181,6 +181,11 @@ button {
   padding-top: 7px;
   padding-bottom: 7px;
   font-size: 20px !important;
+  float: right;
+}
+
+.float-left {
+  float: left !important;
 }
 
 .secondary-button {
@@ -192,6 +197,7 @@ button {
   padding-top: 10px;
   padding-bottom: 10px;
   font-size: 17px !important;
+  float: right;
 }
 
 .delete-button {
