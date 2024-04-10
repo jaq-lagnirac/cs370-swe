@@ -18,7 +18,9 @@ import json
 # Constants
 MAX_ATTEMPTS = 10
 DESCRIPTION = """Hello!
-Welcome to send_email.py
+Welcome to send_email.py, a part of the CS 370 Software Engineering Project!
+Lead Developer: Justin Caringal
+
 """
 EMAILS_KEY = 'recipients'
 SUBJECT_KEY = 'subject'
@@ -95,20 +97,10 @@ def sends_emails_to_list(service, recipients, subject, body):
     Returns:
         None
     """
-    # processes tasks using ThreadPoolExecutor
-    global errors
-    # threading_errors = []
-    # with ThreadPoolExecutor(max_workers = multiprocessing.cpu_count()) as executor:
-    #         for recipient in recipients:
-    #             try:
-    #                 executor.submit(send_email, service, recipient, subject, body)
-    #             except:
-    #                 errors.append(threading_errors)
 
     for recipient in recipients:
         send_email(service, recipient, subject, body)
 
-    # print(errors)
     return
 
 
@@ -191,10 +183,6 @@ def send_email_from_json(json_path):
     Returns:
         None
     """
-    
-    # input_file_path = 'cs370_class_list.txt'
-    # input_file_path = 'small_test_list.txt'
-    # input_file_path = 'dummy_emails.txt'
 
     _, ext = os.path.splitext(json_path)
     if ext != EXT:
@@ -225,11 +213,6 @@ def send_email_from_json(json_path):
         print('Data types do not line up.')
         return
 
-    # prints status update
-    # print(email_request)
-    # print(subject)
-    # print(body)
-    # print(emails)
     # executes exposed function
     auth_into_email(emails, subject, body)
 
