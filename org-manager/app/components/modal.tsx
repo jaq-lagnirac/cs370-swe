@@ -6,31 +6,28 @@ see page.tsx under layout.tsx for example
 */
 
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 
 interface ModalProps {
     modalTitle: string;
     modalBody?: React.ReactNode;
-    addLink?: string,
-    addQR?: string;
     closeButton?: boolean,
     saveButton?: boolean,
     deleteButton?: boolean,
-    areYouSure?: boolean,
     areYouSureTitle?: string,
+    toggleText: string,
+    toggleClass?: string,
+    toggleStyle?: string,
+    modalId: string,
   }
   
-  const Modal: React.FC<ModalProps> = ({ modalTitle, modalBody, addLink, addQR, closeButton, saveButton, deleteButton, areYouSure, areYouSureTitle }) => {
+  const Modal: React.FC<ModalProps> = ({ modalTitle, modalBody, closeButton, saveButton, deleteButton, areYouSureTitle, toggleText, toggleClass, modalId }) => {
     const handleDelete = () => {
         
     };
 
   return (
     <>
-    <div className="modal fade" id="largeModal" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div className="modal fade" id={modalId} role="dialog" aria-labelledby="basicModal" aria-hidden="true">
     <div className="modal-dialog modal-dialog-centered modal-lg">
         <div className="modal-content">
         <div className="modal-header">
@@ -64,6 +61,7 @@ interface ModalProps {
             </div>
         </div>
     </div>
+    <button className={toggleClass} data-toggle="modal" data-target={'#' + modalId} style={{float: 'right'}}>{toggleText}</button>
     </> }
     </>
   );

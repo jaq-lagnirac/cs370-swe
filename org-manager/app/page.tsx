@@ -70,27 +70,36 @@ export default function Roster() {
   const roles = ["president", "exec", "member"];
 
   const handleAddMember = () => {
+    //only add if name, email, banner id, and role exist
     console.log("Submitting the following info: ");
     console.log("name: ", name);
     console.log("email: ", email);
     console.log("banner id: ", bannerId);
     console.log("role: ", role);
 
-  const newMember = {
-    "Name": name,
-    "Email": email,
-    "Banner ID": bannerId,
-    "Role": role,
-  };
+    const newMember = {
+      "Name": name,
+      "Email": email,
+      "Banner ID": bannerId,
+      "Role": role,
+    };
 
-  setRosterMembers(rosterMembers.concat(newMember));
+    setRosterMembers(rosterMembers.concat(newMember));
 
-  setName("");
-  setEmail("");
-  setBannerId(0o0000000);
-  setRole(""); //this causes some issues
+    setName("");
+    setEmail("");
+    setBannerId(0o0000000);
+    setRole(""); //this causes some issues
 
-  {console.log("roster members", rosterMembers)}
+    {console.log("roster members", rosterMembers)}
+  }
+
+  const handleDeleteMember = () => {
+
+  }
+
+  const handleEditMember = () => {
+
   }
 
   return (
@@ -100,43 +109,88 @@ export default function Roster() {
           Filter By
         </a>
         <div className="dropdown-menu">
-          <a className="dropdown-item m-0" href="https://www.nytimes.com/">NY TIMES</a>
+          <a className="dropdown-item m-0" href="#">President</a>
+          <a className="dropdown-item m-0" href="#">Exec</a>
+          <a className="dropdown-item m-0" href="#">Members</a>
         </div>
-      <Modal
-        modalTitle="Create New Member"
-        modalBody={
-          <>
-            <form className="member-form" onSubmit={handleSubmit(onSubmit)}>
-            <input type="text" {...register("name")} placeholder="*Member Name" value={name} onChange={(e) => setName(e.target.value)} />
-            <p className="red-text">{errors.name?.message}</p>
-
-            <input type="text" {...register("email")} placeholder="*Member Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <p className="red-text">{errors.email?.message}</p>
-
-            <input type="number" {...register("bannerId")} placeholder="*Member Banner ID" value={bannerId} onChange={(e) => setBannerId(parseInt(e.target.value))} />
-            <p className="red-text">{errors.bannerId?.message}</p>
-
-            <select {...register("role", { required: true })} className="role-select" value={role} onChange={(e) => setRole(e.target.value)}>
-              
-              <option value="president">President</option>
-              <option value="exec">Exec</option>
-              <option value="member">Member</option>
-            </select>
-            <p className="red-text">{errors.role?.message}</p>
-
-            <button className="purple-button" type="submit" style={{float: 'right'}} onClick={handleAddMember} data-dismiss="modal">Save</button>
-          </form>
-          </>
-      }/>
-      <Modal modalTitle="Edit Member" deleteButton={true} areYouSureTitle={"Are you sure you want to delete this member?"}/>
       <Table columns={columns} tableData={rosterMembers} colorCoded={true}/> 
-      {console.log("roster members", rosterMembers)}
-      <div className="float-right">
-        <button className="large-purple-button" data-toggle="modal" data-target="#largeModal" style={{float: 'right'}}>Add member</button>
+
+      <button className="large-purple-button" data-toggle="modal" data-target="#createMemberModal" style={{float: 'right'}}>Add Member</button>
+      <button className="secondary-button" data-toggle="modal" data-target="#editMemberModal" style={{float: 'right'}}>Edit Members</button>
+
+      {/* Edit Member Modal */}
+      <div className="modal fade" id="editMemberModal" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+      <div className="modal-dialog modal-dialog-centered modal-lg">
+          <div className="modal-content">
+          <div className="modal-header">
+              <h4 className="modal-title main-modal-title" id="myModalLabel">Edit Member</h4>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <img src="/xicon.svg" alt="Close"/>
+              </button>
+          </div>
+          <div className="modal-body">
+              <></>
+          </div>
+          <div className="modal-footer">
+            <button className="delete-button" data-toggle="modal" data-target="#deleteMemberModal">Delete Member</button>
+            <button className="large-purple-button">Save</button>
+          </div>
+        </div>
       </div>
-      <Modal
-        modalTitle="Create New Member"
-      />
+      </div>
+      {/* Are you sure */}
+      <div className="modal fade" id="deleteMemberModal" data-bs-backdrop="static" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content">
+                  <div className="modal-header">
+                      <h4 className="modal-title ays-modal-title" id="myModalLabel">Are you sure you want to delete this member?</h4>
+                  </div>
+                  <div className="modal-body d-flex justify-content-center">
+                      <button className="large-purple-button me-2" onClick={handleDeleteMember}>Yes</button>
+                      <button className="delete-button ms-2" data-dismiss="modal">No, take me back!</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      {/*  Create member modal */}
+      <div className="modal fade" id="createMemberModal" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered modal-lg">
+          <div className="modal-content">
+            <div className="modal-header">
+                <h4 className="modal-title main-modal-title" id="myModalLabel">Create New Member</h4>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <img src="/xicon.svg" alt="Close"/>
+                </button>
+            </div>
+            <div className="modal-body">
+              <form className="member-form" onSubmit={handleSubmit(onSubmit)}>
+                <input type="text" {...register("name")} placeholder="*Member Name" value={name} onChange={(e) => setName(e.target.value)} />
+                <p className="red-text">{errors.name?.message}</p>
+
+                <input type="text" {...register("email")} placeholder="*Member Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <p className="red-text">{errors.email?.message}</p>
+
+                <input type="number" {...register("bannerId")} placeholder="*Member Banner ID" value={bannerId} onChange={(e) => setBannerId(parseInt(e.target.value))} />
+                <p className="red-text">{errors.bannerId?.message}</p>
+
+                <select {...register("role", { required: true })} className="role-select" value={role} onChange={(e) => setRole(e.target.value)}>
+                  
+                  <option value="president">President</option>
+                  <option value="exec">Exec</option>
+                  <option value="member">Member</option>
+                </select>
+                <p className="red-text">{errors.role?.message}</p>
+
+                <button className="purple-button" type="submit" style={{float: 'right'}} onClick={handleAddMember}>Save</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>  
+
+      {console.log("roster members", rosterMembers)}
+        {/* <button className="large-purple-button" data-toggle="modal" data-target="#largeModal" style={{float: 'right'}}>Add member</button> */}
     </>
   );
 }

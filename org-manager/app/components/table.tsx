@@ -29,7 +29,7 @@ const RosterTable: React.FC<TableProps> = ({columns, tableData, colorCoded})  =>
 
   const tableRows = tableData.map((rowData, index) => {
     const cells = columns.map((column, columnIndex) => (
-      <td key={`${column}-${index}`}>{rowData[column]}</td>
+        <td key={`${column}-${index}`}>{rowData[column]}</td>
     ));
 
     const role = rowData['Role'];

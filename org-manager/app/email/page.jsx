@@ -133,7 +133,27 @@ export default function Email() {
           <textarea className="email-input"  {...register("body")} placeholder="*Email Body" value={body} onChange={(e) => setBody(e.target.value)} />
           <p className="red-text">{errors.body?.message}</p>
 
-          <button className="purple-button" type="submit" style={{float: 'right'}} onClick={handleSendEmail} >Send Email</button>
+          <button className="purple-button" type="submit" style={{float: 'right'}} onClick={handleSendEmail} data-toggle="modal" data-target="#confirmEmailSentModal">Send Email</button>
+
+          {/* Confirmation Email Sent Modal */}
+          <div className="modal fade" id="confirmEmailSentModal" data-bs-backdrop="static" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+            <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-content">
+                    <div className="modal-header mt-3">
+                      <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                          <img src="/xicon.svg" alt="Close"/>
+                      </button>
+                    </div>
+                    <div className="modal-body pb-0">
+                      <h4 className="modal-title confirmation-modal-title" style={{float: 'center'}} id="myModalLabel">Your email has been sent!</h4>
+                    </div>
+                    <div className="modal-footer">
+                      <button type="button" className="btn btn-default" style={{float: 'right'}} data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+
         </form>
       ) : <></>}
     </>

@@ -13,8 +13,6 @@ export default function Attendance() {
     {Date: "1970-01-01", Time: "10:00-12:00", Attendees: 2}
   ];
   const [showQR, setShowQR] = useState(false);
-  const addLink = "";
-  const addQR = "";
 
   const showQRCOde = () => {
     setShowQR(!showQR);
@@ -39,8 +37,8 @@ export default function Attendance() {
         </>
       ) : ( <></> )}
       <div className="mb-3">
-        <Table columns={columns} tableData={tableData} colorCoded={false} />
-        <Modal modalTitle="Create New Attendance Session" addLink={addLink} addQR ={addQR} deleteButton={true} areYouSureTitle={"Are you sure you want to delete your session?"}/>
+        <Table columns={columns} tableData={tableData} colorCoded={false}/>
+        {/* <Modal modalTitle="Create New Attendance Session" deleteButton={true} areYouSureTitle={"Are you sure you want to delete your session?"}/> */}
       </div>
     </div>
   );
