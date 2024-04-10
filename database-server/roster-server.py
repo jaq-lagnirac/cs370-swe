@@ -30,7 +30,7 @@ class members(base):
 
 class dates(base):
 	__tablename__ = "dates"
-	date = Column(DateTime(timezone=True), server_default=func.now(), primary_key=True)
+	date = Column(DateTime(timezone=True), primary_key=True)
 
 class attendance(base):
 	__tablename__ = "attendance"
@@ -162,11 +162,20 @@ def get_attendance(db):
 def post_attendance(db):
 	"""
 	Adds a new date to the dates table.
-	No data is needed for this POST request,
-	the time stamp is calculated by the server itself.
+	If no date is provided, the server will automatically use the current time.
 	Returns by calling get_attendance
 	"""
-	new_row = dates()
+	date = None
+	try:
+		date = request.json["date"]
+		date = read_json(["date"], [str])
+	except:
+		date = func.now()
+
+	if db.query(dates).filter_by(date=date).all() != []:
+		abort(409, f"DateTime {date} already exists")
+
+	new_row = dates(date=date)
 	db.add(new_row)
 	db.commit()
 	return get_attendance(db)

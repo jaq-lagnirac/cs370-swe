@@ -30,8 +30,10 @@ POST requests can fail in multiple ways:
 Example data sent along with a POST request:
 `{"id": 2, "name": "Andrew Ruff", "email": "abr8115@truman.edu", "role": 1, "note": "Hello, world!"}`
 
-Note that no data is required to be sent when POSTing to the `attendance` table. The database will automatically create a new row and set the `date` field to be the current time. The `ids` list starts empty.
+Note that the date is optional when POSTing to the `attendance` table. The database will automatically create a new row and set the `date` field to be the current time if no date is provided. The `ids` list starts empty.
 
+Dates should always be of the format `YYYY-MM-DD HH:mm:ss`. For example `2024-04-08 14:00:22`.
+ 
 ## PUT Requests
 A PUT request is used to update an existing row in the database.
 PUT requests can fail in similar ways to POST:
