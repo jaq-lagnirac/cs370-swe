@@ -115,82 +115,51 @@ export default function Roster() {
         </div>
       <Table columns={columns} tableData={rosterMembers} colorCoded={true}/> 
 
-      <button className="large-purple-button" data-toggle="modal" data-target="#createMemberModal" style={{float: 'right'}}>Add Member</button>
-      <button className="secondary-button" data-toggle="modal" data-target="#editMemberModal" style={{float: 'right'}}>Edit Members</button>
+      <Modal
+        modalTitle="Create New Member"
+        modalBody={
+          <>
+            <form className="member-form" onSubmit={handleSubmit(onSubmit)}>
+              <input type="text" {...register("name")} placeholder="*Member Name" value={name} onChange={(e) => setName(e.target.value)} />
+              <p className="red-text">{errors.name?.message}</p>
 
-      {/* Edit Member Modal */}
-      <div className="modal fade" id="editMemberModal" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-      <div className="modal-dialog modal-dialog-centered modal-lg">
-          <div className="modal-content">
-          <div className="modal-header">
-              <h4 className="modal-title main-modal-title" id="myModalLabel">Edit Member</h4>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                  <img src="/xicon.svg" alt="Close"/>
-              </button>
-          </div>
-          <div className="modal-body">
-              <></>
-          </div>
-          <div className="modal-footer">
-            <button className="delete-button" data-toggle="modal" data-target="#deleteMemberModal">Delete Member</button>
-            <button className="large-purple-button">Save</button>
-          </div>
-        </div>
-      </div>
-      </div>
-      {/* Are you sure */}
-      <div className="modal fade" id="deleteMemberModal" data-bs-backdrop="static" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-          <div className="modal-dialog modal-dialog-centered">
-              <div className="modal-content">
-                  <div className="modal-header">
-                      <h4 className="modal-title ays-modal-title" id="myModalLabel">Are you sure you want to delete this member?</h4>
-                  </div>
-                  <div className="modal-body d-flex justify-content-center">
-                      <button className="large-purple-button me-2" onClick={handleDeleteMember}>Yes</button>
-                      <button className="delete-button ms-2" data-dismiss="modal">No, take me back!</button>
-                  </div>
-              </div>
-          </div>
-      </div>
+              <input type="text" {...register("email")} placeholder="*Member Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <p className="red-text">{errors.email?.message}</p>
 
-      {/*  Create member modal */}
-      <div className="modal fade" id="createMemberModal" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-        <div className="modal-dialog modal-dialog-centered modal-lg">
-          <div className="modal-content">
-            <div className="modal-header">
-                <h4 className="modal-title main-modal-title" id="myModalLabel">Create New Member</h4>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                    <img src="/xicon.svg" alt="Close"/>
-                </button>
-            </div>
-            <div className="modal-body">
-              <form className="member-form" onSubmit={handleSubmit(onSubmit)}>
-                <input type="text" {...register("name")} placeholder="*Member Name" value={name} onChange={(e) => setName(e.target.value)} />
-                <p className="red-text">{errors.name?.message}</p>
+              <input type="number" {...register("bannerId")} placeholder="*Member Banner ID" value={bannerId} onChange={(e) => setBannerId(parseInt(e.target.value))} />
+              <p className="red-text">{errors.bannerId?.message}</p>
 
-                <input type="text" {...register("email")} placeholder="*Member Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                <p className="red-text">{errors.email?.message}</p>
+              <select {...register("role", { required: true })} className="role-select" value={role} onChange={(e) => setRole(e.target.value)}>
+                
+                <option value="president">President</option>
+                <option value="exec">Exec</option>
+                <option value="member">Member</option>
+              </select>
+              <p className="red-text">{errors.role?.message}</p>
+            </form>
+          </>
+        }
+        closeButton="Close"
+        saveButton="Save"
+        toggleText="Add Member"
+        toggleClass="large-purple-button"
+        modalId="createMemberModal"
+        onClickSave={handleAddMember}
+      />
 
-                <input type="number" {...register("bannerId")} placeholder="*Member Banner ID" value={bannerId} onChange={(e) => setBannerId(parseInt(e.target.value))} />
-                <p className="red-text">{errors.bannerId?.message}</p>
-
-                <select {...register("role", { required: true })} className="role-select" value={role} onChange={(e) => setRole(e.target.value)}>
-                  
-                  <option value="president">President</option>
-                  <option value="exec">Exec</option>
-                  <option value="member">Member</option>
-                </select>
-                <p className="red-text">{errors.role?.message}</p>
-
-                <button className="purple-button" type="submit" style={{float: 'right'}} onClick={handleAddMember}>Save</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>  
+      <Modal
+        modalTitle="Edit Member"
+        saveButton="Save"
+        deleteButton="Delete"
+        areYouSureTitle={"Are you sure you want to delete this member?"}
+        toggleText="Edit Member"
+        toggleClass="secondary-button"
+        modalId="editMemberModal"
+        onClickSave={handleEditMember}
+        onClickDelete={handleDeleteMember}
+      />
 
       {console.log("roster members", rosterMembers)}
-        {/* <button className="large-purple-button" data-toggle="modal" data-target="#largeModal" style={{float: 'right'}}>Add member</button> */}
     </>
   );
 }
