@@ -12,6 +12,7 @@ from sqlalchemy import create_engine, Column, BigInteger, SmallInteger, String, 
 from sqlalchemy.sql import func
 from sqlalchemy.orm import declarative_base
 from sqlalchemy_utils import database_exists, create_database
+from send_email import send_email_from_json
 
 base = declarative_base()
 engine = create_engine("mysql://admin:admin@localhost/roster")
@@ -243,5 +244,17 @@ def delete_attendance(db):
 
 	db.commit()
 	return get_attendance(db)
+
+@app.post("/api/email")
+def post_email(db):
+	"""
+	Calls Justin's send email function with the provided JSON data
+	Pass the return value back to the user to indicate failure/success
+	"""
+	validate_content_type()
+	with open(".tmp.json", "wb") as file:
+		file.write(request.body.getbuffer())
+	return send_email_from_json(".tmp.json")
+
 
 app.run(host = "127.0.0.1" if LOCAL_ONLY else "0.0.0.0", port=PORT)
