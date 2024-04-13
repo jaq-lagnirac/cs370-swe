@@ -284,6 +284,12 @@ button {
   border-color: var(--bg-color);
 }
 
+.transparent {
+  background-color: transparent !important;
+  /* display: flex !important; */
+  justify-content: center;
+}
+
 .tr-president {
   background-color: #90BEE1 !important;
 }
@@ -298,6 +304,11 @@ button {
 
 .color-coded {
   background-color: #90BEE1 !important;
+}
+
+.delete-edit-icons {
+  display: flex !important;
+  justify-content: center;
 }
 
 /* modal */
