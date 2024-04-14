@@ -37,4 +37,31 @@ git clone https://github.com/jaq-lagnirac/cs370-swe.git
 
 ### Front-End (Page)
 
+[Tauri](https://tauri.app/) is a Rust tool to run web applications locally by using operating system WebView APIs (similar to Electron). To install the front-end pages, do the following:
+
+1) Install Rust and Cargo. 
+    - Install the required packages on Ubuntu by running the following commands:
+        ```
+        sudo apt update
+
+        sudo apt install libwebkit2gtk-4.0-dev \
+        build-essential \
+        curl \
+        wget \
+        file \
+        libssl-dev \
+        libgtk-3-dev \
+        libayatana-appindicator3-dev \
+        librsvg2-dev \
+        nsis \
+        lld \
+        llvm
+        ```
+    - Download the Rust distribution and execute the file using the following command:
+        ```
+        curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
+        ```
+        You can use your system package manager to download and install Rust but this may result in errors. If the TLSv1.2 flag (`--tlsv1.2`) causes issues, you can attempt the installation by removing it.
+2) Set up PNPM
+
 ### Back-End (Server)
