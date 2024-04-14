@@ -17,9 +17,6 @@ export default function Attendance() {
     // Also it will probably need to refresh the table so the new event shows up
   }
 
-  const generateQR = () => {
-
-  }
 
   return (
     <div>
@@ -37,7 +34,6 @@ export default function Attendance() {
           }
           saveButton="Done"
           onClickSave={saveSession}
-          toggleOnClick={generateQR}
           toggleText="Create Session"
           toggleClass="large-purple-button mb-4 float-left"
           modalId="newAttendance"
