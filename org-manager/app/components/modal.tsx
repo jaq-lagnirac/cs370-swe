@@ -1,19 +1,19 @@
 import React from 'react';
 
 interface ModalProps {
-    modalTitle: string;
+    modalTitle?: string;
     modalBody?: React.ReactNode;
     closeButton?: string,
     saveButton?: string,
     deleteButton?: string,
     areYouSureTitle?: string,
-    toggleText: string,
+    toggleText?: string,
     toggleClass?: string,
     toggleOnClick?: () => void;
     onClickSave?: () => void;
     onClickDelete?: () => void;
     onClickClose?: () => void;
-    modalId: string,
+    modalId?: string,
   }
   
   const Modal: React.FC<ModalProps> = ({ modalTitle, modalBody, closeButton, saveButton, deleteButton, areYouSureTitle, toggleClass, toggleText, modalId, toggleOnClick, onClickDelete, onClickSave, onClickClose}) => {
@@ -23,6 +23,7 @@ interface ModalProps {
 
   return (
     <>
+    {modalTitle && <>
     <div className="modal fade" id={modalId} role="dialog" aria-labelledby="basicModal" aria-hidden="true">
     <div className="modal-dialog modal-dialog-centered modal-lg">
         <div className="modal-content">
@@ -43,6 +44,7 @@ interface ModalProps {
         </div>
     </div>
     </div>
+    </> }
     {areYouSureTitle && <>
     <div className="modal fade" id="basicModal" data-bs-backdrop="static" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered">
@@ -58,7 +60,9 @@ interface ModalProps {
         </div>
     </div>
     </> }
-    <button className={toggleClass} onClick={toggleOnClick} data-toggle="modal" data-target={'#' + modalId}>{toggleText}</button>
+    {toggleText && <>
+        <button className={toggleClass} onClick={toggleOnClick} data-toggle="modal" data-target={'#' + modalId}>{toggleText}</button>
+    </> }
     </>
   );
 };
