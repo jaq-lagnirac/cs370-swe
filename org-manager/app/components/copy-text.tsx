@@ -14,14 +14,13 @@ function CopyText() {
   // Temporary fiat definition, replace with an argument
   let text = "https://ruff.computer";
   return (
-  <>
-    <a href={text}>
-      {text}
-    </a>
-    <button onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => copy(text)}>
-      Copy
+  <div style={{display: 'flex', justifyContent: 'center'}}>
+    <button className="copy-button me-2" onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => copy(text)}>
+      <img src="/copyicon.svg" className="copy-image"/>
     </button>
-  </>
+    {/* <p style={{ margin: 0, verticalAlign: 'middle' }}> */}
+    <input type="text" value={text} style={{ margin: 0, verticalAlign: 'middle', width: '80%' }}/>
+  </div>
   );
 };
 
