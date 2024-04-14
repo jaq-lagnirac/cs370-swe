@@ -18,7 +18,7 @@ We approached the [Stargazers Astronomy Club](https://stargazers.truman.edu/) wi
 
 `org-manager/` - directory to store and organize the frontend server written using Typescript, Javascript, and the React framework.
 
-## Installation Guide
+## Development Installation Guide
 
 This guide is intended for installation onto WSL2 (Windows Subsystem for Linux 2) with the Ubuntu distro. Please keep in mind your variations on the commands and follow local installation guides for your requisite system.
 
@@ -37,9 +37,10 @@ git clone https://github.com/jaq-lagnirac/cs370-swe.git
 
 ### Front-End (Page)
 
-[Tauri](https://tauri.app/) is a Rust tool to run web applications locally by using operating system WebView APIs (similar to Electron). To install the front-end pages, do the following:
+1) **Install Rust and Cargo.**
 
-1) Install Rust and Cargo. 
+    [Tauri](https://tauri.app/) is a Rust tool to run web applications locally by using operating system WebView APIs (similar to Electron). To install the front-end pages, do the following:
+
     - Install the required packages on Ubuntu by running the following commands:
         ```
         sudo apt update
@@ -62,6 +63,9 @@ git clone https://github.com/jaq-lagnirac/cs370-swe.git
         curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
         ```
         You can use your system package manager to download and install Rust but this may result in errors. If the TLSv1.2 flag (`--tlsv1.2`) causes issues, you can attempt the installation by removing it.
-2) Set up PNPM
+2) **Set up Node and PNPM**
+
+    There is no supported normal way to install Node onto Ubuntu. You must use a Node manager or add the NodeSource repository to your package manager. Fast Node Manager (FNM) and Performant Node Package Manager (PNPM) is covered in detail here. PNPM is an alternative to the default
+    Node package manager that is faster and more storage-efficient. For more information about NodeSource, please [click here](https://github.com/nodesource/distributions).
 
 ### Back-End (Server)
