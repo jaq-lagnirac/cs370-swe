@@ -19,6 +19,10 @@ export default function Attendance() {
     setShowAttendanceTable(true);
   }
 
+  const deleteSession = () => {
+    // Delete attendance session
+  }
+
   const generateQR = () => {
 
   }
@@ -46,7 +50,7 @@ export default function Attendance() {
         />
         {showAttendanceTable &&
         <> <div className="mb-3">
-            <Table columns={columns} tableData={tableData} colorCoded={false}/>
+            <Table columns={columns} tableData={tableData} colorCoded={false} EditTitle="Attendance Session" AreYouSureTitle="Are you sure you want to delete this attendance session?" SaveMember={saveSession} DeleteMember={deleteSession}/>
           </div> </> }
     </div>
   );

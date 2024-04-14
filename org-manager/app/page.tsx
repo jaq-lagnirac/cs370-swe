@@ -113,7 +113,7 @@ export default function Roster() {
           <a className="dropdown-item m-0" href="#">Exec</a>
           <a className="dropdown-item m-0" href="#">Members</a>
         </div>
-      <Table columns={columns} tableData={rosterMembers} colorCoded={true}/> 
+      <Table columns={columns} tableData={rosterMembers} colorCoded={true} EditTitle="Edit Member" AreYouSureTitle="Are you sure you want to delete this member?" SaveMember={handleEditMember} DeleteMember={handleDeleteMember}/> 
 
       <Modal
         modalTitle="Create New Member"
@@ -145,19 +145,6 @@ export default function Roster() {
         toggleClass="large-purple-button"
         modalId="createMemberModal"
       />
-
-      <Modal
-        modalTitle="Edit Member"
-        saveButton="Save"
-        deleteButton="Delete"
-        areYouSureTitle={"Are you sure you want to delete this member?"}
-        toggleText="Edit Member"
-        toggleClass="secondary-button"
-        modalId="editMemberModal"
-        onClickSave={handleEditMember}
-        onClickDelete={handleDeleteMember}
-      />
-
       {console.log("roster members", rosterMembers)}
     </>
   );
