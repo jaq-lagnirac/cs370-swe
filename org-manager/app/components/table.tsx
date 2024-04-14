@@ -20,7 +20,7 @@ const RosterTable: React.FC<TableProps> = ({columns, tableData, colorCoded})  =>
         case 'member':
           return 'tr-member';
         default:
-          return '';
+          return 'color-coded';
       }
     } else {
       return 'color-coded';
@@ -33,7 +33,7 @@ const RosterTable: React.FC<TableProps> = ({columns, tableData, colorCoded})  =>
     ));
 
     const role = rowData['Role'];
-    const rowClassName = colorCoded ? getRowClassName(role) : '';
+    const rowClassName = colorCoded ? getRowClassName(role) : 'color-coded';
 
     return (
       <>
