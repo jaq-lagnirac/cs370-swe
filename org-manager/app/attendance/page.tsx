@@ -8,6 +8,7 @@ import { useState } from 'react';
 import RootLayout from '../layout';
 
 export default function Attendance() {
+  const [showAttendanceTable, setShowAttendanceTable] = useState(false);
   const columns = ["Date", "Time", "Attendees"];
   const tableData = [
     {Date: "1970-01-01", Time: "10:00-12:00", Attendees: 2}
@@ -15,6 +16,7 @@ export default function Attendance() {
   const saveSession = () => {
     console.log("When we connect to the backend, this function will create a new event.");
     // Also it will probably need to refresh the table so the new event shows up
+    setShowAttendanceTable(true);
   }
 
   const generateQR = () => {
@@ -28,7 +30,6 @@ export default function Attendance() {
           modalTitle="Create New Attendance Session"
           modalBody={
             <>
-              <h2 className="mb-2">Here is a test QR code download.</h2>
               <CopyText/>
               <div id="qrcode" className="mb-2">
                 <ImgDl/>
@@ -37,14 +38,16 @@ export default function Attendance() {
           }
           saveButton="Done"
           onClickSave={saveSession}
+          onClickDismiss={saveSession}
           toggleOnClick={generateQR}
           toggleText="Create Session"
           toggleClass="large-purple-button mb-4 float-left"
           modalId="newAttendance"
         />
-      <div className="mb-3">
-        <Table columns={columns} tableData={tableData} colorCoded={false}/>
-      </div>
+        {showAttendanceTable &&
+        <> <div className="mb-3">
+            <Table columns={columns} tableData={tableData} colorCoded={false}/>
+          </div> </> }
     </div>
   );
 }
