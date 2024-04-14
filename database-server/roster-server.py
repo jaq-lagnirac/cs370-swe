@@ -254,7 +254,7 @@ def post_email(db):
 	validate_content_type()
 	with open(".tmp.json", "wb") as file:
 		file.write(request.body.getbuffer())
-	return send_email_from_json(".tmp.json")
+	return str(send_email_from_json(".tmp.json"))
 
 
 app.run(host = "127.0.0.1" if LOCAL_ONLY else "0.0.0.0", port=PORT)
