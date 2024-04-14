@@ -56,3 +56,10 @@ Note that a DELETE request on a row that doesn't exist has no effect.
 Example data for a DELETE request:
 `{"id": 1}`
 
+## Sending an email
+In order to send email, send a POST request to `/api/email` with JSON
+- Again, the content-type must be application/json
+- The JSON should contain keys `recipients` `subject` `body`
+
+Example JSON:
+`{ "recipients": ["1@truman.edu", "2@truman.edu"], "subject": "This is the subject", "body": "This is the body" }`

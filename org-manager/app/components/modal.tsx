@@ -13,10 +13,11 @@ interface ModalProps {
     onClickSave?: () => void;
     onClickDelete?: () => void;
     onClickClose?: () => void;
+    onClickDismiss?: () => void;
     modalId?: string,
   }
   
-  const Modal: React.FC<ModalProps> = ({ modalTitle, modalBody, closeButton, saveButton, deleteButton, areYouSureTitle, toggleClass, toggleText, modalId, toggleOnClick, onClickDelete, onClickSave, onClickClose}) => {
+  const Modal: React.FC<ModalProps> = ({ modalTitle, modalBody, closeButton, saveButton, deleteButton, areYouSureTitle, toggleClass, toggleText, modalId, toggleOnClick, onClickDelete, onClickSave, onClickClose, onClickDismiss}) => {
     const handleDelete = () => {
         
     };
@@ -29,7 +30,7 @@ interface ModalProps {
         <div className="modal-content">
         <div className="modal-header">
             <h4 className="modal-title main-modal-title" id="myModalLabel">{modalTitle}</h4>
-            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" className="close" data-dismiss="modal" onClick={onClickDismiss} aria-label="Close">
                 <img src="/xicon.svg" alt="Close"/>
             </button>
         </div>

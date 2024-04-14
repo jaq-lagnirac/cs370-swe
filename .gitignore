@@ -12,6 +12,8 @@ swe-env/
 .env
 credentials.json
 token.json
+__pycache__/
+.tmp.json
 
 # to ignore react node modules
 node_modules/

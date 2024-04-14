@@ -24,7 +24,7 @@ const RosterTable: React.FC<TableProps> = ({columns, tableData, colorCoded, Edit
       } else if (role === 'member') {
         return 'tr-member';
       } else {
-        return '';
+        return 'color-coded';
       }
     } else {
       return 'color-coded';
