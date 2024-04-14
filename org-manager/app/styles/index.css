@@ -184,6 +184,16 @@ button {
   float: right;
 }
 
+.copy-image {
+  width: 25px;
+  height: 25px;
+}
+
+.copy-button {
+  background-color: transparent;
+  padding: 0px;
+}
+
 .float-left {
   float: left !important;
 }

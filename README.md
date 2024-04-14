@@ -69,3 +69,28 @@ git clone https://github.com/jaq-lagnirac/cs370-swe.git
     Node package manager that is faster and more storage-efficient. For more information about NodeSource, please [click here](https://github.com/nodesource/distributions).
 
 ### Back-End (Server)
+#### Update
+Start by making sure that your system is fully up-to-date before installing anything.
+
+At the terminal, run the command `sudo apt update; sudo apt upgrade`. You will have to enter your password here.
+
+#### MySQL
+To install MariaDB, do the following:
+1. `sudo apt install mariadb-server`
+2. `sudo systemctl enable --now mariadb`
+3. `sudo mysql_secure_installation`. Complete the installation process like this:
+	- Enter the current password for root: (just press enter)
+	- Switch to unix socket authentication: n
+	- Change the root password?: n
+	- Remove anonymous users?: n
+	- Disallow root login remotely?: y
+	- Remove test database and access to it?: y
+	- Reload privilege tables now?: y
+4. `sudo mysql`. This will take you into the MySQL database
+5. Run this command in MySQL `grant all on *.* to 'admin' identified by 'admin' with grant option;`
+6. Exit MySQL using `exit;`
+
+#### Python
+1. Make sure that you have python and its dependencies installed using this command:
+	`sudo apt install python3 python3-pip build-essential pkg-config python3-dev default-libmysqlclient-dev`
+2. Inside the `database-server` directory, run `pip install -r requirements.txt` to install required python packages
