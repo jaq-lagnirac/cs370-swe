@@ -162,8 +162,9 @@ def auth_into_email(recipients, subject, body):
 
     if not successful_auth:
         print('Authentication into Google API unsuccessful.')
+        return False
 
-    return
+    return True
 
 
 def send_email_from_json(json_path):
@@ -187,7 +188,7 @@ def send_email_from_json(json_path):
     _, ext = os.path.splitext(json_path)
     if ext != EXT:
         print('Non-JSON file inputted.')
-        return
+        return False
     
     expected_keys = {SUBJECT_KEY, BODY_KEY, EMAILS_KEY} # set
     with open(json_path, 'r') as input:
@@ -199,7 +200,7 @@ def send_email_from_json(json_path):
         received_keys = set(email_request.keys())
         if received_keys != expected_keys:
             print('Inputted JSON file does not have the required keys.')
-            return
+            return False
         
         # extracts data
         emails = email_request[EMAILS_KEY]
@@ -211,12 +212,10 @@ def send_email_from_json(json_path):
         type(subject) != str or \
             type(body) != str:
         print('Data types do not line up.')
-        return
+        return False
 
     # executes exposed function
-    auth_into_email(emails, subject, body)
-
-    return
+    return auth_into_email(emails, subject, body)
 
 
 if __name__ == '__main__':
