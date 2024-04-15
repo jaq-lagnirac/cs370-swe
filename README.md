@@ -14,7 +14,7 @@ Developed by [Justin Caringal](https://github.com/jaq-lagnirac), [Akansha Negi](
 
 1) [Synopsis](#cs370-swe)
 2) [Credits](#credits)
-3) [Table of Contents](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+3) [Table of Contents](https://www.youtube.com/watch?v=uHgt8giw1LY)
 4) [Purpose](#purpose)
 5) [Root Directory Breakdown](#root-directory-breakdown)
 6) [Development Installation Guide](#development-installation-guide)
