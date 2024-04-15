@@ -1,12 +1,23 @@
 # cs370-swe
 
-A repository for the development of a project for CS 370 Software Engineering under the direction of Dr. Ruthie Halma.
+A repository for the development of a project for CS370 Software Engineering under the direction of Dr. Ruthie Halma of Truman State University.
+
+<p align="center">
+    <img src="papers/images/stargazers_icon.png" width="150" alt="Stargazers Icon">
+</p>
+
+### Credits
+
+Developed by [Justin Caringal](https://github.com/jaq-lagnirac), [Akansha Negi](https://github.com/negiakansha), [Andrew Ruff](https://github.com/abr8115), and [Julian Williams](https://github.com/Eidolon2003).
 
 ## Table of Contents
 
-1) [Purpose](#purpose)
-2) [Root Directory Breakdown](#root-directory-breakdown)
-3) [Development Installation Guide](#development-installation-guide)
+1) [Synopsis](#cs370-swe)
+2) [Credits](#credits)
+3) [Table of Contents](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+4) [Purpose](#purpose)
+5) [Root Directory Breakdown](#root-directory-breakdown)
+6) [Development Installation Guide](#development-installation-guide)
     - [Installing WSL2](#installing-wsl2)
     - [Getting a local copy of the Roster Management System](#getting-a-local-copy-of-the-roster-management-system)
     - [Update Ubuntu Package Manager](#update-ubuntu-package-manager)
@@ -14,9 +25,11 @@ A repository for the development of a project for CS 370 Software Engineering un
         - [Install Rust and Cargo](#install-rust-and-cargo)
         - [Set up Node and PNPM](#set-up-node-and-pnpm)
         - [Set up Tauri](#set-up-tauri)
+        - [Enable Windows Compilation](#enable-windows-compilation)
     - [Back-End (Server)](#back-end-server)
         - [Install MySQL](#install-mysql)
-        - [Install Python](#install-python)
+        - [Install Python 3.xx](#install-python-3xx)
+7) [Thank you!](#thank-you)
 
 ## Purpose
 
@@ -45,13 +58,18 @@ This guide is intended for installation onto WSL2 (Windows Subsystem for Linux 2
 
 ### Getting a local copy of the Roster Management System
 
-- Type the following command into your terminal window.
+It is assumed that since you are accessing this you are at least familiar with [Git](https://git-scm.com/) and [Github](https://github.com/). If you require assistance with how to set up Git for WSL2, please follow [this tutorial](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-git) as a reference.
+
+You can access the code for this repository in one of two main ways:
+
+- Type the following command into your terminal window:
     ```
     git clone https://github.com/jaq-lagnirac/cs370-swe.git
     ```
 - Alternatively, visit the [Github repository](https://github.com/jaq-lagnirac/cs370-swe), click "Code", and download the ZIP file.
 
 ### Update Ubuntu Package Manager
+
 Start by making sure that your system is fully up-to-date before installing anything.
 
 At the terminal, run the following command.
@@ -65,22 +83,22 @@ You will have to enter your password here.
 
 #### Install Rust and Cargo
 
-[Tauri](https://tauri.app/) is a Rust tool to run web applications locally by using operating system WebView APIs (similar to Electron). To install the front-end pages, do the following:
+[Tauri](https://tauri.app/) is a Rust tool to run web applications locally by using operating system WebView APIs (similar to Electron). Cargo is the Rust package manager. To install the front-end pages, do the following:
 
 1) Install the required packages on Ubuntu by running the following commands:
     ```
     sudo apt install libwebkit2gtk-4.0-dev \
-    build-essential \
-    curl \
-    wget \
-    file \
-    libssl-dev \
-    libgtk-3-dev \
-    libayatana-appindicator3-dev \
-    librsvg2-dev \
-    nsis \
-    lld \
-    llvm
+        build-essential \
+        curl \
+        wget \
+        file \
+        libssl-dev \
+        libgtk-3-dev \
+        libayatana-appindicator3-dev \
+        librsvg2-dev \
+        nsis \
+        lld \
+        llvm
     ```
 2) Download the Rust distribution and execute the file using the following command:
     ```
@@ -104,7 +122,7 @@ Node package manager that is faster and more storage-efficient. For more informa
     ```
     (Alternatively, you can use your preferred text editor to open `~/.bashrc`)
 
-    Copy-paste the following line into the end of the file and save.
+    Copy and paste the following line at the ***end of the file*** and save.
     ```
     eval "$(fnm env --use-on-cd)"
     ```
@@ -119,6 +137,10 @@ Node package manager that is faster and more storage-efficient. For more informa
     ```
     corepack enable pnpm
     ```
+5) After downloading a local version of the [Github repository](https://github.com/jaq-lagnirac/cs370-swe), navigate to the directory `org-manager` and run the following command to install the required Node packages and dependencies using the PNPM package manager:
+    ```
+    pnpm install
+    ```
 
 #### Set up Tauri
 
@@ -129,27 +151,117 @@ Node package manager that is faster and more storage-efficient. For more informa
 
 See [Tauri's documentation](https://tauri.app/v1/guides/getting-started/setup/next-js) for additional resources.
 
+#### Enable Windows Compilation
+
+Compilation of the code is system-specific. As we are developing in a Linux environment and a majority of our projected users utilize Windows, the following is a guide on how to compile for Windows in a Linux environment.
+
+1) Enable targeting Windows with Rust with the following command:
+    ```
+    rustup target add x86_64-pc-windows-msvc
+    ```
+
+2) Run the following command to download Windows-related libraries:
+    ```
+    cargo install xwin
+    ```
+
+3) Run the following command to make the libraries available:
+    ```
+    xwin splat --output ~/.xwin
+    ```
+    If this does not work, you need to add the installed Cargo directory to the `PATH`. This can be done by executing the following commands:
+    ```
+    sudo apt install nano
+    nano ~/.bash_profile
+    ```
+    (Alternatively, you can use your preferred text editor to open `~/.bash_profile`)
+
+    Copy and paste the following line on a ***newline in the file***, replacing `my_user` with your username.
+    ```
+    export PATH="${PATH}:/home/my_user/bin"
+    ``` 
+    Exit `~/.bash_profile`, then run the file by executing the following command:
+    ```
+    source ~/.bash_profile
+    ```
+
+4) After downloading a local version of the [Github repository](https://github.com/jaq-lagnirac/cs370-swe), navigate to the directory `org-manager` and create a file named `config.toml` with `nano` or your preferred text editor. Copy and paste the following lines:
+    ```
+    [target.x86\_64-pc-windows-msvc]
+    linker = "lld"
+    rustflags = [
+    "-Lnative=/home/username/.xwin/crt/lib/x86\_64",
+    "-Lnative=/home/username/.xwin/sdk/lib/um/x86\_64",
+    "-Lnative=/home/username/.xwin/sdk/lib/ucrt/x86_64"
+    ]
+    ```
+
+5) To compile an application targeting Windows, run the following command:
+    ```
+    cargo tauri build --target x86_64-pc-windows-msvc
+    ```
+
 ### Back-End (Server)
 
 #### Install MySQL
 
 Our database-of-choice was MySQL. Specifically, a popular fork of MySQL was implemented called MariaDB. To install MariaDB, enter the following commands:
 
-1) `sudo apt install mariadb-server`
-2) `sudo systemctl enable --now mariadb`
-3) `sudo mysql_secure_installation`. Complete the installation process like this:
-	- Enter the current password for root: (just press enter)
-	- Switch to unix socket authentication: n
-	- Change the root password?: n
-	- Remove anonymous users?: n
-	- Disallow root login remotely?: y
-	- Remove test database and access to it?: y
-	- Reload privilege tables now?: y
-4) `sudo mysql`. This will take you into the MySQL database
-5) Run this command in MySQL `grant all on *.* to 'admin' identified by 'admin' with grant option;`
-6) Exit MySQL using `exit;`
+1) Install MariaDB:
+    ```
+    sudo apt install mariadb-server
+    ```
+2) Run Maria DB and configure it to automatically run at start-up:
+    ```
+    sudo systemctl enable --now mariadb
+    ```
+3) Run the MySQL installer with the following command:
+    ```
+    sudo mysql_secure_installation
+    ```
+    Complete the installation process by answering the following questions:
+	- Enter the current password for root: `[Press ENTER]`
+	- Switch to unix socket authentication: `n`
+	- Change the root password?: `n`
+	- Remove anonymous users?: `n`
+	- Disallow root login remotely?: `y`
+	- Remove test database and access to it?: `y`
+	- Reload privilege tables now?: `y`
+4) Enter the MySQL database with the following command:
+    ```
+    sudo mysql
+    ```
+5) Run the following command within MySQL to create an administrator:
+    ```
+    grant all on *.* to 'admin' identified by 'admin' with grant option;
+    ```
+6) Exit MySQL using the following:
+    ```
+    exit;
+    ```
 
-#### Install Python
-1) Make sure that you have python and its dependencies installed using this command:
-	`sudo apt install python3 python3-pip build-essential pkg-config python3-dev default-libmysqlclient-dev`
-2) Inside the `database-server` directory, run `pip install -r requirements.txt` to install required python packages
+#### Install Python 3.xx
+
+[Python](https://www.python.org/) is a high-level and general-purpose language useful in many areas. Over its lifetime it has a variety of packages and libraries which greatly aid in the development process. The main package manager used with Python is [PIP](https://pypi.org/project/pip/).
+
+1) Install Python 3.xx and its dependencies with the following command:
+	```
+    sudo apt install python3 \
+        python3-pip \
+        build-essential \
+        pkg-config \
+        python3-dev \
+        default-libmysqlclient-dev
+    ```
+2) After downloading a local version of the [Github repository](https://github.com/jaq-lagnirac/cs370-swe), navigate to the directory `database-server` and run the following command to install the required Python packages and dependencies using the PIP package manager:
+    ```
+    pip install -r requirements.txt
+    ```
+
+## Thank you!
+
+Thank you for reading through, and we hope that you find use in this tool!
+
+<p align="center">
+    <img src="papers/images/standup1.jpg" width="450" alt="Stargazers Icon">
+</p>
