@@ -1,6 +1,9 @@
 import React from 'react';
 // An image that can be clicked to download, with a download symbol on hover
 
+interface CopyTextProps {
+    url: string;
+}
 async function copy(text: string) {
   try {
     await navigator.clipboard.writeText(text);
@@ -10,15 +13,14 @@ async function copy(text: string) {
   }
 }
 
-function CopyText() {
+const CopyText: React.FC<CopyTextProps> = ({ url }) => {
   // Temporary fiat definition, replace with an argument
-  let text = "https://ruff.computer";
   return (
   <>
-    <a href={text}>
-      {text}
+    <a href={url}>
+      {url}
     </a>
-    <button onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => copy(text)}>
+    <button onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => copy(url)}>
       Copy
     </button>
   </>

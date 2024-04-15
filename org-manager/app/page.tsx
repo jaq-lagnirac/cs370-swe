@@ -88,7 +88,7 @@ export default function Roster() {
     console.log("Reading members, response body is: " + JSON.stringify(newMembers));
     let tempArray = rosterMembers;
     for (let i = 0; i < newMembers["members"].length; i++) {
-      let tempMember = dbMemberToLocal(newMembers["members"][i])
+      let tempMember = dbMemberToLocal(newMembers["members"][i]);
       console.log("Adding member: " + newMembers["members"][i]);
       tempArray.push(tempMember);
     }
