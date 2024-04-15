@@ -35,7 +35,7 @@ Developed by [Justin Caringal](https://github.com/jaq-lagnirac), [Akansha Negi](
 
 We approached the [Stargazers Astronomy Club](https://stargazers.truman.edu/) with the proposition to develop a Roster Management System for use in their daily operations. We hope to accomplish this task with the following three main functionalities:
 
-1) A downloadable software to help provide an overview over the executive and general body members
+1) A downloadable software to help provide an overview over the executive and general body members.
 2) A functionality to provide an easy way to track, log, and view attendance of members.
 3) Integrate an email function which can send messages to members in the database.
 
@@ -54,7 +54,7 @@ This guide is intended for installation onto WSL2 (Windows Subsystem for Linux 2
 ### Installing WSL2
 
 - Visit the Microsoft Store for [Ubuntu 22.04.3 LTS](https://apps.microsoft.com/detail/9pn20msr04dw).
-- Alternatively, follow [this guide from Microsoft](https://learn.microsoft.com/en-us/windows/wsl/install) to install WSL2 and a default distribution (in this case [Ubuntu](https://ubuntu.com/)) from Windows Powershell or Windows Command Prompt.
+- Alternatively, follow [this guide from Microsoft](https://learn.microsoft.com/en-us/windows/wsl/install) to install WSL2 and a default distribution (in this case [Ubuntu](https://ubuntu.com/) from Windows Powershell or Windows Command Prompt.
 
 ### Getting a local copy of the Roster Management System
 
@@ -205,7 +205,7 @@ Compilation of the code is system-specific. As we are developing in a Linux envi
 
 #### Install MySQL
 
-Our database-of-choice was MySQL. Specifically, a popular fork of MySQL was implemented called MariaDB. To install MariaDB, enter the following commands:
+Our database-of-choice was [MySQL](https://www.mysql.com/). Specifically, a popular fork of MySQL was implemented called [MariaDB](https://mariadb.org/). To install MariaDB, enter the following commands:
 
 1) Install MariaDB:
     ```
@@ -219,8 +219,8 @@ Our database-of-choice was MySQL. Specifically, a popular fork of MySQL was impl
     ```
     sudo mysql_secure_installation
     ```
-    Complete the installation process by answering the following questions:
-	- Enter the current password for root: `[Press ENTER]`
+    Complete the installation process by answering the following questions as they appear:
+	- Enter the current password for root: `[Press ENTER to skip]`
 	- Switch to unix socket authentication: `n`
 	- Change the root password?: `n`
 	- Remove anonymous users?: `n`
@@ -263,5 +263,5 @@ Our database-of-choice was MySQL. Specifically, a popular fork of MySQL was impl
 Thank you for reading through, and we hope that you find use in this tool!
 
 <p align="center">
-    <img src="papers/images/standup1.jpg" width="450" alt="Stargazers Icon">
+    <img src="papers/images/standup1.jpg" width="450" alt="First Standup">
 </p>
