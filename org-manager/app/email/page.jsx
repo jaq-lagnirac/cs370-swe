@@ -75,19 +75,16 @@ export default function Email() {
   const execEmails = () => {
     setRecipients(execMembers);
     setShowForm(!showForm);
-    setShowForm(true);
   }
 
   const memberEmails = () => {
     setRecipients(options);
     setShowForm(!showForm);
-    setShowForm(true);
   }
   
   const customEmails = () => {
     setRecipients(customMembers);
     setShowForm(!showForm);
-    setShowForm(true);
   }
 
   const handleChange = (selectedOptions) => {
