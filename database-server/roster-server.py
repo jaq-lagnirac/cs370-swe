@@ -6,7 +6,7 @@ STRING_LENGTH = 50
 NOTE_LENGTH = 500
 LOCAL_ONLY = False
 
-from bottle import Bottle, get, post, put, delete, request, abort, redirect, template
+from bottle import Bottle, get, post, put, delete, request, abort, template
 from bottle.ext import sqlalchemy
 from sqlalchemy import create_engine, Column, BigInteger, SmallInteger, String, DateTime
 from sqlalchemy.sql import func
