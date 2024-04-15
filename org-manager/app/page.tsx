@@ -28,6 +28,7 @@ export default function Roster() {
   const [bannerId, setBannerId] = useState(0o0000000);
   const [name, setName] = useState("");
   const [loadingGate, setLoadingGate] = useState(false);
+  let pleaseRunOnceFlag = false;
   
   const schema = yup.object({
     name: yup.string().required("Name required"),
@@ -55,17 +56,39 @@ export default function Roster() {
       },
     });
   }
+  function roleIntToText(roleInt: number) {
+    switch (roleInt) {
+      case 0:
+        return 'President';
+      case 1:
+        return 'Exec';
+      case 2:
+        return 'Member';
+      default:
+        // Duplicate with member condition, but makes it easy to change if necessary
+        return 'Member';
+    }
+  }
+
+  function roleTextToInt(roleText: string) {
+    switch (roleText) {
+      case 'President':
+        return 0;
+      case 'Exec':
+        return 1;
+      case 'Member':
+        return 2;
+      default:
+        // Duplicate with member condition, but makes it easy to change if necessary
+        return 2;
+    }
+  }
 
   const readMembers = (newMembers: any) => {
     console.log("Reading members, response body is: " + JSON.stringify(newMembers));
     let tempArray = rosterMembers;
     for (let i = 0; i < newMembers["members"].length; i++) {
-      let tempMember = {
-        "Name": newMembers["members"][i]["name"],
-        "Email": newMembers["members"][i]["email"],
-        "Banner ID": newMembers["members"][i]["id"],
-        "Role": "exec"
-      }
+      let tempMember = dbMemberToLocal(newMembers["members"][i])
       console.log("Adding member: " + newMembers["members"][i]);
       tempArray.push(tempMember);
     }
@@ -73,12 +96,16 @@ export default function Roster() {
     console.log(rosterMembers);
     setLoadingGate(true);
   }
+
   useEffect(() => {
-  const testPromise = sendRequest("http://0.0.0.0:8080/api/members");
-    testPromise.then(response => response.json())
-    .then(readMembers, console.log);
-    // Update default values when role changes
-    setValue("role", role);
+  if (!pleaseRunOnceFlag) {
+    const testPromise = sendRequest("http://0.0.0.0:8080/api/members");
+      testPromise.then(response => response.json())
+      .then(readMembers, console.log);
+      // Update default values when role changes
+      setValue("role", role);
+  }
+  pleaseRunOnceFlag = true;
   }, [role, setValue]);
 
 
@@ -95,6 +122,15 @@ export default function Roster() {
 
   const roles = ["president", "exec", "member"];
 
+  function dbMemberToLocal(dbMember: any) {
+    return {
+        "Name": dbMember["name"],
+        "Email": dbMember["email"],
+        "Banner ID": dbMember["id"],
+        "Role": roleIntToText(dbMember["role"])
+      };
+  }
+
   const handleAddMember = () => {
     //only add if name, email, banner id, and role exist
     console.log("Submitting the following info: ");
@@ -107,7 +143,7 @@ export default function Roster() {
       "id": bannerId,
       "name": name,
       "email": email,
-      "role": 0,
+      "role": roleTextToInt(role),
       "note": "",
     };
     fetch("http://0.0.0.0:8080/api/members", {
@@ -122,9 +158,9 @@ export default function Roster() {
 
     console.log(JSON.stringify(newMember));
 
-    /*
-    setRosterMembers(rosterMembers.concat(newMember));
+    setRosterMembers(rosterMembers.concat(dbMemberToLocal(newMember)));
 
+    /*
     setName("");
     setEmail("");
     setBannerId(0o0000000);
