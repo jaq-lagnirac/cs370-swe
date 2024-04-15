@@ -40,6 +40,7 @@ export default function Email() {
     handleSubmit,
     formState: { errors },
     setValue,
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -60,6 +61,8 @@ export default function Email() {
     };
     const jsonString = JSON.stringify(jsonData, null, 2);
     console.log("JSON Data:", jsonString);
+
+    reset();
   };
 
   const options = members.map(member => ({ value: member.Email, label: member.Name }));
