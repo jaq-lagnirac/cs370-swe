@@ -45,8 +45,21 @@ export default function Roster() {
   } = useForm({
     resolver: yupResolver(schema),
   })
+  function sendRequest(url: any) {
+    // options.body = JSON.stringify(body);
+    return fetch(url, {
+      method: "GET",
+      mode: "no-cors",
+      cache: "default",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    });
+  }
 
   useEffect(() => {
+  const testPromise = sendRequest("http://0.0.0.0:8080/api/members");
+    testPromise.then(console.log, console.log);
     // Update default values when role changes
     setValue("role", role);
   }, [role, setValue]);
@@ -74,20 +87,31 @@ export default function Roster() {
     console.log("role: ", role);
 
     const newMember = {
-      "Name": name,
-      "Email": email,
-      "Banner ID": bannerId,
-      "Role": role,
+      "id": bannerId,
+      "name": name,
+      "email": email,
+      "role": 0,
+      "note": "",
     };
+    fetch("http://0.0.0.0/api/json", {
+      method: "POST",
+      mode: "no-cors",
+      cache: "default",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newMember),
+    });
 
+    /*
     setRosterMembers(rosterMembers.concat(newMember));
 
     setName("");
     setEmail("");
     setBannerId(0o0000000);
     setRole(""); //this causes some issues
-
     {console.log("roster members", rosterMembers)}
+    */
   }
 
   const handleDeleteMember = () => {
@@ -98,23 +122,10 @@ export default function Roster() {
 
   }
 
-  function sendRequest(url: any) {
-
-    // options.body = JSON.stringify(body);
-
-    return fetch(url, {
-      method: "POST",
-      mode: "no-cors",
-      cache: "default",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-}
 
   return (
     <>
-      {console.log(sendRequest("http://0.0.0.0:8080/api/members"))}
+      
       <h1 className="pb-0">Stargazers Roster Manager</h1>
         <a className="nav-link dropdown-toggle filter" href="#" id="navbardrop" data-toggle="dropdown">
           Filter By
