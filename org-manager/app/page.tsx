@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import Modal from './components/modal';
 import Table from './components/table';
 import Select from 'react-select';
+import useSWR from 'swr';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
@@ -20,14 +21,8 @@ interface FormData {
 
 export default function Roster() {
   const columns: string[] = ["Name", "Email", "Banner ID"];
-  const members = [
+  let members = [
     {"Name": "Andrew Ruff", "Email": "acr9932@truman.edu", "Banner ID": 102344322, "Role": "exec"},
-    {"Name": "Julian Williams", "Email": "jww1111@truman.edu", "Banner ID": 103422344, "Role": "member"},
-    {"Name": "Justin Caringal", "Email": "jac5566@truman.edu", "Banner ID": 1011113456, "Role": "president"},
-    {"Name": "Akansha Negi", "Email": "an2713@truman.edu", "Banner ID": 1011234567, "Role": "exec"},
-    {"Name": "Ruthie Halma", "Email": "ruthie@truman.edu", "Banner ID": 105464445, "Role": "member"},
-    {"Name": "Kafi Rahman", "Email": "kir2311@truman.edu", "Banner ID": 102042342, "Role": "member"},
-    {"Name": "Ting Cao", "Email": "tac3912@truman.edu", "Banner ID": 102342332, "Role": "member"},
   ];
   const [rosterMembers, setRosterMembers] = useState(members);
   const [role, setRole] = useState("");
@@ -55,6 +50,7 @@ export default function Roster() {
     // Update default values when role changes
     setValue("role", role);
   }, [role, setValue]);
+
 
   const onSubmit = (data: FormData) => {
     const jsonData = {
@@ -102,8 +98,23 @@ export default function Roster() {
 
   }
 
+  function sendRequest(url: any) {
+
+    // options.body = JSON.stringify(body);
+
+    return fetch(url, {
+      method: "POST",
+      mode: "no-cors",
+      cache: "default",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+}
+
   return (
     <>
+      {console.log(sendRequest("http://0.0.0.0:8080/api/members"))}
       <h1 className="pb-0">Stargazers Roster Manager</h1>
         <a className="nav-link dropdown-toggle filter" href="#" id="navbardrop" data-toggle="dropdown">
           Filter By
