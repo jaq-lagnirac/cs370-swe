@@ -303,5 +303,32 @@ def post_signin(db):
 
 	return f"<p>Attendance recorded for {name} on {date}</p>"
 
+@app.get("/signup")
+def get_signup(db):
+	"""
+	URL for member signup
+	When the HTML formed is filled, the data will be received by the POST method below
+	"""
+	return template("signup", error=None)
+
+@app.post("/signup")
+def post_signup(db):
+	"""
+	This function is called when the signup form is submitted
+	Nobody else should call this function
+	"""
+	id = request.forms.get("id")
+	name = request.forms.get("name")
+	email = request.forms.get("email")
+	role = 2 #Member role value
+	note = request.forms.get("note")
+
+	if db.query(members).filter_by(id=id).all() != []:
+		return template("signup", error="id")
+
+	new_row = members(id=id, name=name, email=email, role=role, note=note)
+	db.add(new_row)
+	db.commit()
+	return f"<p>{name} is now a member!</p>"
 
 app.run(host = "127.0.0.1" if LOCAL_ONLY else "0.0.0.0", port=PORT)
