@@ -170,11 +170,39 @@ export default function Roster() {
   }
 
   const handleDeleteMember = () => {
+    console.log("Deleting member: " + bannerId);
+    /*
+    fetch("http://0.0.0.0:8080/api/members", {
+      method: "DELETE",
+      mode: "cors",
+      cache: "default",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({bannerId}, null, " "),
+    });
+    */
 
   }
 
   const handleEditMember = () => {
-
+    // Make sure the ID matches an existing member
+    const newMember = {
+      "id": bannerId,
+      "name": name,
+      "email": email,
+      "role": roleTextToInt(role),
+      "note": "",
+    };
+    fetch("http://0.0.0.0:8080/api/members", {
+      method: "PUT",
+      mode: "cors",
+      cache: "default",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newMember, null, " "),
+    });
   }
 
 
