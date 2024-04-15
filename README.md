@@ -54,7 +54,7 @@ This guide is intended for installation onto WSL2 (Windows Subsystem for Linux 2
 ### Installing WSL2
 
 - Visit the Microsoft Store for [Ubuntu 22.04.3 LTS](https://apps.microsoft.com/detail/9pn20msr04dw).
-- Alternatively, follow [this guide from Microsoft](https://learn.microsoft.com/en-us/windows/wsl/install) to install WSL2 and a default distribution (in this case [Ubuntu](https://ubuntu.com/) from Windows Powershell or Windows Command Prompt.
+- Alternatively, follow [this guide from Microsoft](https://learn.microsoft.com/en-us/windows/wsl/install) to install WSL2 and a default distribution (in this case [Ubuntu](https://ubuntu.com/)) from Windows Powershell or Windows Command Prompt.
 
 ### Getting a local copy of the Roster Management System
 
