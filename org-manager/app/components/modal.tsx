@@ -39,7 +39,7 @@ interface ModalProps {
         </div>
         <div className="modal-footer">
             {closeButton && <button type="button" className="btn btn-default" data-dismiss="modal" onClick={onClickClose}>{closeButton}</button>}
-            {deleteButton && <button className="delete-button" onClick={onClickDelete} data-toggle="modal" data-target="#basicModal">{deleteButton}</button>}
+            {deleteButton && <button className="delete-button" data-toggle="modal" data-target="#basicModal">{deleteButton}</button>}
             {saveButton && <button className="large-purple-button" type="submit" onClick={onClickSave}>{saveButton}</button>}
         </div>
         </div>
@@ -54,7 +54,7 @@ interface ModalProps {
                     <h4 className="modal-title ays-modal-title" id="myModalLabel">{areYouSureTitle}</h4>
                 </div>
                 <div className="modal-body d-flex justify-content-center">
-                    <button className="large-purple-button me-2" data-dismiss="modal">Yes</button>
+                    <button className="large-purple-button me-2" onClick={onClickDelete} data-dismiss="modal">Yes</button>
                     <button className="delete-button ms-2" data-dismiss="modal">No, take me back!</button>
                 </div>
             </div>

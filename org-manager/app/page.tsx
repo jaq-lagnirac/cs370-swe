@@ -69,6 +69,20 @@ export default function Roster() {
 
   const roles = ["president", "exec", "member"];
 
+  // useForm({
+  //   defaultValues: {
+  //     name: '',
+  //     email: '',
+  //     bannerId: 0o0000000,
+  //     role: '',
+  //   }
+  // })
+  
+  // // set default value async
+  // useForm({
+  //   defaultValues: async () => fetch('/api-endpoint')
+  // })
+
   const handleAddMember = () => {
     //only add if name, email, banner id, and role exist
     console.log("Submitting the following info: ");
@@ -105,15 +119,51 @@ export default function Roster() {
   return (
     <>
       <h1 className="pb-0">Stargazers Roster Manager</h1>
-        <a className="nav-link dropdown-toggle filter" href="#" id="navbardrop" data-toggle="dropdown">
+        {/* <a className="nav-link dropdown-toggle filter" href="#" id="navbardrop" data-toggle="dropdown">
           Filter By
         </a>
         <div className="dropdown-menu">
           <a className="dropdown-item m-0" href="#">President</a>
           <a className="dropdown-item m-0" href="#">Exec</a>
           <a className="dropdown-item m-0" href="#">Members</a>
-        </div>
-      <Table columns={columns} tableData={rosterMembers} colorCoded={true} EditTitle="Edit Member" AreYouSureTitle="Are you sure you want to delete this member?" SaveMember={handleEditMember} DeleteMember={handleDeleteMember}/> 
+        </div> */}
+
+        {/* <select {...register("role")} onChange={(e) => setRole(e.target.value)}>
+          <option value="president">President</option>
+          <option value="exec">Exec</option>
+          <option value="member">Member</option>
+        </select> */}
+
+      <Table
+        columns={columns}
+        tableData={rosterMembers}
+        colorCoded={true}
+        EditTitle="Edit Member"
+        AreYouSureTitle="Are you sure you want to delete this member?"
+        editModalBody={
+        <>
+          <form className="member-form" onSubmit={handleSubmit(onSubmit)}>
+            <input type="text" {...register("name")} placeholder="*Member Name" value={name} onChange={(e) => setName(e.target.value)} />
+            <p className="red-text">{errors.name?.message}</p>
+
+            <input type="text" {...register("email")} placeholder="*Member Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <p className="red-text">{errors.email?.message}</p>
+
+            <input type="number" {...register("bannerId")} placeholder="*Member Banner ID" value={bannerId} onChange={(e) => setBannerId(parseInt(e.target.value))} />
+            <p className="red-text">{errors.bannerId?.message}</p>
+
+            <select {...register("role", { required: true })} className="role-select" value={role} onChange={(e) => setRole(e.target.value)}>
+              
+              <option value="president">President</option>
+              <option value="exec">Exec</option>
+              <option value="member">Member</option>
+            </select>
+            <p className="red-text">{errors.role?.message}</p>
+            <button className="large-purple-button" type="submit" style={{float: 'right'}} onClick={handleEditMember}>Save</button>
+            <button className="delete-button me-2" onClick={handleDeleteMember} style={{float: 'right'}} data-toggle="modal" data-target="#basicModal">Delete</button>
+          </form>
+        </> }
+      /> 
 
       <Modal
         modalTitle="Create New Member"
