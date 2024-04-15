@@ -37,7 +37,7 @@ export default function Roster() {
 
   const schema = yup.object({
     name: yup.string().required("Name required"),
-    email: yup.string().required("Email required"),
+    email: yup.string().email('Invalid email').required('Email required'),
     bannerId: yup.number().required("Banner ID required"),
     role: yup.string().required("Role required"),
   }).required();

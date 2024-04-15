@@ -18,7 +18,10 @@ body, .root-layout {
   background-color: var(--bg-color);
   min-height: 100vh;
   font-family: 'Georgia', serif;
-  overflow: hidden;
+}
+
+.row {
+  margin: 0 !important;
 }
 
 /* navigation */
