@@ -7,10 +7,11 @@ import { useState, useEffect } from 'react';
 import Modal from './components/modal';
 import Table from './components/table';
 import Select from 'react-select';
-import useSWR from 'swr';
+// import useSWR from 'swr';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
+
 
 interface FormData {
   name: string;
@@ -21,15 +22,13 @@ interface FormData {
 
 export default function Roster() {
   const columns: string[] = ["Name", "Email", "Banner ID"];
-  let members = [
-    {"Name": "Andrew Ruff", "Email": "acr9932@truman.edu", "Banner ID": 102344322, "Role": "exec"},
-  ];
-  const [rosterMembers, setRosterMembers] = useState(members);
+  const [rosterMembers, setRosterMembers] = useState<any>([]);
   const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
   const [bannerId, setBannerId] = useState(0o0000000);
   const [name, setName] = useState("");
-
+  const [loadingGate, setLoadingGate] = useState(false);
+  
   const schema = yup.object({
     name: yup.string().required("Name required"),
     email: yup.string().required("Email required"),
@@ -49,7 +48,7 @@ export default function Roster() {
     // options.body = JSON.stringify(body);
     return fetch(url, {
       method: "GET",
-      mode: "no-cors",
+      mode: "cors",
       cache: "default",
       headers: {
         "Content-Type": "application/json"
@@ -57,9 +56,27 @@ export default function Roster() {
     });
   }
 
+  const readMembers = (newMembers: any) => {
+    console.log("Reading members, response body is: " + JSON.stringify(newMembers));
+    let tempArray = rosterMembers;
+    for (let i = 0; i < newMembers["members"].length; i++) {
+      let tempMember = {
+        "Name": newMembers["members"][i]["name"],
+        "Email": newMembers["members"][i]["email"],
+        "Banner ID": newMembers["members"][i]["id"],
+        "Role": "exec"
+      }
+      console.log("Adding member: " + newMembers["members"][i]);
+      tempArray.push(tempMember);
+    }
+    setRosterMembers(tempArray);
+    console.log(rosterMembers);
+    setLoadingGate(true);
+  }
   useEffect(() => {
   const testPromise = sendRequest("http://0.0.0.0:8080/api/members");
-    testPromise.then(console.log, console.log);
+    testPromise.then(response => response.json())
+    .then(readMembers, console.log);
     // Update default values when role changes
     setValue("role", role);
   }, [role, setValue]);
@@ -95,13 +112,15 @@ export default function Roster() {
     };
     fetch("http://0.0.0.0:8080/api/members", {
       method: "POST",
-      mode: "no-cors",
+      mode: "cors",
       cache: "default",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(newMember),
+      body: JSON.stringify(newMember, null, " "),
     });
+
+    console.log(JSON.stringify(newMember));
 
     /*
     setRosterMembers(rosterMembers.concat(newMember));
@@ -125,7 +144,6 @@ export default function Roster() {
 
   return (
     <>
-      
       <h1 className="pb-0">Stargazers Roster Manager</h1>
         <a className="nav-link dropdown-toggle filter" href="#" id="navbardrop" data-toggle="dropdown">
           Filter By
@@ -135,7 +153,11 @@ export default function Roster() {
           <a className="dropdown-item m-0" href="#">Exec</a>
           <a className="dropdown-item m-0" href="#">Members</a>
         </div>
-      <Table columns={columns} tableData={rosterMembers} colorCoded={true}/> 
+      {loadingGate ?
+        <Table columns={columns} tableData={rosterMembers} colorCoded={true}/> 
+        :
+        <></>
+      }
 
       <Modal
         modalTitle="Create New Member"
