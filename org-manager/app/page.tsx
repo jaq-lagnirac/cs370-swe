@@ -93,7 +93,7 @@ export default function Roster() {
       "role": 0,
       "note": "",
     };
-    fetch("http://0.0.0.0/api/json", {
+    fetch("http://0.0.0.0:8080/api/members", {
       method: "POST",
       mode: "no-cors",
       cache: "default",
