@@ -6,7 +6,7 @@ STRING_LENGTH = 50
 NOTE_LENGTH = 500
 LOCAL_ONLY = False
 
-from bottle import Bottle, get, post, put, delete, request, abort
+from bottle import Bottle, get, post, put, delete, request, abort, redirect, template
 from bottle.ext import sqlalchemy
 from sqlalchemy import create_engine, Column, BigInteger, SmallInteger, String, DateTime
 from sqlalchemy.sql import func
@@ -196,7 +196,7 @@ def put_attendance(db):
 	if db.query(members).filter_by(id=id).all() == []:
 		abort(409, f"ID {id} does not exist in the members table")
 
-	if db.query(attendance).filter_by(date=date, id=id).all() == []:
+	if db.query(attendance).filter_by(date=date, id=id).all() != []:
 		abort(409, f"Attendance for ID {id} on {date} has already been recorded")
 
 	new_row = attendance(date=date, id=id)
@@ -255,6 +255,53 @@ def post_email(db):
 	with open(".tmp.json", "wb") as file:
 		file.write(request.body.getbuffer())
 	return str(send_email_from_json(".tmp.json"))
+
+@app.get("/signin")
+def get_signin(db):
+	"""
+	URL for attendance signin
+	The signin date by default is the most recent meeting
+	However, the date can be provided in the URL ?date=x
+	When the HTML form is filled, the data is received by the POST method
+	"""
+
+	#Get the date from the URL, or the most recent one
+	date = request.query.date or str(db.query(dates).all()[-1].date)
+
+	#This should only happen if a date isn't provided AND no dates exist in the db
+	if date == None:
+		abort(400, "No dates exist yet!")
+
+	#HTML for a basic form
+	return template("signin", date=date, name="", error=None)
+
+@app.post("/signin")
+def post_signin(db):
+	"""
+	This function is called along side data from the signin form
+	I don't expect anyone to call this function otherwise
+	"""
+	date = request.forms.get("date")
+	name = request.forms.get("name")
+
+	#Check that the provided name and date are valid
+	if db.query(members).filter_by(name=name).all() == []:
+		return template("signin", date=date, name=name, error="name")
+
+	if db.query(dates).filter_by(date=date).all() == []:
+		return template("signin", date=date, name=name, error="date")
+
+	#Get the member's id based on the name provided
+	#What to do about duplicate names?
+	id = db.query(members).filter_by(name=name).first().id
+
+	#Only sign them in if they weren't already
+	if db.query(attendance).filter_by(date=date, id=id).all() == []:
+		new_row = attendance(date=date, id=id)
+		db.add(new_row)
+		db.commit()
+
+	return f"<p>Attendance recorded for {name} on {date}</p>"
 
 
 app.run(host = "127.0.0.1" if LOCAL_ONLY else "0.0.0.0", port=PORT)
