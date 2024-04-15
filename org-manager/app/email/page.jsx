@@ -30,7 +30,7 @@ export default function Email() {
   const [darkMode, setDarkMode] = useState(false);
 
   const schema = yup.object({
-    recipients: yup.array().min(1, "At least one recipient required."),
+    recipients: yup.array().of(yup.object()).min(1, "At least one recipient required."),
     subject: yup.string().required("Email subject required."),
     body: yup.string().required("Email Body required."),
   }).required();
