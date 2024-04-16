@@ -16,7 +16,6 @@ interface TableProps {
 }
 
 // The key column is last
-// N
 const RosterTable: React.FC<TableProps> = ({setDeleteRowIndex, columns, tableData, colorCoded, EditTitle, AreYouSureTitle, SaveMember, DeleteMember, editModalBody})  => {
 
   const getRowClassName = (role: string) => {

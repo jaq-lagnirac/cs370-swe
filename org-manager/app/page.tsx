@@ -201,10 +201,10 @@ export default function Roster() {
   }
 
   const handleDeleteMember = () => {
+    let bannerId = rosterMembers[deleteRowIndex]["Banner ID"]
     console.log("Deleting member: " + bannerId);
     console.log("deleteRowIndex ", deleteRowIndex);
     setRosterMembers(rosterMembers.slice(0, deleteRowIndex).concat(rosterMembers.slice(deleteRowIndex + 1, rosterMembers.length)));    console.log("Deleting member: " + bannerId);
-    /*
     fetch("http://0.0.0.0:8080/api/members", {
       method: "DELETE",
       mode: "cors",
@@ -212,9 +212,17 @@ export default function Roster() {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({bannerId}, null, " "),
+      body: JSON.stringify({"id": bannerId}, null, " "),
     });
-    */
+    fetch("http://0.0.0.0:8080/api/attendance", {
+      method: "DELETE",
+      mode: "cors",
+      cache: "default",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({"id": bannerId}, null, " "),
+    });
 
   };
 
