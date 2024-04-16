@@ -214,7 +214,7 @@ export default function Roster() {
       },
       body: JSON.stringify({"id": bannerId}, null, " "),
     });
-    fetch("http://0.0.0.0:8080/api/attendance", {
+    fetch("http://127.0.0.1:8080/api/attendance", {
       method: "DELETE",
       mode: "cors",
       cache: "default",
