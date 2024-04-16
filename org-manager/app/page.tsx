@@ -57,33 +57,63 @@ export default function Roster() {
     });
   }
   function roleIntToText(roleInt: number) {
+    let role = 'Member';
     switch (roleInt) {
       case 0:
-        return 'President';
+        role = 'President';
+        break;
       case 1:
-        return 'Exec';
+        role = 'Exec';
+        break;
       case 2:
-        return 'Member';
+        role = 'Member';
+        break;
       default:
         // Duplicate with member condition, but makes it easy to change if necessary
-        return 'Member';
+        console.log("Reached roleIntToText default state!");
+        role = 'Member';
+        break;
     }
+    return role;
   }
 
   function roleTextToInt(roleText: string) {
+    let role = 2;
     switch (roleText) {
       case 'President':
-        return 0;
+       role = 0;
+        break;
+      case 'president':
+       role = 0;
+        break;
       case 'Exec':
-        return 1;
+        role = 1;
+        break;
+      case 'exec':
+        role = 1;
+        break;
       case 'Member':
-        return 2;
+        role = 2;
+        break;
+      case 'member':
+        role = 2;
+        break;
       default:
         // Duplicate with member condition, but makes it easy to change if necessary
-        return 2;
+        console.log("Reached roleTextToInt default state!");
+        role = 2;
+        break;
     }
+    return role;
   }
-
+  // https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
+  function uniqBy(a: any, key: any) {
+      var seen: any = {};
+      return a.filter(function(item: any) {
+          var k = key(item);
+          return seen.hasOwnProperty(k) ? false : (seen[k] = true);
+      })
+  }
   const readMembers = (newMembers: any) => {
     console.log("Reading members, response body is: " + JSON.stringify(newMembers));
     let tempArray = rosterMembers;
@@ -92,7 +122,7 @@ export default function Roster() {
       console.log("Adding member: " + newMembers["members"][i]);
       tempArray.push(tempMember);
     }
-    setRosterMembers(tempArray);
+    setRosterMembers(uniqBy(tempArray, JSON.stringify));
     console.log(rosterMembers);
     setLoadingGate(true);
   }
@@ -106,7 +136,7 @@ export default function Roster() {
     setValue("role", role);
     pleaseRunOnceFlag = true;
   }
-  }, [role, setValue]);
+  }, []);
 
 
   const onSubmit = (data: FormData) => {

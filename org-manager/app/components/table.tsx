@@ -18,11 +18,11 @@ interface TableProps {
 const RosterTable: React.FC<TableProps> = ({columns, tableData, colorCoded, EditTitle, AreYouSureTitle, SaveMember, DeleteMember, editModalBody})  => {
   const getRowClassName = (role: string) => {
     if (colorCoded) {
-      if (role === 'president') {
+      if (role === 'President') {
         return 'tr-president';
-      } else if (role === 'exec') {
+      } else if (role === 'Exec') {
         return 'tr-exec';
-      } else if (role === 'member') {
+      } else if (role === 'Member') {
         return 'tr-member';
       } else {
         return 'color-coded';

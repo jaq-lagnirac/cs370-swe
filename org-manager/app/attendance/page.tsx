@@ -24,11 +24,19 @@ export default function Attendance() {
         console.log("Adding event: " + tempMember);
         tempArray.push(tempMember);
       }
-      setTableData(tempArray);
+      setTableData(uniqBy(tempArray, JSON.stringify));
+      console.log("Running ReadEntries");
       console.log(tableData);
       setLoadingGate(true);
   }
-
+// https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
+function uniqBy(a: any, key: any) {
+    var seen: any = {};
+    return a.filter(function(item: any) {
+        var k = key(item);
+        return seen.hasOwnProperty(k) ? false : (seen[k] = true);
+    })
+}
 function sendRequest(url: any) {
     // options.body = JSON.stringify(body);
     return fetch(url, {
@@ -50,7 +58,7 @@ function sendRequest(url: any) {
   else {
     console.log("UseEffect duplicated!");
   }
-  });
+  }, []);
 
 
 
