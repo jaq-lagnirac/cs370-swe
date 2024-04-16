@@ -17,16 +17,16 @@ export default function Attendance() {
   let pleaseRunOnceFlag = false;
 
   const readEntries = (newEntries: any) => {
-    console.log("Reading members, response body is: " + JSON.stringify(newEntries));
-    let tempArray = tableData;
-    for (let i = 0; i < newEntries["attendance"].length; i++) {
-      let tempMember = dbEventToLocal(newEntries["attendance"][i]);
-      console.log("Adding event: " + tempMember);
-      tempArray.push(tempMember);
-    }
-    setTableData(tempArray);
-    console.log(tableData);
-    setLoadingGate(true);
+      console.log("Reading members, response body is: " + JSON.stringify(newEntries));
+      let tempArray = tableData;
+      for (let i = 0; i < newEntries["attendance"].length; i++) {
+        let tempMember = dbEventToLocal(newEntries["attendance"][i]);
+        console.log("Adding event: " + tempMember);
+        tempArray.push(tempMember);
+      }
+      setTableData(tempArray);
+      console.log(tableData);
+      setLoadingGate(true);
   }
 
 function sendRequest(url: any) {
@@ -45,8 +45,11 @@ function sendRequest(url: any) {
     const testPromise = sendRequest("http://0.0.0.0:8080/api/attendance");
       testPromise.then(response => response.json())
       .then(readEntries, console.log);
+    pleaseRunOnceFlag = true;
   }
-  pleaseRunOnceFlag = true;
+  else {
+    console.log("UseEffect duplicated!");
+  }
   });
 
 
@@ -63,16 +66,18 @@ function dbEventToLocal(dbEvent: any) {
   };
 }
 
+
   function jsDate(dbDate: string) {
     return new Date(dbDate.replace(" ", "T").concat(".000Z"));
   }
 
   function dbDate(jsDate: Date) {
-    return jsDate.toISOString().replace("T", " ").replace(".000Z", "");
+    // Final replace has regexp that replaces . followed by 3 digits followed by 'Z'
+    return jsDate.toISOString().replace("T", " ").replace(/.\d{3}Z/g, "");
   }
 
   function urlDate(jsDate: Date) {
-    return jsDate.toISOString().replace("T", "+").replace(".000Z", "");
+    return jsDate.toISOString().replace("T", "+").replace(/.\d{3}Z/g, "");
   }
 
   const saveSession = () => {
@@ -90,7 +95,7 @@ function dbEventToLocal(dbEvent: any) {
       },
       body: JSON.stringify(newEvent, null, " "),
     });
-
+    setTableData(tableData.concat((dbEventToLocal(newEvent))));
     setLinkToggle(true);
     // Also it will probably need to refresh the table so the new event shows up
   }

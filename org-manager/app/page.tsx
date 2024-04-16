@@ -100,12 +100,12 @@ export default function Roster() {
   useEffect(() => {
   if (!pleaseRunOnceFlag) {
     const testPromise = sendRequest("http://0.0.0.0:8080/api/members");
-      testPromise.then(response => response.json())
-      .then(readMembers, console.log);
-      // Update default values when role changes
-      setValue("role", role);
+    testPromise.then(response => response.json())
+    .then(readMembers, console.log);
+    // Update default values when role changes
+    setValue("role", role);
+    pleaseRunOnceFlag = true;
   }
-  pleaseRunOnceFlag = true;
   }, [role, setValue]);
 
 
