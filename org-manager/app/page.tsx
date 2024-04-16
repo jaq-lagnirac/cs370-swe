@@ -32,10 +32,10 @@ export default function Roster() {
   let pleaseRunOnceFlag = false;
   
   const schema = yup.object({
-    name: yup.string().required("Name required"),
-    email: yup.string().email('Invalid email').required('Email required'),
-    bannerId: yup.number().required("Banner ID required"),
-    role: yup.string().required("Role required"),
+    name: yup.string().min(1, "Name required").required("Name required"),
+    email: yup.string().min(1, "Email required").email('Invalid email').required('Email required'),
+    bannerId: yup.number().positive("Banner ID required").required("Banner ID required"),
+    role: yup.string().min(1, "Role required").required("Role required"),
   }).required();
 
   const {
@@ -161,9 +161,10 @@ export default function Roster() {
 
       setRosterMembers(rosterMembers.concat(dbMemberToLocal(newMember)));
 
+      //reset values
       setName("");
       setEmail("");
-      setBannerId(0o0000000);
+      setBannerId(-1);
       setRole(""); //this causes some issues
       {console.log("roster members", rosterMembers)}
     }
