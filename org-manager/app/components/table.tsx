@@ -52,9 +52,7 @@ const RosterTable: React.FC<TableProps> = ({setDeleteRowIndex, columns, tableDat
     <>
       <tr key={`row-${index}`} className={rowClassName}>
         { <>
-          {columns.map((column, columnIndex) => (
-            <td key={`${column}-${index}`}>{rowData[column]}</td>
-          ))}
+          {cells}
           <td key={`data-${index}`} className="transparent" style={{whiteSpace: 'nowrap', width: '1%'}}>
             <div className="edit-delete-icons">
               {/* <svg onClick={() => {setDeleteRowIndex(index)}} data-toggle="modal" data-target={'#editModal'} xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-pencil-square pe-1" viewBox="0 0 16 16">
