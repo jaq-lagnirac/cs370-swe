@@ -133,41 +133,40 @@ export default function Roster() {
   }
 
   const handleAddMember = () => {
-    //only add if name, email, banner id, and role exist
-    console.log("Submitting the following info: ");
-    console.log("name: ", name);
-    console.log("email: ", email);
-    console.log("banner id: ", bannerId);
-    console.log("role: ", role);
+    if (!errors.name && !errors.email && !errors.bannerId && !errors.role) {
+      console.log("Submitting the following info: ");
+      console.log("name: ", name);
+      console.log("email: ", email);
+      console.log("banner id: ", bannerId);
+      console.log("role: ", role);
 
-    const newMember = {
-      "id": bannerId,
-      "name": name,
-      "email": email,
-      "role": roleTextToInt(role),
-      "note": "",
-    };
-    fetch("http://127.0.0.1:8080/api/members", {
-      method: "POST",
-      mode: "cors",
-      cache: "default",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(newMember, null, " "),
-    });
+      const newMember = {
+        "id": bannerId,
+        "name": name,
+        "email": email,
+        "role": roleTextToInt(role),
+        "note": "",
+      };
+      fetch("http://127.0.0.1:8080/api/members", {
+        method: "POST",
+        mode: "cors",
+        cache: "default",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newMember, null, " "),
+      });
 
-    console.log(JSON.stringify(newMember));
+      console.log(JSON.stringify(newMember));
 
-    setRosterMembers(rosterMembers.concat(dbMemberToLocal(newMember)));
+      setRosterMembers(rosterMembers.concat(dbMemberToLocal(newMember)));
 
-    /*
-    setName("");
-    setEmail("");
-    setBannerId(0o0000000);
-    setRole(""); //this causes some issues
-    {console.log("roster members", rosterMembers)}
-    */
+      setName("");
+      setEmail("");
+      setBannerId(0o0000000);
+      setRole(""); //this causes some issues
+      {console.log("roster members", rosterMembers)}
+    }
   }
 
   const handleDeleteMember = () => {
