@@ -130,7 +130,7 @@ export default function Roster() {
 
   useEffect(() => {
   if (!pleaseRunOnceFlag) {
-    const testPromise = sendRequest("http://0.0.0.0:8080/api/members");
+    const testPromise = sendRequest("http://127.0.0.1:8080/api/members");
     testPromise.then(response => response.json())
     .then(readMembers, console.log);
     // Update default values when role changes
@@ -177,7 +177,7 @@ export default function Roster() {
       "role": roleTextToInt(role),
       "note": "",
     };
-    fetch("http://0.0.0.0:8080/api/members", {
+    fetch("http://127.0.0.1:8080/api/members", {
       method: "POST",
       mode: "cors",
       cache: "default",
@@ -205,7 +205,7 @@ export default function Roster() {
     console.log("Deleting member: " + bannerId);
     console.log("deleteRowIndex ", deleteRowIndex);
     setRosterMembers(rosterMembers.slice(0, deleteRowIndex).concat(rosterMembers.slice(deleteRowIndex + 1, rosterMembers.length)));    console.log("Deleting member: " + bannerId);
-    fetch("http://0.0.0.0:8080/api/members", {
+    fetch("http://127.0.0.1:8080/api/members", {
       method: "DELETE",
       mode: "cors",
       cache: "default",
@@ -235,7 +235,7 @@ export default function Roster() {
       "role": roleTextToInt(role),
       "note": "",
     };
-    fetch("http://0.0.0.0:8080/api/members", {
+    fetch("http://127.0.0.1:8080/api/members", {
       method: "PUT",
       mode: "cors",
       cache: "default",
@@ -265,7 +265,7 @@ export default function Roster() {
           <option value="member">Member</option>
         </select> */}
 
-      {loadingGate ?
+      {( loadingGate && rosterMembers.length > 0) ?
         <Table
           setDeleteRowIndex={setDeleteRowIndex}
           columns={columns}

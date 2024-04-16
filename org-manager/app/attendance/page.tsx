@@ -51,7 +51,7 @@ function sendRequest(url: any) {
   }
   useEffect(() => {
   if (!pleaseRunOnceFlag) {
-    const testPromise = sendRequest("http://0.0.0.0:8080/api/attendance");
+    const testPromise = sendRequest("http://127.0.0.1:8080/api/attendance");
       testPromise.then(response => response.json())
       .then(readEntries, console.log);
     pleaseRunOnceFlag = true;
@@ -86,15 +86,13 @@ function dbEventToLocal(dbEvent: any) {
   function urlDate(jsDate: Date) {
     return jsDate.toISOString().replace("T", "+").replace(/.\d{3}Z/g, "");
   }
-
-  const [attendanceSessions, setAttendanceSessions] = useState(tableData);
   const saveSession = () => {
     console.log("Creating event with date: " + dbDate(startDate));
     const newEvent = {
       "date": dbDate(startDate),
       "ids": [],
     }
-    fetch("http://0.0.0.0:8080/api/attendance", {
+    fetch("http://127.0.0.1:8080/api/attendance", {
       method: "POST",
       mode: "cors",
       cache: "default",
@@ -108,8 +106,7 @@ function dbEventToLocal(dbEvent: any) {
   }
 
   const deleteSession = () => {
-    console.log("delete row is hpappening at ", deleteRowIndex)
-    setAttendanceSessions(attendanceSessions.slice(0, deleteRowIndex).concat(attendanceSessions.slice(deleteRowIndex + 1, attendanceSessions.length)));
+    setTableData(tableData.slice(0, deleteRowIndex).concat(tableData.slice(deleteRowIndex + 1, tableData.length)));
   }
 
 
@@ -123,7 +120,7 @@ function dbEventToLocal(dbEvent: any) {
               <DatePicker selected={startDate} showTimeSelect onChange={(date: any) => setStartDate(date)} />
               <br></br>
               {linkToggle ?
-              <CopyText url={"http://0.0.0.0:8080/signin?date=".concat(urlDate(startDate))}/> :
+              <CopyText url={"http://127.0.0.1:8080/signin?date=".concat(urlDate(startDate))}/> :
               <></>
               }
               {/*
@@ -139,7 +136,7 @@ function dbEventToLocal(dbEvent: any) {
           toggleClass="large-purple-button mb-4 float-left"
           modalId="newAttendance"
         />
-      {loadingGate ?
+      {(loadingGate &&  tableData.length > 0) ?
         <> <div className="mb-3">
             <Table
               setDeleteRowIndex={setDeleteRowIndex}
