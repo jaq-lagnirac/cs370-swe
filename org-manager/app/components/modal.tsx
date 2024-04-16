@@ -16,13 +16,8 @@ interface ModalProps {
     onClickDismiss?: () => void;
     modalId?: string,
   }
-  
   const Modal: React.FC<ModalProps> = ({ modalTitle, modalBody, closeButton, saveButton, deleteButton, areYouSureTitle, toggleClass, toggleText, modalId, toggleOnClick, onClickDelete, onClickSave, onClickClose, onClickDismiss}) => {
-    const handleDelete = () => {
-        
-    };
-
-  return (
+    return (
     <>
     {modalTitle && <>
     <div className="modal fade" id={modalId} role="dialog" aria-labelledby="basicModal" aria-hidden="true">
@@ -62,7 +57,7 @@ interface ModalProps {
     </div>
     </> }
     {toggleText && <>
-        <button className={toggleClass} onClick={toggleOnClick} data-toggle="modal" data-target={'#' + modalId}>{toggleText}</button>
+        <button className={toggleClass + ' mb-4'} onClick={toggleOnClick} data-toggle="modal" data-target={'#' + modalId}>{toggleText}</button>
     </> }
     </>
   );

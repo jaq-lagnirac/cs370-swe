@@ -14,6 +14,7 @@ export default function Attendance() {
   const [linkToggle, setLinkToggle] = useState(false);
   const [tableData, setTableData] = useState<any>([]);
   const [startDate, setStartDate] = useState(new Date());
+  const [deleteRowIndex, setDeleteRowIndex] = useState(-1);
   let pleaseRunOnceFlag = false;
 
   const readEntries = (newEntries: any) => {
@@ -60,8 +61,6 @@ function sendRequest(url: any) {
   }
   }, []);
 
-
-
   const columns = ["Date", "Time", "Attendees"];
 
 function dbEventToLocal(dbEvent: any) {
@@ -88,6 +87,7 @@ function dbEventToLocal(dbEvent: any) {
     return jsDate.toISOString().replace("T", "+").replace(/.\d{3}Z/g, "");
   }
 
+  const [attendanceSessions, setAttendanceSessions] = useState(tableData);
   const saveSession = () => {
     console.log("Creating event with date: " + dbDate(startDate));
     const newEvent = {
@@ -108,7 +108,8 @@ function dbEventToLocal(dbEvent: any) {
   }
 
   const deleteSession = () => {
-    console.log("Make sure to make deletion work");
+    console.log("delete row is hpappening at ", deleteRowIndex)
+    setAttendanceSessions(attendanceSessions.slice(0, deleteRowIndex).concat(attendanceSessions.slice(deleteRowIndex + 1, attendanceSessions.length)));
   }
 
 
@@ -141,6 +142,7 @@ function dbEventToLocal(dbEvent: any) {
       {loadingGate ?
         <> <div className="mb-3">
             <Table
+              setDeleteRowIndex={setDeleteRowIndex}
               columns={columns}
               tableData={tableData}
               colorCoded={false}
@@ -148,8 +150,7 @@ function dbEventToLocal(dbEvent: any) {
               AreYouSureTitle="Are you sure you want to delete this attendance session?"
               SaveMember={saveSession}
               DeleteMember={deleteSession}
-              editModalBody={<>
-              </> }
+              editModalBody={<></>}
             />
           </div> </> 
         : <></>}

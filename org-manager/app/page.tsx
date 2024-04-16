@@ -27,6 +27,7 @@ export default function Roster() {
   const [email, setEmail] = useState("");
   const [bannerId, setBannerId] = useState(0o0000000);
   const [name, setName] = useState("");
+  const [deleteRowIndex, setDeleteRowIndex] = useState(-1);
   const [loadingGate, setLoadingGate] = useState(false);
   let pleaseRunOnceFlag = false;
   
@@ -201,6 +202,8 @@ export default function Roster() {
 
   const handleDeleteMember = () => {
     console.log("Deleting member: " + bannerId);
+    console.log("deleteRowIndex ", deleteRowIndex);
+    setRosterMembers(rosterMembers.slice(0, deleteRowIndex).concat(rosterMembers.slice(deleteRowIndex + 1, rosterMembers.length)));    console.log("Deleting member: " + bannerId);
     /*
     fetch("http://0.0.0.0:8080/api/members", {
       method: "DELETE",
@@ -213,7 +216,7 @@ export default function Roster() {
     });
     */
 
-  }
+  };
 
   const handleEditMember = () => {
     // Make sure the ID matches an existing member
@@ -256,34 +259,35 @@ export default function Roster() {
 
       {loadingGate ?
         <Table
-        columns={columns}
-        tableData={rosterMembers}
-        colorCoded={true}
-        EditTitle="Edit Member"
-        AreYouSureTitle="Are you sure you want to delete this member?"
-        editModalBody={
-        <>
-          <form className="member-form" onSubmit={handleSubmit(onSubmit)}>
-            <input type="text" {...register("name")} placeholder="*Member Name" value={name} onChange={(e) => setName(e.target.value)} />
-            <p className="red-text">{errors.name?.message}</p>
+          setDeleteRowIndex={setDeleteRowIndex}
+          columns={columns}
+          tableData={rosterMembers}
+          colorCoded={true}
+          DeleteMember={handleDeleteMember}
+          EditTitle="Edit Member"
+          editModalBody={
+          <>
+            <form className="member-form" onSubmit={handleSubmit(onSubmit)}>
+              <input type="text" {...register("name")} placeholder="*Member Name" value={name} onChange={(e) => setName(e.target.value)} />
+              <p className="red-text">{errors.name?.message}</p>
 
-            <input type="text" {...register("email")} placeholder="*Member Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <p className="red-text">{errors.email?.message}</p>
+              <input type="text" {...register("email")} placeholder="*Member Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <p className="red-text">{errors.email?.message}</p>
 
-            <input type="number" {...register("bannerId")} placeholder="*Member Banner ID" value={bannerId} onChange={(e) => setBannerId(parseInt(e.target.value))} />
-            <p className="red-text">{errors.bannerId?.message}</p>
+              <input type="number" {...register("bannerId")} placeholder="*Member Banner ID" value={bannerId} onChange={(e) => setBannerId(parseInt(e.target.value))} />
+              <p className="red-text">{errors.bannerId?.message}</p>
 
-            <select {...register("role", { required: true })} className="role-select" value={role} onChange={(e) => setRole(e.target.value)}>
-              
-              <option value="president">President</option>
-              <option value="exec">Exec</option>
-              <option value="member">Member</option>
-            </select>
-            <p className="red-text">{errors.role?.message}</p>
-            <button className="large-purple-button" type="submit" style={{float: 'right'}} onClick={handleEditMember}>Save</button>
-            <button className="delete-button me-2" onClick={handleDeleteMember} style={{float: 'right'}} data-toggle="modal" data-target="#basicModal">Delete</button>
-          </form>
-        </> }
+              <select {...register("role", { required: true })} className="role-select" value={role} onChange={(e) => setRole(e.target.value)}>
+                
+                <option value="president">President</option>
+                <option value="exec">Exec</option>
+                <option value="member">Member</option>
+              </select>
+              <p className="red-text">{errors.role?.message}</p>
+              <button className="large-purple-button" type="submit" style={{float: 'right'}} onClick={handleEditMember}>Save</button>
+              <button className="delete-button me-2" onClick={handleDeleteMember} style={{float: 'right'}} data-toggle="modal" data-target="#basicModal">Delete</button>
+            </form>
+          </> }
       /> 
         :
         <></>
