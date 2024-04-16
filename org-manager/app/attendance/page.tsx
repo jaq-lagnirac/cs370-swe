@@ -95,9 +95,12 @@ function dbEventToLocal(dbEvent: any) {
       },
       body: JSON.stringify(newEvent, null, " "),
     });
-    setTableData(tableData.concat((dbEventToLocal(newEvent))));
+    setTableData([...tableData, dbEventToLocal(newEvent)]);
     setLinkToggle(true);
-    // Also it will probably need to refresh the table so the new event shows up
+  }
+
+  const deleteSession = () => {
+    console.log("Make sure to make deletion work");
   }
 
 

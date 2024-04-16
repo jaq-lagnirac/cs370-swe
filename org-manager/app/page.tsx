@@ -289,7 +289,6 @@ export default function Roster() {
         toggleClass="large-purple-button"
         modalId="createMemberModal"
       />
-      {console.log("roster members", rosterMembers)}
     </>
   );
 }
