@@ -149,7 +149,7 @@ def auth_into_email(recipients, subject, body):
     # keeps attempting to send emails until max attempts reached
     successful_auth = False
     for attempt in range(1, MAX_ATTEMPTS + 1):
-        try:
+        # try:
             # builds Gmail call with attached credentials
             service = build('gmail', 'v1', credentials = credentials)
             # sends emails to a given email list
@@ -157,8 +157,9 @@ def auth_into_email(recipients, subject, body):
             successful_auth = True
             print('Successfully sent emails.')
             break
-        except:
+        # except Exception as e:
             print(f'Attempt {attempt} failed. Error in authenticating into Google API.')
+            print(e)
 
     if not successful_auth:
         print('Authentication into Google API unsuccessful.')

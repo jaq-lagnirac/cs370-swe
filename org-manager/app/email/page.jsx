@@ -10,30 +10,32 @@ import Select from 'react-select';
 import * as yup from "yup";
 
 export default function Email() {
-  //test members only
-  // TODO: integrate into SQL database
-  const members = [
-    {"Name": "Andrew Ruff", "Email": "acr9932@truman.edu", "Banner ID": 102344322, "Role": "exec"},
-    {"Name": "Julian Williams", "Email": "jww1111@truman.edu", "Banner ID": 103422344, "Role": "president"},
-    {"Name": "Justin Caringal", "Email": "jac5566@truman.edu", "Banner ID": 1011113456, "Role": "exec"},
-    {"Name": "Akansha Negi", "Email": "an2713@truman.edu", "Banner ID": 1011234567, "Role": "exec"},
-    {"Name": "Ruthie Halma", "Email": "ruthie@truman.edu", "Banner ID": 105464445, "Role": "member"},
-    {"Name": "Kafi Rahman", "Email": "kir2311@truman.edu", "Banner ID": 102042342, "Role": "member"},
-    {"Name": "Ting Cao", "Email": "tac3912@truman.edu", "Banner ID": 102342332, "Role": "member"},
-  ];
-
   //change this array based on intended recipients
   const [recipients, setRecipients] = useState([]);
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [members, setMembers] = useState([]);
+  let pleaseRunOnceFlag = false;
 
   const schema = yup.object({
     recipients: yup.array().of(yup.object()).min(1, "At least one recipient required."),
     subject: yup.string().required("Email subject required."),
     body: yup.string().required("Email Body required."),
   }).required();
+
+  function sendRequest(url) {
+    // options.body = JSON.stringify(body);
+    return fetch(url, {
+      method: "GET",
+      mode: "cors",
+      cache: "default",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    });
+  }
 
   const {
     register,
@@ -65,10 +67,72 @@ export default function Email() {
     reset();
   };
 
+  function roleIntToText(roleInt) {
+    let role = 'Member';
+    switch (roleInt) {
+      case 0:
+        role = 'President';
+        break;
+      case 1:
+        role = 'Exec';
+        break;
+      case 2:
+        role = 'Member';
+        break;
+      default:
+        // Duplicate with member condition, but makes it easy to change if necessary
+        console.log("Reached roleIntToText default state!");
+        role = 'Member';
+        break;
+    }
+    return role;
+  }
+ 
+
+ // https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
+  function uniqBy(a, key) {
+      var seen = {};
+      return a.filter(function(item) {
+          var k = key(item);
+          return seen.hasOwnProperty(k) ? false : (seen[k] = true);
+      })
+  }
+  const readMembers = (newMembers) => {
+    console.log("Reading members, response body is: " + JSON.stringify(newMembers));
+    let tempArray = members;
+    for (let i = 0; i < newMembers["members"].length; i++) {
+      let tempMember = dbMemberToLocal(newMembers["members"][i]);
+      console.log("Adding member: " + newMembers["members"][i]);
+      tempArray.push(tempMember);
+    }
+    setMembers(uniqBy(tempArray, JSON.stringify));
+    console.log(members);
+  }
+
+  function dbMemberToLocal(dbMember) {
+    return {
+        "Name": dbMember["name"],
+        "Email": dbMember["email"],
+        "Banner ID": dbMember["id"],
+        "Role": roleIntToText(dbMember["role"])
+      };
+  }
+
+  useEffect(() => {
+  if (!pleaseRunOnceFlag) {
+    const testPromise = sendRequest("http://127.0.0.1:8080/api/members");
+    testPromise.then(response => response.json())
+    .then(readMembers, console.log);
+    // Update default values when role changes
+    // setValue("role", role);
+    pleaseRunOnceFlag = true;
+  }
+  }, []);
+
   const options = members.map(member => ({ value: member.Email, label: member.Name }));
   // const options = jsonMemberData.map(member => ({ value: member.Name, label: member.label }));
   const execMembers = members
-  .filter(member => member.Role === "exec" || member.Role === "president")
+  .filter(member => member.Role === "Exec" || member.Role === "President")
   .map(member => ({ value: member.Email, label: member.Name }));
   const customMembers = [];
 
@@ -96,11 +160,31 @@ export default function Email() {
   };
 
   const handleSendEmail = () => {
+    let recipientArray = [];
+    for (let i = 0; i < recipients.length; i++) {
+      recipientArray.push(recipients[i]["value"]);
+    }
     console.log("Submitting the following info: ");
-    console.log("recipients: ", recipients);
+    console.log("recipients: ", recipientArray);
     console.log("subject: ", subject);
     console.log("body: ", body);
     //TODO: add modal or something here that says email sent, refresh to blank email page
+    let email = {
+      "recipients": recipientArray,
+      "subject": subject,
+      "body": body,
+    };
+    fetch("http://127.0.0.1:8080/api/email", {
+      method: "POST",
+      mode: "cors",
+      cache: "default",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(email, null, " "),
+    });
+
+
   }
 
   return (

@@ -280,7 +280,8 @@ def delete_attendance(db):
 	db.commit()
 	return get_attendance(db)
 
-@app.post("/api/email")
+# @app.post("/api/email")
+@app.route("/api/email", method=['OPTIONS', 'POST'])
 def post_email(db):
 	"""
 	Calls Justin's send email function with the provided JSON data

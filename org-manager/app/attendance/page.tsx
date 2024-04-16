@@ -15,6 +15,7 @@ export default function Attendance() {
   const [tableData, setTableData] = useState<any>([]);
   const [startDate, setStartDate] = useState(new Date());
   const [deleteRowIndex, setDeleteRowIndex] = useState(-1);
+  const [cachedResponse, setCachedResponse] =  useState<any>();
   let pleaseRunOnceFlag = false;
 
   const readEntries = (newEntries: any) => {
@@ -28,6 +29,7 @@ export default function Attendance() {
       setTableData(uniqBy(tempArray, JSON.stringify));
       console.log("Running ReadEntries");
       console.log(tableData);
+      setCachedResponse(structuredClone(newEntries));
       setLoadingGate(true);
   }
 // https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
@@ -101,6 +103,8 @@ function dbEventToLocal(dbEvent: any) {
       },
       body: JSON.stringify(newEvent, null, " "),
     });
+    console.log(cachedResponse);
+    cachedResponse["attendance"].push(newEvent);
     setTableData([...tableData, dbEventToLocal(newEvent)]);
     setLinkToggle(true);
   }
@@ -115,7 +119,7 @@ function dbEventToLocal(dbEvent: any) {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({"id": bannerId}, null, " "),
+      body: JSON.stringify({"date": cachedResponse["attendance"][deleteRowIndex]["date"]}, null, " "),
     });
 
     setTableData(tableData.slice(0, deleteRowIndex).concat(tableData.slice(deleteRowIndex + 1, tableData.length)));
