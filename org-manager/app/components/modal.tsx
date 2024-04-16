@@ -35,7 +35,7 @@ interface ModalProps {
         <div className="modal-footer">
             {closeButton && <button type="button" className="btn btn-default" data-dismiss="modal" onClick={onClickClose}>{closeButton}</button>}
             {deleteButton && <button className="delete-button" data-toggle="modal" data-target="#basicModal">{deleteButton}</button>}
-            {saveButton && <button className="large-purple-button" type="submit" onClick={onClickSave}>{saveButton}</button>}
+            {saveButton && <button className="large-purple-button" type="submit" data-dismiss="modal" onClick={onClickSave}>{saveButton}</button>}
         </div>
         </div>
     </div>
