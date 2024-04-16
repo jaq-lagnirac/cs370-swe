@@ -109,7 +109,6 @@ function dbEventToLocal(dbEvent: any) {
     setTableData(tableData.slice(0, deleteRowIndex).concat(tableData.slice(deleteRowIndex + 1, tableData.length)));
   }
 
-
   return (
     <div>
       <h1>Attendance</h1>
