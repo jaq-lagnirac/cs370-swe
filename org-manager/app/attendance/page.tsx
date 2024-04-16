@@ -67,7 +67,7 @@ function dbEventToLocal(dbEvent: any) {
   const dateObj = new Date(jsDate(dbEvent["date"]));
   const attendeeCount = dbEvent["ids"].length;
   return {
-    "Date": dateObj.toLocaleDateString("en-US"),
+    "Date": dateObj.toLocaleDateString("es-pa"),
     "Time": dateObj.toLocaleTimeString("en-US"),
     "Attendees": attendeeCount,
   };
@@ -106,8 +106,21 @@ function dbEventToLocal(dbEvent: any) {
   }
 
   const deleteSession = () => {
+    let date = tableData[deleteRowIndex]["Date"];
+    let time = tableData[deleteRowIndex]["Time"];
+    fetch("http://127.0.0.1:8080/api/attendance", {
+      method: "DELETE",
+      mode: "cors",
+      cache: "default",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({"id": bannerId}, null, " "),
+    });
+
     setTableData(tableData.slice(0, deleteRowIndex).concat(tableData.slice(deleteRowIndex + 1, tableData.length)));
   }
+
 
   return (
     <div>
