@@ -358,6 +358,9 @@ def post_signup(db):
 	role = 2 #Member role value
 	note = request.forms.get("note")
 
+	if id == "" or name == "" or email == "":
+		return template("signup", error="empty")
+
 	if db.query(members).filter_by(id=id).all() != []:
 		return template("signup", error="id")
 
