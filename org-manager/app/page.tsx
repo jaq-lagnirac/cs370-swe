@@ -292,7 +292,7 @@ export default function Roster() {
                 <option value="member">Member</option>
               </select>
               <p className="red-text">{errors.role?.message}</p>
-              <button className="large-purple-button" type="submit" style={{float: 'right'}} onClick={handleEditMember}>Save</button>
+              <button className="large-purple-button" type="submit" style={{float: 'right'}} onClick={handleEditMember} data-dismiss="modal">Save</button>
               <button className="delete-button me-2" onClick={handleDeleteMember} style={{float: 'right'}} data-toggle="modal" data-target="#basicModal">Delete</button>
             </form>
           </> }
