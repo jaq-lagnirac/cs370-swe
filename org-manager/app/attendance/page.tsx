@@ -110,8 +110,6 @@ function dbEventToLocal(dbEvent: any) {
   }
 
   const deleteSession = () => {
-    let date = tableData[deleteRowIndex]["Date"];
-    let time = tableData[deleteRowIndex]["Time"];
     fetch("http://127.0.0.1:8080/api/attendance", {
       method: "DELETE",
       mode: "cors",
@@ -121,6 +119,7 @@ function dbEventToLocal(dbEvent: any) {
       },
       body: JSON.stringify({"date": cachedResponse["attendance"][deleteRowIndex]["date"]}, null, " "),
     });
+    cachedResponse["attendance"].splice(deleteRowIndex, 1);
 
     setTableData(tableData.slice(0, deleteRowIndex).concat(tableData.slice(deleteRowIndex + 1, tableData.length)));
   }
