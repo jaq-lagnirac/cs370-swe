@@ -7,9 +7,11 @@ import { useState, useEffect } from 'react';
 import Modal from './components/modal';
 import Table from './components/table';
 import Select from 'react-select';
+// import useSWR from 'swr';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
+
 
 interface FormData {
   name: string;
@@ -20,21 +22,14 @@ interface FormData {
 
 export default function Roster() {
   const columns: string[] = ["Name", "Email", "Banner ID"];
-  const members = [
-    {"Name": "Andrew Ruff", "Email": "acr9932@truman.edu", "Banner ID": 102344322, "Role": "exec"},
-    {"Name": "Julian Williams", "Email": "jww1111@truman.edu", "Banner ID": 103422344, "Role": "member"},
-    {"Name": "Justin Caringal", "Email": "jac5566@truman.edu", "Banner ID": 1011113456, "Role": "president"},
-    {"Name": "Akansha Negi", "Email": "an2713@truman.edu", "Banner ID": 1011234567, "Role": "exec"},
-    {"Name": "Ruthie Halma", "Email": "ruthie@truman.edu", "Banner ID": 105464445, "Role": "member"},
-    {"Name": "Kafi Rahman", "Email": "kir2311@truman.edu", "Banner ID": 102042342, "Role": "member"},
-    {"Name": "Ting Cao", "Email": "tac3912@truman.edu", "Banner ID": 102342332, "Role": "member"},
-  ];
-  const [rosterMembers, setRosterMembers] = useState(members);
+  const [rosterMembers, setRosterMembers] = useState<any>([]);
   const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
   const [bannerId, setBannerId] = useState(0o0000000);
   const [name, setName] = useState("");
-
+  const [loadingGate, setLoadingGate] = useState(false);
+  let pleaseRunOnceFlag = false;
+  
   const schema = yup.object({
     name: yup.string().required("Name required"),
     email: yup.string().email('Invalid email').required('Email required'),
@@ -50,11 +45,69 @@ export default function Roster() {
   } = useForm({
     resolver: yupResolver(schema),
   })
+  function sendRequest(url: any) {
+    // options.body = JSON.stringify(body);
+    return fetch(url, {
+      method: "GET",
+      mode: "cors",
+      cache: "default",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    });
+  }
+  function roleIntToText(roleInt: number) {
+    switch (roleInt) {
+      case 0:
+        return 'President';
+      case 1:
+        return 'Exec';
+      case 2:
+        return 'Member';
+      default:
+        // Duplicate with member condition, but makes it easy to change if necessary
+        return 'Member';
+    }
+  }
+
+  function roleTextToInt(roleText: string) {
+    switch (roleText) {
+      case 'President':
+        return 0;
+      case 'Exec':
+        return 1;
+      case 'Member':
+        return 2;
+      default:
+        // Duplicate with member condition, but makes it easy to change if necessary
+        return 2;
+    }
+  }
+
+  const readMembers = (newMembers: any) => {
+    console.log("Reading members, response body is: " + JSON.stringify(newMembers));
+    let tempArray = rosterMembers;
+    for (let i = 0; i < newMembers["members"].length; i++) {
+      let tempMember = dbMemberToLocal(newMembers["members"][i]);
+      console.log("Adding member: " + newMembers["members"][i]);
+      tempArray.push(tempMember);
+    }
+    setRosterMembers(tempArray);
+    console.log(rosterMembers);
+    setLoadingGate(true);
+  }
 
   useEffect(() => {
+  if (!pleaseRunOnceFlag) {
+    const testPromise = sendRequest("http://0.0.0.0:8080/api/members");
+    testPromise.then(response => response.json())
+    .then(readMembers, console.log);
     // Update default values when role changes
     setValue("role", role);
+    pleaseRunOnceFlag = true;
+  }
   }, [role, setValue]);
+
 
   const onSubmit = (data: FormData) => {
     const jsonData = {
@@ -69,19 +122,14 @@ export default function Roster() {
 
   const roles = ["president", "exec", "member"];
 
-  // useForm({
-  //   defaultValues: {
-  //     name: '',
-  //     email: '',
-  //     bannerId: 0o0000000,
-  //     role: '',
-  //   }
-  // })
-  
-  // // set default value async
-  // useForm({
-  //   defaultValues: async () => fetch('/api-endpoint')
-  // })
+  function dbMemberToLocal(dbMember: any) {
+    return {
+        "Name": dbMember["name"],
+        "Email": dbMember["email"],
+        "Banner ID": dbMember["id"],
+        "Role": roleIntToText(dbMember["role"])
+      };
+  }
 
   const handleAddMember = () => {
     //only add if name, email, banner id, and role exist
@@ -92,29 +140,71 @@ export default function Roster() {
     console.log("role: ", role);
 
     const newMember = {
-      "Name": name,
-      "Email": email,
-      "Banner ID": bannerId,
-      "Role": role,
+      "id": bannerId,
+      "name": name,
+      "email": email,
+      "role": roleTextToInt(role),
+      "note": "",
     };
+    fetch("http://0.0.0.0:8080/api/members", {
+      method: "POST",
+      mode: "cors",
+      cache: "default",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newMember, null, " "),
+    });
 
-    setRosterMembers(rosterMembers.concat(newMember));
+    console.log(JSON.stringify(newMember));
 
+    setRosterMembers(rosterMembers.concat(dbMemberToLocal(newMember)));
+
+    /*
     setName("");
     setEmail("");
     setBannerId(0o0000000);
     setRole(""); //this causes some issues
-
     {console.log("roster members", rosterMembers)}
+    */
   }
 
   const handleDeleteMember = () => {
+    console.log("Deleting member: " + bannerId);
+    /*
+    fetch("http://0.0.0.0:8080/api/members", {
+      method: "DELETE",
+      mode: "cors",
+      cache: "default",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({bannerId}, null, " "),
+    });
+    */
 
   }
 
   const handleEditMember = () => {
-
+    // Make sure the ID matches an existing member
+    const newMember = {
+      "id": bannerId,
+      "name": name,
+      "email": email,
+      "role": roleTextToInt(role),
+      "note": "",
+    };
+    fetch("http://0.0.0.0:8080/api/members", {
+      method: "PUT",
+      mode: "cors",
+      cache: "default",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newMember, null, " "),
+    });
   }
+
 
   return (
     <>
@@ -134,7 +224,8 @@ export default function Roster() {
           <option value="member">Member</option>
         </select> */}
 
-      <Table
+      {loadingGate ?
+        <Table
         columns={columns}
         tableData={rosterMembers}
         colorCoded={true}
@@ -164,6 +255,9 @@ export default function Roster() {
           </form>
         </> }
       /> 
+        :
+        <></>
+      }
 
       <Modal
         modalTitle="Create New Member"

@@ -6,7 +6,7 @@ STRING_LENGTH = 50
 NOTE_LENGTH = 500
 LOCAL_ONLY = False
 
-from bottle import Bottle, get, post, put, delete, request, abort, template
+from bottle import Bottle, get, post, put, delete, request, abort, response, template
 from bottle.ext import sqlalchemy
 from sqlalchemy import create_engine, Column, BigInteger, SmallInteger, String, DateTime
 from sqlalchemy.sql import func
@@ -19,6 +19,41 @@ engine = create_engine("mysql://admin:admin@localhost/roster")
 app = Bottle()
 plugin = sqlalchemy.Plugin(engine, keyword='db')
 app.install(plugin)
+
+class EnableCors(object):
+    name = 'enable_cors'
+    api = 2
+
+    def apply(self, fn, context):
+        def _enable_cors(*args, **kwargs):
+            # set CORS headers
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS, DELETE'
+            response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+
+            if request.method != 'OPTIONS':
+                # actual request; reply with the actual response
+                return fn(*args, **kwargs)
+
+        return _enable_cors
+
+app.install(EnableCors())
+
+"""
+# Decorator to allow CORS from https://stackoverflow.com/questions/17262170/bottle-py-enabling-cors-for-jquery-ajax-requests
+def enable_cors(fn):
+    def _enable_cors(*args, **kwargs):
+        # set CORS headers
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+
+        if request.method != 'OPTIONS':
+            # actual request; reply with the actual response
+            return fn(*args, **kwargs)
+
+    return _enable_cors
+"""
 
 #Define the tables in the database
 class members(base):
@@ -101,7 +136,7 @@ def get_members(db):
 		results.append({ "id":x.id, "name":x.name, "email":x.email, "role":x.role, "note":x.note })
 	return {"members" : results}
 
-@app.post("/api/members")
+@app.route("/api/members", method=['OPTIONS', 'POST'])
 def post_members(db):
 	"""
 	Adds a new row to the members table.
@@ -159,7 +194,7 @@ def get_attendance(db):
 
 	return {"attendance" : results}
 
-@app.post("/api/attendance")
+@app.route("/api/attendance", method=['OPTIONS', 'POST'])
 def post_attendance(db):
 	"""
 	Adds a new date to the dates table.
