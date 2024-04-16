@@ -1,13 +1,25 @@
-<h1>Member Sign Up Form</h1> <br>
+<h1>Member Sign Up Form</h1>
+<br>
 <form action="/signup" method="post">
-	<label for="name">Name: </label>
-	<input type="text" name="name"/> <br>
-	<label for="email">Email Address: </label>
-	<input type="email" name="email"> <br>
-	<label for="id">Banner ID: </label>
-	<input type="number" name="id"> <br>
-	<label for="note">Additional Notes: </label>
-	<input type="text" name="note"> <br><br>
+<table>
+	<tr>
+		<td><label for="name">Name: &nbsp</label></td>
+		<td><input type="text" name="name"/></td>
+	</tr>
+	<tr>
+		<td><label for="email">Email Address: &nbsp</label></td>
+		<td><input type="email" name="email"></td>
+	</tr>
+	<tr>
+		<td><label for="id">Banner ID: &nbsp</label></td>
+		<td><input type="number" name="id"></td>
+	</tr>
+	<tr>
+		<td><label for="note">Additional Notes: &nbsp</label></td>
+		<td><input type="text" name="note"></td>
+	</tr>
+</table>
+	<br>
 	<input type="submit" value="Submit">
 </form>	
 
