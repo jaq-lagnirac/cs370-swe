@@ -9,10 +9,12 @@ import RootLayout from '../layout';
 
 export default function Attendance() {
   const [showAttendanceTable, setShowAttendanceTable] = useState(false);
+  const [deleteRowIndex, setDeleteRowIndex] = useState(-1);
   const columns = ["Date", "Time", "Attendees"];
   const tableData = [
     {Date: "1970-01-01", Time: "10:00-12:00", Attendees: 2}
   ];
+  const [attendanceSessions, setAttendanceSessions] = useState(tableData);
   const saveSession = () => {
     console.log("When we connect to the backend, this function will create a new event.");
     // Also it will probably need to refresh the table so the new event shows up
@@ -20,7 +22,8 @@ export default function Attendance() {
   }
 
   const deleteSession = () => {
-    // Delete attendance session
+    console.log("delete row is hpappening at ", deleteRowIndex)
+    setAttendanceSessions(attendanceSessions.slice(0, deleteRowIndex).concat(attendanceSessions.slice(deleteRowIndex + 1, attendanceSessions.length)));
   }
 
   const generateQR = () => {
@@ -51,6 +54,7 @@ export default function Attendance() {
         {showAttendanceTable &&
         <> <div className="mb-3">
             <Table
+              setDeleteRowIndex={setDeleteRowIndex}
               columns={columns}
               tableData={tableData}
               colorCoded={false}
@@ -58,8 +62,7 @@ export default function Attendance() {
               AreYouSureTitle="Are you sure you want to delete this attendance session?"
               SaveMember={saveSession}
               DeleteMember={deleteSession}
-              editModalBody={<>
-              </> }
+              editModalBody={<></>}
             />
           </div> </> }
     </div>

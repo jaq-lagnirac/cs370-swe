@@ -34,6 +34,7 @@ export default function Roster() {
   const [email, setEmail] = useState("");
   const [bannerId, setBannerId] = useState(0o0000000);
   const [name, setName] = useState("");
+  const [deleteRowIndex, setDeleteRowIndex] = useState(-1);
 
   const schema = yup.object({
     name: yup.string().required("Name required"),
@@ -109,8 +110,9 @@ export default function Roster() {
   }
 
   const handleDeleteMember = () => {
-
-  }
+    console.log("deleteRowIndex ", deleteRowIndex);
+    setRosterMembers(rosterMembers.slice(0, deleteRowIndex).concat(rosterMembers.slice(deleteRowIndex + 1, rosterMembers.length)));
+  };
 
   const handleEditMember = () => {
 
@@ -135,11 +137,12 @@ export default function Roster() {
         </select> */}
 
       <Table
+        setDeleteRowIndex={setDeleteRowIndex}
         columns={columns}
         tableData={rosterMembers}
         colorCoded={true}
+        DeleteMember={handleDeleteMember}
         EditTitle="Edit Member"
-        AreYouSureTitle="Are you sure you want to delete this member?"
         editModalBody={
         <>
           <form className="member-form" onSubmit={handleSubmit(onSubmit)}>
