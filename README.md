@@ -190,13 +190,16 @@ Compilation of the code is system-specific. As we are developing in a Linux envi
     [target.x86\_64-pc-windows-msvc]
     linker = "lld"
     rustflags = [
-    "-Lnative=/home/username/.xwin/crt/lib/x86\_64",
-    "-Lnative=/home/username/.xwin/sdk/lib/um/x86\_64",
-    "-Lnative=/home/username/.xwin/sdk/lib/ucrt/x86_64"
+        "-Lnative=/home/username/.xwin/crt/lib/x86\_64",
+        "-Lnative=/home/username/.xwin/sdk/lib/um/x86\_64",
+        "-Lnative=/home/username/.xwin/sdk/lib/ucrt/x86_64"
     ]
     ```
+    Don't forget to switch the `username` to your specific username.
 
-5) To compile an application targeting Windows, run the following command:
+5) Navigate to `org-manager/src-tauri`. Enter `tauri.conf.json` using your preferred text editor and find the `identifier` key under the `tauri` key and switch it to a unique string.
+
+6) To compile an application targeting Windows, run the following command:
     ```
     cargo tauri build --target x86_64-pc-windows-msvc
     ```
