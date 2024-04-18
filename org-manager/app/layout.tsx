@@ -1,9 +1,10 @@
 'use client';
 import { Inter } from "next/font/google";
 import { useState } from 'react';
+import { useEffect } from 'react';
 import Navbar from './components/navbar';
 import "./styles/index.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,7 +14,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [darkMode, setDarkMode] = useState(false);
-
+  useEffect(()=>{
+    require("bootstrap/dist/js/bootstrap");
+  },[])
   const toggleTheme = () => {
     const root = document.documentElement;
 
@@ -42,9 +45,9 @@ export default function RootLayout({
         <div className="main-container">
           {children}
         </div>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        {/*<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>*/}
+        {/*<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>*/}
+        {/*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>*/}
       </body>
     </html>
   );
