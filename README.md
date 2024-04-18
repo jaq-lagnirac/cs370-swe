@@ -190,13 +190,16 @@ Compilation of the code is system-specific. As we are developing in a Linux envi
     [target.x86\_64-pc-windows-msvc]
     linker = "lld"
     rustflags = [
-    "-Lnative=/home/username/.xwin/crt/lib/x86\_64",
-    "-Lnative=/home/username/.xwin/sdk/lib/um/x86\_64",
-    "-Lnative=/home/username/.xwin/sdk/lib/ucrt/x86_64"
+        "-Lnative=/home/username/.xwin/crt/lib/x86\_64",
+        "-Lnative=/home/username/.xwin/sdk/lib/um/x86\_64",
+        "-Lnative=/home/username/.xwin/sdk/lib/ucrt/x86_64"
     ]
     ```
+    Don't forget to switch the `username` to your specific username.
 
-5) To compile an application targeting Windows, run the following command:
+5) Navigate to `org-manager/src-tauri`. Enter `tauri.conf.json` using your preferred text editor and find the `identifier` key under the `tauri` key and switch it to a unique string.
+
+6) To compile an application targeting Windows, run the following command:
     ```
     cargo tauri build --target x86_64-pc-windows-msvc
     ```
@@ -253,7 +256,21 @@ Our database-of-choice was [MySQL](https://www.mysql.com/). Specifically, a popu
         python3-dev \
         default-libmysqlclient-dev
     ```
-2) After downloading a local version of the [Github repository](https://github.com/jaq-lagnirac/cs370-swe), navigate to the directory `database-server` and run the following command to install the required Python packages and dependencies using the PIP package manager:
+2) Python offers lightweight "virtual environments" which allow projects to have independent and isolated packages and dependencies. Create a Python virtual environment with the following command:
+    ```
+    python3 -m venv .venv
+    ```
+
+    Activate the virtual environment by entering the following:
+    ```
+    source .venv/bin/activate
+    ```
+    ***Note:*** To exit the virtual environment and return to your base Python, type the following:
+    ```
+    deactivate
+    ```
+
+3) After downloading a local version of the [Github repository](https://github.com/jaq-lagnirac/cs370-swe), navigate to the directory `database-server` and run the following command to install the required Python packages and dependencies into your virtual environment using the PIP package manager:
     ```
     pip install -r requirements.txt
     ```
