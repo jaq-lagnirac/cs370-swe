@@ -256,7 +256,21 @@ Our database-of-choice was [MySQL](https://www.mysql.com/). Specifically, a popu
         python3-dev \
         default-libmysqlclient-dev
     ```
-2) After downloading a local version of the [Github repository](https://github.com/jaq-lagnirac/cs370-swe), navigate to the directory `database-server` and run the following command to install the required Python packages and dependencies using the PIP package manager:
+2) Python offers lightweight "virtual environments" which allow projects to have independent and isolated packages and dependencies. Create a Python virtual environment with the following command:
+    ```
+    python3 -m venv .venv
+    ```
+
+    Activate the virtual environment by entering the following:
+    ```
+    source .venv/bin/activate
+    ```
+    ***Note:*** To exit the virtual environment and return to your base Python, type the following:
+    ```
+    deactivate
+    ```
+
+3) After downloading a local version of the [Github repository](https://github.com/jaq-lagnirac/cs370-swe), navigate to the directory `database-server` and run the following command to install the required Python packages and dependencies into your virtual environment using the PIP package manager:
     ```
     pip install -r requirements.txt
     ```
