@@ -2,7 +2,7 @@
 import React from 'react';
 import ImgDl from '../components/img-dl';
 import Table from '../components/table';
-import Modal from '../components/modal';
+import CustomModal from '../components/modal';
 import CopyText from '../components/copy-text';
 import { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
@@ -128,7 +128,7 @@ function dbEventToLocal(dbEvent: any) {
   return (
     <div>
       <h1>Attendance</h1>
-        <Modal
+        <CustomModal
           modalTitle="Create New Attendance Session"
           modalBody={
             <>

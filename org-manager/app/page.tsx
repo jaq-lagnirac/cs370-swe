@@ -4,7 +4,7 @@ import React from 'react';
 import RootLayout from './layout';
 import type { Metadata } from "next";
 import { useState, useEffect } from 'react';
-import Modal from './components/modal';
+import CustomModal from './components/modal';
 import Table from './components/table';
 import Select from 'react-select';
 // import useSWR from 'swr';
@@ -331,7 +331,7 @@ export default function Roster() {
         <></>
       }
 
-      <Modal
+      <CustomModal
         modalTitle="Create New Member"
         modalBody={
           <>

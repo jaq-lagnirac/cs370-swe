@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import React from 'react';
-import Modal from '../components/modal';
+import CustomModal from '../components/modal';
 import { useState } from 'react';
 
 interface TableProps {
@@ -90,7 +90,7 @@ const RosterTable: React.FC<TableProps> = ({setDeleteRowIndex, columns, tableDat
       </tbody>
     </table>
     {/* edit modal */}
-      <Modal
+      <CustomModal
         modalTitle={EditTitle}
         areYouSureTitle={AreYouSureTitle}
         modalId="editModal"
@@ -99,7 +99,7 @@ const RosterTable: React.FC<TableProps> = ({setDeleteRowIndex, columns, tableDat
         modalBody={editModalBody}
       />
       {/* delete modal */}
-      <Modal
+      <CustomModal
         areYouSureTitle={`Are you sure you want to delete ?`}
         onClickSave={SaveMember}
         onClickDelete={DeleteMember}
