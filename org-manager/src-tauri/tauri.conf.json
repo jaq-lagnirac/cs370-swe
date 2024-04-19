@@ -28,7 +28,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "computer.ruff.orgmanager"
+      "identifier": "computer.ruff.orgmanager",
       "longDescription": "",
       "macOS": {
         "entitlements": null,

@@ -200,13 +200,15 @@ def get_attendance(db):
 	"""
 	dates_data = db.query(dates)
 	attendance_data = db.query(attendance)
+	members_data = db.query(members)
 	results = list()
 
 	for i in dates_data:
-		ids = list()
+		attendees = list()
 		for j in attendance_data.filter_by(date=i.date):
-			ids.append(j.id)
-		results.append({ "date":str(i.date), "ids":ids })
+			x = members_data.filter_by(id=j.id).first()
+			attendees.append({ "id": x.id, "name": x.name, "email": x.email, "role": x.role, "note": x.note })
+		results.append({ "date":str(i.date), "attendees":attendees })
 
 	return {"attendance" : results}
 
