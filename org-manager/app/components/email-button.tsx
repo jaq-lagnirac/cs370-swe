@@ -19,7 +19,7 @@ const EmailButton: React.FC<TableProps> = ({buttonText, onClick, darkMode})  => 
   <>
     <div onClick={onClick}>
         <button className="email-button email-text">
-            <Image className="pe-3 mb-1" src={icon} alt="Send Email" width={80} height={60}/>
+            <Image className="pr-3 mb-1" src={icon} alt="Send Email" width={80} height={60}/>
             {buttonText}
         </button>
     </div>
