@@ -134,7 +134,7 @@ def get_members(db):
 	results = []
 	for x in table_data:
 		results.append({ "id":x.id, "name":x.name, "email":x.email, "role":x.role, "note":x.note })
-	results.sort(key=lambda x: x.role)
+	results.sort(key=lambda x: x["role"])
 	return {"members" : results}
 
 @app.get("/api/members")
@@ -149,7 +149,7 @@ def get_members(db):
 	for x in table_data:
 		if x.role != 3:
 			results.append({ "id":x.id, "name":x.name, "email":x.email, "role":x.role, "note":x.note })
-	results.sort(key=lambda x: x.role)
+	results.sort(key=lambda x: x["role"])
 	return {"members" : results}
 
 @app.route("/api/members", method=['OPTIONS', 'POST'])
