@@ -124,7 +124,7 @@ def read_json(names, types):
 	return tuple(ret)
 
 #Define access methods
-@app.get("/api/members")
+@app.get("/api/members/all")
 def get_members(db):
 	"""
 	Queries the members table and returns the data in a dict.
@@ -134,6 +134,22 @@ def get_members(db):
 	results = []
 	for x in table_data:
 		results.append({ "id":x.id, "name":x.name, "email":x.email, "role":x.role, "note":x.note })
+	results.sort(key=lambda x: x.role)
+	return {"members" : results}
+
+@app.get("/api/members")
+def get_members(db):
+	"""
+	Queries the members table and returns the data in a dict.
+	Only sends active members. Role == 3 is inactive
+	Dicts are automatically converted to JSON by Bottle
+	"""
+	table_data = db.query(members)
+	results = []
+	for x in table_data:
+		if x.role != 3:
+			results.append({ "id":x.id, "name":x.name, "email":x.email, "role":x.role, "note":x.note })
+	results.sort(key=lambda x: x.role)
 	return {"members" : results}
 
 @app.route("/api/members", method=['OPTIONS', 'POST'])
