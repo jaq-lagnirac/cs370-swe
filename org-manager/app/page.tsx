@@ -45,6 +45,12 @@ export default function Roster() {
     setValue,
   } = useForm({
     resolver: yupResolver(schema),
+      defaultValues: {
+        name: "",
+        email: "",
+        bannerId: 0o0000000,
+        role: "",
+      },
   })
   function sendRequest(url: any) {
     // options.body = JSON.stringify(body);
@@ -149,6 +155,9 @@ export default function Roster() {
     };
     const jsonString = JSON.stringify(jsonData, null, 2);
     console.log("JSON Roster Member Data:", jsonString);
+
+    // e.PreventDefault();
+    handleAddMember();
   };
 
   const roles = ["president", "exec", "member"];
@@ -162,8 +171,21 @@ export default function Roster() {
       };
   }
 
+  const clearForm = () => {
+      //reset values
+      setName("");
+      setEmail("");
+      setBannerId(-1);
+      setRole(""); //this causes some issues
+      {console.log("roster members", rosterMembers)}
+  }
+
   const handleAddMember = () => {
-    if (!errors.name && !errors.email && !errors.bannerId && !errors.role) {
+    console.log("errors length: ", Object.values(errors).length);
+    console.log("errors detected? ", Object.values(errors).length===0)
+    if (Object.values(errors).length === 0) {
+      //dismiss modal
+      // $("#createMemberModal").modal('hide');
       console.log("Submitting the following info: ");
       console.log("name: ", name);
       console.log("email: ", email);
@@ -190,13 +212,7 @@ export default function Roster() {
       console.log(JSON.stringify(newMember));
 
       setRosterMembers(rosterMembers.concat(dbMemberToLocal(newMember)));
-
-      //reset values
-      setName("");
-      setEmail("");
-      setBannerId(-1);
-      setRole(""); //this causes some issues
-      {console.log("roster members", rosterMembers)}
+      clearForm();
     }
   }
 
@@ -277,7 +293,7 @@ export default function Roster() {
           <>
             <form className="member-form" onSubmit={handleSubmit(onSubmit)}>
               <input type="text" {...register("name")} placeholder="*Member Name" value={name} onChange={(e) => setName(e.target.value)} />
-              <p className="red-text">{errors.name?.message}</p>
+              {<p className="red-text">{errors.name?.message}</p>}
 
               <input type="text" {...register("email")} placeholder="*Member Email" value={email} onChange={(e) => setEmail(e.target.value)} />
               <p className="red-text">{errors.email?.message}</p>
@@ -322,7 +338,7 @@ export default function Roster() {
                 <option value="member">Member</option>
               </select>
               <p className="red-text">{errors.role?.message}</p>
-              <button className="purple-button" type="submit" style={{float: 'right'}} onClick={handleAddMember}>Save</button>
+              <button className="purple-button" type="submit" style={{float: 'right'}}>Save</button>
               <button type="button" className="btn btn-default" style={{float: 'right'}} data-dismiss="modal">Close</button>
             </form>
           </>
