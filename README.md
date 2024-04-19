@@ -256,8 +256,9 @@ Our database-of-choice was [MySQL](https://www.mysql.com/). Specifically, a popu
         python3-dev \
         default-libmysqlclient-dev
     ```
-2) Python offers lightweight "virtual environments" which allow projects to have independent and isolated packages and dependencies. Create a Python virtual environment with the following command:
+2) Python offers lightweight "virtual environments" which allow projects to have independent and isolated packages and dependencies. Create a Python virtual environment with the following commands:
     ```
+    sudo apt install python3-venv
     python3 -m venv .venv
     ```
 
