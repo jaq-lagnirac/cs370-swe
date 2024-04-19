@@ -1,5 +1,6 @@
 'use client';
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import { useState } from 'react';
 import { useEffect } from 'react';
 import Navbar from './components/navbar';
@@ -45,9 +46,9 @@ export default function RootLayout({
         <div className="main-container">
           {children}
         </div>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <Script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"/>
+        <Script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"/>
+        <Script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"/>
       </body>
     </html>
   );

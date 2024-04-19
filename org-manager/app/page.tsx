@@ -206,6 +206,23 @@ export default function Roster() {
     console.log("deleteRowIndex ", deleteRowIndex);
     setRosterMembers(rosterMembers.slice(0, deleteRowIndex).concat(rosterMembers.slice(deleteRowIndex + 1, rosterMembers.length)));    console.log("Deleting member: " + bannerId);
     fetch("http://127.0.0.1:8080/api/members", {
+      method: "PUT",
+      mode: "cors",
+      cache: "default",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({"id": rosterMembers[deleteRowIndex]["Banner ID"],
+                            "name": rosterMembers[deleteRowIndex]["Name"],
+                            "email": rosterMembers[deleteRowIndex]["Email"],
+                            "role": 3,
+                            "note": "",
+
+      }, null, " "),
+    });
+
+    /*
+    fetch("http://127.0.0.1:8080/api/members", {
       method: "DELETE",
       mode: "cors",
       cache: "default",
@@ -223,6 +240,7 @@ export default function Roster() {
       },
       body: JSON.stringify({"id": bannerId}, null, " "),
     });
+    */
 
   };
 
@@ -249,6 +267,7 @@ export default function Roster() {
 
   return (
     <>
+ 
       <h1 className="pb-0">Stargazers Roster Manager</h1>
         {/* <a className="nav-link dropdown-toggle filter" href="#" id="navbardrop" data-toggle="dropdown">
           Filter By

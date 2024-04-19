@@ -67,7 +67,7 @@ function sendRequest(url: any) {
 
 function dbEventToLocal(dbEvent: any) {
   const dateObj = new Date(jsDate(dbEvent["date"]));
-  const attendeeCount = dbEvent["ids"].length;
+  const attendeeCount = dbEvent["attendees"].length;
   return {
     "Date": dateObj.toLocaleDateString("es-pa"),
     "Time": dateObj.toLocaleTimeString("en-US"),
