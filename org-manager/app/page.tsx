@@ -41,6 +41,7 @@ export default function Roster() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
     setValue,
   } = useForm({
@@ -145,7 +146,6 @@ export default function Roster() {
   }
   }, []);
 
-
   const onSubmit = (data: FormData) => {
     const jsonData = {
       name: data.name,
@@ -181,10 +181,6 @@ export default function Roster() {
   }
 
   const handleAddMember = () => {
-    console.log("errors length: ", Object.values(errors).length);
-    console.log("errors detected? ", Object.values(errors).length===0)
-    if (Object.values(errors).length === 0) {
-      //dismiss modal
       // $("#createMemberModal").modal('hide');
       console.log("Submitting the following info: ");
       console.log("name: ", name);
@@ -212,8 +208,7 @@ export default function Roster() {
       console.log(JSON.stringify(newMember));
 
       setRosterMembers(rosterMembers.concat(dbMemberToLocal(newMember)));
-      clearForm();
-    }
+      reset();
   }
 
   const handleDeleteMember = () => {
@@ -339,7 +334,7 @@ export default function Roster() {
               </select>
               <p className="red-text">{errors.role?.message}</p>
               <button className="purple-button" type="submit" style={{float: 'right'}}>Save</button>
-              <button type="button" className="btn btn-default" style={{float: 'right'}} data-dismiss="modal">Close</button>
+              <button type="button" className="btn btn-default" style={{float: 'right'}} data-dismiss="modal" onClick={() => reset()}>Close</button>
             </form>
           </>
         }
