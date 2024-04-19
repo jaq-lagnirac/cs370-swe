@@ -92,7 +92,7 @@ function dbEventToLocal(dbEvent: any) {
     console.log("Creating event with date: " + dbDate(startDate));
     const newEvent = {
       "date": dbDate(startDate),
-      "ids": [],
+      "attendees": [],
     }
     fetch("http://127.0.0.1:8080/api/attendance", {
       method: "POST",
