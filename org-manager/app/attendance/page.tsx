@@ -3,6 +3,7 @@ import React from 'react';
 import ImgDl from '../components/img-dl';
 import Table from '../components/table';
 import CustomModal from '../components/modal';
+import NewModal from '../components/new-modal';
 import CopyText from '../components/copy-text';
 import { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
@@ -107,6 +108,7 @@ function dbEventToLocal(dbEvent: any) {
     cachedResponse["attendance"].push(newEvent);
     setTableData([...tableData, dbEventToLocal(newEvent)]);
     setLinkToggle(true);
+    return false;
   }
 
   const deleteSession = () => {
@@ -128,6 +130,29 @@ function dbEventToLocal(dbEvent: any) {
   return (
     <div>
       <h1>Attendance</h1>
+        <NewModal
+          modalTitle="Create New Attendance Session"
+          modalBody={
+            <>
+              <DatePicker selected={startDate} showTimeSelect onChange={(date: any) => setStartDate(date)} />
+              <br></br>
+              {linkToggle ?
+              <CopyText url={"http://127.0.0.1:8080/signin?date=".concat(urlDate(startDate))}/> :
+              <></>
+              }
+              <div id="qrcode" className="mb-2">
+                <ImgDl/>
+              </div>
+            </>
+          }
+          showSave={true}
+          saveText="Done"
+          onSave={saveSession}
+          showDelete={false}
+          showConfirm={false}
+          openText="Create Session"
+        />
+        {/*
         <CustomModal
           modalTitle="Create New Attendance Session"
           modalBody={
@@ -138,11 +163,9 @@ function dbEventToLocal(dbEvent: any) {
               <CopyText url={"http://127.0.0.1:8080/signin?date=".concat(urlDate(startDate))}/> :
               <></>
               }
-              {/*
               <div id="qrcode" className="mb-2">
                 <ImgDl/>
               </div>
-              */}
             </>
           }
           saveButton="Done"
@@ -151,6 +174,7 @@ function dbEventToLocal(dbEvent: any) {
           toggleClass="large-purple-button mb-4 float-left"
           modalId="newAttendance"
         />
+      */}
       {(loadingGate &&  tableData.length > 0) ?
         <> <div className="mb-3">
             <Table
