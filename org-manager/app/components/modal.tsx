@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 
-interface ModalProps {
+interface CustomModalProps {
     modalTitle?: string;
     modalBody?: React.ReactNode;
     closeButton?: string,
@@ -17,29 +17,29 @@ interface ModalProps {
     onClickDismiss?: () => void;
     modalId?: string,
   }
-  const Modal: React.FC<ModalProps> = ({ modalTitle, modalBody, closeButton, saveButton, deleteButton, areYouSureTitle, toggleClass, toggleText, modalId, toggleOnClick, onClickDelete, onClickSave, onClickClose, onClickDismiss}) => {
+  const CustomModal: React.FC<CustomModalProps> = ({ modalTitle, modalBody, closeButton, saveButton, deleteButton, areYouSureTitle, toggleClass, toggleText, modalId, toggleOnClick, onClickDelete, onClickSave, onClickClose, onClickDismiss}) => {
     return (
     <>
     {modalTitle && <>
     <div className="modal fade" id={modalId} role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-    <div className="modal-dialog modal-dialog-centered modal-lg">
+      <div className="modal-dialog modal-dialog-centered modal-lg">
         <div className="modal-content">
-        <div className="modal-header">
+          <div className="modal-header">
             <h4 className="modal-title main-modal-title" id="myModalLabel">{modalTitle}</h4>
             <button type="button" className="close" data-dismiss="modal" onClick={onClickDismiss} aria-label="Close">
                 <img src="/xicon.svg" alt="Close"/>
             </button>
-        </div>
-        <div className="modal-body">
+          </div>
+          <div className="modal-body">
             {modalBody}
-        </div>
-        <div className="modal-footer">
+          </div>
+          <div className="modal-footer">
             {closeButton && <button type="button" className="btn btn-default" data-dismiss="modal" onClick={onClickClose}>{closeButton}</button>}
             {deleteButton && <button className="delete-button" data-toggle="modal" data-target="#basicModal">{deleteButton}</button>}
             {saveButton && <button className="large-purple-button" type="submit" onClick={onClickSave}>{saveButton}</button>}
+          </div>
         </div>
-        </div>
-    </div>
+      </div>
     </div>
     </> }
     {areYouSureTitle && <>
@@ -64,4 +64,4 @@ interface ModalProps {
   );
 };
 
-export default Modal;
+export default CustomModal;
