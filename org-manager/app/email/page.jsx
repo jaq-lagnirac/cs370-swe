@@ -64,7 +64,7 @@ export default function Email() {
     const jsonString = JSON.stringify(jsonData, null, 2);
     console.log("JSON Data:", jsonString);
 
-    reset();
+    handleSendEmail();
   };
 
   function roleIntToText(roleInt) {
@@ -168,7 +168,7 @@ export default function Email() {
     console.log("recipients: ", recipientArray);
     console.log("subject: ", subject);
     console.log("body: ", body);
-    //TODO: add modal or something here that says email sent, refresh to blank email page
+
     let email = {
       "recipients": recipientArray,
       "subject": subject,
@@ -184,7 +184,7 @@ export default function Email() {
       body: JSON.stringify(email, null, " "),
     });
 
-
+    reset();
   }
 
   return (
@@ -217,7 +217,7 @@ export default function Email() {
           <textarea className="email-input"  {...register("body")} placeholder="*Email Body" value={body} onChange={(e) => setBody(e.target.value)} />
           <p className="red-text">{errors.body?.message}</p>
 
-          <button className="purple-button" type="submit" style={{float: 'right'}} onClick={handleSendEmail} data-toggle="modal" data-target="#confirmEmailSentModal">Send Email</button>
+          <button className="purple-button" type="submit" style={{float: 'right'}} data-toggle="modal" data-target="#confirmEmailSentModal">Send Email</button>
 
           {/* Confirmation Email Sent Modal */}
           <div className="modal fade" id="confirmEmailSentModal" data-bs-backdrop="static" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
