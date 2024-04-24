@@ -24,7 +24,7 @@ passwd = json_data["passwd"]
 
 
 base = declarative_base()
-engine = create_engine(f"mysql://{passwd}:{username}@localhost/roster")
+engine = create_engine(f"mysql://{username}:{passwd}@localhost/roster")
 app = Bottle()
 plugin = sqlalchemy.Plugin(engine, keyword='db')
 app.install(plugin)
