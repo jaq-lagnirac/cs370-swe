@@ -4,7 +4,7 @@
 STRING_LENGTH = 50
 NOTE_LENGTH = 500
 LOCAL_ONLY = False
-PASSWD_FILE = "passwd.json"
+CONFIG_FILE = "config.json"
 
 from bottle import Bottle, get, post, put, delete, request, abort, response, template
 from bottle.ext import sqlalchemy
@@ -16,7 +16,7 @@ from send_email import send_email_from_json
 import json
 
 #Read info from the passwd.json file
-with open(PASSWD_FILE, "r") as file:
+with open(CONFIG_FILE, "r") as file:
 	json_data = json.load(file)
 uname = json_data["uname"]
 passwd = json_data["passwd"]
