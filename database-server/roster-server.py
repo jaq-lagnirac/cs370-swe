@@ -19,12 +19,13 @@ import json
 #Read info from the passwd.json file
 with open(PASSWD_FILE, "r") as file:
 	json_data = json.load(file)
-username = json_data["user"]
+uname = json_data["uname"]
 passwd = json_data["passwd"]
+db = json_data["db"]
 
 
 base = declarative_base()
-engine = create_engine(f"mysql://{username}:{passwd}@localhost/roster")
+engine = create_engine(f"mysql://{username}:{passwd}@localhost/{db}")
 app = Bottle()
 plugin = sqlalchemy.Plugin(engine, keyword='db')
 app.install(plugin)
