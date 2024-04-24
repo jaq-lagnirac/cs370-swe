@@ -5,6 +5,8 @@ import RootLayout from './layout';
 import type { Metadata } from "next";
 import { useState, useEffect } from 'react';
 import CustomModal from './components/modal';
+import ControlledModal from './components/controlled-modal';
+import Form from 'react-bootstrap/Form';
 import Table from './components/table';
 import Select from 'react-select';
 // import useSWR from 'swr';
@@ -29,6 +31,7 @@ export default function Roster() {
   const [name, setName] = useState("");
   const [deleteRowIndex, setDeleteRowIndex] = useState(-1);
   const [loadingGate, setLoadingGate] = useState(false);
+  const [showAddMember, setShowAddMember] = useState(false);
   let pleaseRunOnceFlag = false;
   
   const schema = yup.object({
@@ -160,7 +163,6 @@ export default function Roster() {
     handleAddMember();
   };
 
-  const roles = ["president", "exec", "member"];
 
   function dbMemberToLocal(dbMember: any) {
     return {
@@ -182,6 +184,7 @@ export default function Roster() {
 
   const handleAddMember = () => {
       // $("#createMemberModal").modal('hide');
+      setShowAddMember(false);
       console.log("Submitting the following info: ");
       console.log("name: ", name);
       console.log("email: ", email);
@@ -231,28 +234,6 @@ export default function Roster() {
 
       }, null, " "),
     });
-
-    /*
-    fetch("http://127.0.0.1:8080/api/members", {
-      method: "DELETE",
-      mode: "cors",
-      cache: "default",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({"id": bannerId}, null, " "),
-    });
-    fetch("http://127.0.0.1:8080/api/attendance", {
-      method: "DELETE",
-      mode: "cors",
-      cache: "default",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({"id": bannerId}, null, " "),
-    });
-    */
-
   };
 
   const handleEditMember = () => {
@@ -305,7 +286,7 @@ export default function Roster() {
           EditTitle="Edit Member"
           editModalBody={
           <>
-            <form className="member-form" onSubmit={handleSubmit(onSubmit)}>
+            <Form className="member-form" onSubmit={handleSubmit(onSubmit)}>
               <input type="text" {...register("name")} placeholder="*Member Name" value={name} onChange={(e) => setName(e.target.value)} />
               {<p className="red-text">{errors.name?.message}</p>}
 
@@ -324,13 +305,48 @@ export default function Roster() {
               <p className="red-text">{errors.role?.message}</p>
               <button className="large-purple-button" type="submit" style={{float: 'right'}} onClick={handleEditMember}>Save</button>
               <button className="delete-button me-2" onClick={handleDeleteMember} style={{float: 'right'}} data-toggle="modal" data-target="#basicModal">Delete</button>
-            </form>
+            </Form>
           </> }
       /> 
         :
         <></>
       }
+  
+      <ControlledModal
+        modalTitle="Create New Member"
+        openText="Add Member"
+        showSave={false}
+        showDelete={false}
+        showConfirm={false}
+        showClose={false}
+        show={showAddMember}
+        setShow={setShowAddMember}
+        modalBody={
+          <>
+            <form className="member-form" onSubmit={handleSubmit(onSubmit)}>
+              <input type="text" {...register("name")} placeholder="*Member Name" value={name} onChange={(e) => setName(e.target.value)} />
+              <p className="red-text">{errors.name?.message}</p>
 
+              <input type="text" {...register("email")} placeholder="*Member Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <p className="red-text">{errors.email?.message}</p>
+
+              <input type="number" {...register("bannerId")} placeholder="*Member Banner ID" value={bannerId} onChange={(e) => setBannerId(parseInt(e.target.value))} />
+              <p className="red-text">{errors.bannerId?.message}</p>
+
+              <select {...register("role", { required: true })} className="role-select" value={role} onChange={(e) => setRole(e.target.value)}>
+                
+                <option value="president">President</option>
+                <option value="exec">Exec</option>
+                <option value="member">Member</option>
+              </select>
+              <p className="red-text">{errors.role?.message}</p>
+              <button className="purple-button" type="submit" style={{float: 'right'}}>Save</button>
+              <button type="button" className="btn btn-default" style={{float: 'right'}} onClick={() => {reset(); setShowAddMember(false)}}>Close</button>
+            </form>
+          </>
+        }
+      />
+{/*
       <CustomModal
         modalTitle="Create New Member"
         modalBody={
@@ -361,6 +377,7 @@ export default function Roster() {
         toggleClass="large-purple-button"
         modalId="createMemberModal"
       />
+  */}
     </>
   );
 }

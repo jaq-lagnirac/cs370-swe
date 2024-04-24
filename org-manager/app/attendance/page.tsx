@@ -150,6 +150,7 @@ function dbEventToLocal(dbEvent: any) {
           onSave={saveSession}
           showDelete={false}
           showConfirm={false}
+          showClose={true}
           openText="Create Session"
         />
      {(loadingGate &&  tableData.length > 0) ?

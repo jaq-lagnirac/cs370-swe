@@ -11,7 +11,7 @@ import Modal from 'react-bootstrap/Modal';
     other way. Probably, they will usually do the same thing. By default, they
     both simply setShow(false).
 */
-interface NewModalProps {
+interface ControlledModalProps {
     modalTitle?: string;
     modalBody?: React.ReactNode;
     showSave: boolean,
@@ -24,15 +24,16 @@ interface NewModalProps {
     deleteText?: string,
     confirmTitle?: string,
     buttonVariant?: string,
-    onShow?: () => boolean;
-    onSave?: () => boolean;
-    onDelete?: () => boolean;
-    onClose?: () => boolean;
-    onHide?: () => boolean;
+    onShow?: () => boolean,
+    onSave?: () => boolean,
+    onDelete?: () => boolean,
+    onClose?: () => boolean,
+    onHide?: () => boolean,
+    show: boolean,
+    setShow: React.Dispatch<React.SetStateAction<boolean>>,
   }
 
-const NewModal: React.FC<NewModalProps> = ({ modalTitle, modalBody, showSave, showDelete, showConfirm, showClose, openText, closeText, saveText, deleteText, confirmTitle, buttonVariant, onShow, onDelete, onSave, onClose, onHide}) => {
-  const [show, setShow] = useState(false);
+const ControlledModal: React.FC<ControlledModalProps> = ({ modalTitle, modalBody, showSave, showDelete, showConfirm, showClose, openText, closeText, saveText, deleteText, confirmTitle, buttonVariant, onShow, onDelete, onSave, onClose, onHide, show, setShow}) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   const handleShow = () => setShow(typeof onShow === 'function' ? onShow : true);
@@ -98,4 +99,4 @@ const NewModal: React.FC<NewModalProps> = ({ modalTitle, modalBody, showSave, sh
   );
 }
 
-export default NewModal;
+export default ControlledModal;
