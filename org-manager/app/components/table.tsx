@@ -12,7 +12,7 @@ interface TableProps {
   AreYouSureTitle?: string;
   SaveMember?: () => void;
   DeleteMember?: () => boolean;
-  editModalBody: React.ReactNode;
+  editModalBody?: React.ReactNode;
   setDeleteRowIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
@@ -92,7 +92,7 @@ const RosterTable: React.FC<TableProps> = ({setDeleteRowIndex, columns, tableDat
         {tableRows}
       </tbody>
     </table>
-    {/* edit modal */}
+    {/* edit modal 
       <CustomModal
         modalTitle={EditTitle}
         areYouSureTitle={AreYouSureTitle}
@@ -100,7 +100,7 @@ const RosterTable: React.FC<TableProps> = ({setDeleteRowIndex, columns, tableDat
         onClickSave={SaveMember}
         onClickDelete={DeleteMember}
         modalBody={editModalBody}
-      />
+      />*/}
       {/* delete modal */}
       <ControlledModal
         modalTitle={"Are you sure you want to delete?"}
