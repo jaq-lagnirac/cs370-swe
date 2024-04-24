@@ -25,7 +25,7 @@ db = json_data["db"]
 
 
 base = declarative_base()
-engine = create_engine(f"mysql://{username}:{passwd}@localhost/{db}")
+engine = create_engine(f"mysql://{uname}:{passwd}@localhost/{db}")
 app = Bottle()
 plugin = sqlalchemy.Plugin(engine, keyword='db')
 app.install(plugin)
