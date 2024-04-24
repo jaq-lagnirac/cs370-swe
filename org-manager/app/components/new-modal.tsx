@@ -7,6 +7,9 @@ import Modal from 'react-bootstrap/Modal';
 
 /* Functions that return booleans should return false to close the modal (or
     keep it closed) and true to open it (or keep it open).
+    onClose runs when the close button is pressed, onHide when it is closed some
+    other way. Probably, they will usually do the same thing. By default, they
+    both simply setShow(false).
 */
 interface TestModalProps {
     modalTitle?: string;
@@ -25,20 +28,17 @@ interface TestModalProps {
     onSave?: () => boolean;
     onDelete?: () => boolean;
     onClose?: () => boolean;
+    onHide?: () => boolean;
   }
 
-const NewModal: React.FC<TestModalProps> = ({ modalTitle, modalBody, showSave, showDelete, showConfirm, openText, closeText, saveText, deleteText, confirmTitle, buttonVariant, onShow, onDelete, onSave, onClose}) => {
+const NewModal: React.FC<TestModalProps> = ({ modalTitle, modalBody, showSave, showDelete, showConfirm, openText, closeText, saveText, deleteText, confirmTitle, buttonVariant, onShow, onDelete, onSave, onClose, onHide}) => {
   const [show, setShow] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  const handleClose = () => setShow(typeof onClose === 'function' ? onClose : false);
-  const handleSave = () => setShow(typeof onSave === 'function' ? onSave : false);
-  const handleDelete = () => setShow(typeof onDelete === 'function' ? onDelete : false);
   const handleShow = () => setShow(typeof onShow === 'function' ? onShow : true);
   const beginDeleteConfirmation = () => {
     setShowConfirmation(true);
   }
-  const handleCloseConfirm = () => setShowConfirmation(false);
 
   return (
     <>
@@ -46,13 +46,13 @@ const NewModal: React.FC<TestModalProps> = ({ modalTitle, modalBody, showSave, s
         {openText || "Open"}
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={() => {setShow(onHide ? onHide() : false)}}>
         <Modal.Header closeButton>
           <Modal.Title>{modalTitle}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{modalBody}</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={() => {setShow(onClose ? onClose() : false)}}>
             {/* There should always be a close button */ closeText || "Close"}
           </Button>
           {showDelete ? 
@@ -61,12 +61,12 @@ const NewModal: React.FC<TestModalProps> = ({ modalTitle, modalBody, showSave, s
               {deleteText || "Delete"}
             </Button>
             :
-            <Button variant="dangerous" onClick={handleDelete}>
+            <Button variant="dangerous" onClick={() => {setShow(onDelete ? onDelete() : false)}}>
               {deleteText || "Delete"}
             </Button>
           : <></>}
           {showSave ? 
-            <Button variant={buttonVariant || "primary"} onClick={handleSave}>
+            <Button variant={buttonVariant || "primary"} onClick={() => {setShow(onSave ? onSave() : false)}}>
               {saveText || "Save"}
             </Button>
           : <></>}
@@ -74,15 +74,15 @@ const NewModal: React.FC<TestModalProps> = ({ modalTitle, modalBody, showSave, s
       </Modal>
       {showConfirm ? 
             <>
-              <Modal show={showConfirmation} onHide={handleCloseConfirm}>
+              <Modal show={showConfirmation} onHide={() => {setShowConfirmation(false)}}>
                 <Modal.Header closeButton>
                   <Modal.Title>{confirmTitle}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <Button variant="secondary" onClick={handleCloseConfirm}>
+                  <Button variant="secondary" onClick={() => {setShowConfirmation(false)}}>
                     No, take me back!
                   </Button>
-                  <Button variant="dangerous" onClick={handleDelete}>
+                  <Button variant="dangerous" onClick={() => {setShow(onDelete ? onDelete() : false)}}>
                     Yes
                   </Button>
                 </Modal.Body>

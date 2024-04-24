@@ -152,30 +152,7 @@ function dbEventToLocal(dbEvent: any) {
           showConfirm={false}
           openText="Create Session"
         />
-        {/*
-        <CustomModal
-          modalTitle="Create New Attendance Session"
-          modalBody={
-            <>
-              <DatePicker selected={startDate} showTimeSelect onChange={(date: any) => setStartDate(date)} />
-              <br></br>
-              {linkToggle ?
-              <CopyText url={"http://127.0.0.1:8080/signin?date=".concat(urlDate(startDate))}/> :
-              <></>
-              }
-              <div id="qrcode" className="mb-2">
-                <ImgDl/>
-              </div>
-            </>
-          }
-          saveButton="Done"
-          onClickSave={saveSession}
-          toggleText="Create Session"
-          toggleClass="large-purple-button mb-4 float-left"
-          modalId="newAttendance"
-        />
-      */}
-      {(loadingGate &&  tableData.length > 0) ?
+     {(loadingGate &&  tableData.length > 0) ?
         <> <div className="mb-3">
             <Table
               setDeleteRowIndex={setDeleteRowIndex}
