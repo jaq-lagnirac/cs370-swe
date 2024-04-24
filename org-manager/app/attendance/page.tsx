@@ -124,6 +124,7 @@ function dbEventToLocal(dbEvent: any) {
     cachedResponse["attendance"].splice(deleteRowIndex, 1);
 
     setTableData(tableData.slice(0, deleteRowIndex).concat(tableData.slice(deleteRowIndex + 1, tableData.length)));
+    return false;
   }
 
 

@@ -234,6 +234,7 @@ export default function Roster() {
 
       }, null, " "),
     });
+    return false;
   };
 
   const handleEditMember = () => {
@@ -321,6 +322,7 @@ export default function Roster() {
         showClose={false}
         show={showAddMember}
         setShow={setShowAddMember}
+        showButton={true}
         modalBody={
           <>
             <form className="member-form" onSubmit={handleSubmit(onSubmit)}>
