@@ -1,7 +1,6 @@
 #!/bin/python3
 
 #Config variables
-PORT = 8080
 STRING_LENGTH = 50
 NOTE_LENGTH = 500
 LOCAL_ONLY = False
@@ -22,7 +21,7 @@ with open(PASSWD_FILE, "r") as file:
 uname = json_data["uname"]
 passwd = json_data["passwd"]
 db = json_data["db"]
-
+port = json_data["port"]
 
 base = declarative_base()
 engine = create_engine(f"mysql://{uname}:{passwd}@localhost/{db}")
@@ -398,4 +397,4 @@ def post_signup(db):
 	db.commit()
 	return f"<p>{name} is now a member!</p>"
 
-app.run(host = "127.0.0.1" if LOCAL_ONLY else "0.0.0.0", port=PORT)
+app.run(host = "127.0.0.1" if LOCAL_ONLY else "0.0.0.0", port=port)
