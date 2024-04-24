@@ -219,16 +219,16 @@ export default function Email() {
           <textarea className="email-input"  {...register("body")} placeholder="*Email Body" value={body} onChange={(e) => setBody(e.target.value)} />
           <p className="red-text">{errors.body?.message}</p>
 
-          <button className="purple-button" type="submit" style={{float: 'right'}} data-toggle="modal" data-target="#confirmEmailSentModal">Send Email</button>
+          <button className="purple-button" type="submit" style={{float: 'right'}} onClick={() => {setShowSent(true)}}>Send Email</button>
 
           {/* Email Send Confirmation Modal */}
           <ControlledModal
             modalTitle="Email Sent!"
             showClose={true}
             closeText="Okay"
-            showDelete={true}
-            showSave={true}
-            showConfirm={true}
+            showDelete={false}
+            showSave={false}
+            showConfirm={false}
             showButton={false}
             show={showSent}
             setShow={setShowSent}
