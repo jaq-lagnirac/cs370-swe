@@ -5,6 +5,7 @@ PORT = 8080
 STRING_LENGTH = 50
 NOTE_LENGTH = 500
 LOCAL_ONLY = False
+PASSWD_FILE = "passwd.json"
 
 from bottle import Bottle, get, post, put, delete, request, abort, response, template
 from bottle.ext import sqlalchemy
@@ -13,9 +14,17 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import declarative_base
 from sqlalchemy_utils import database_exists, create_database
 from send_email import send_email_from_json
+import json
+
+#Read info from the passwd.json file
+with open(PASSWD_FILE, "r") as file:
+	json_data = json.load(file)
+username = json_data["user"]
+passwd = json_data["passwd"]
+
 
 base = declarative_base()
-engine = create_engine("mysql://admin:admin@localhost/roster")
+engine = create_engine(f"mysql://{passwd}:{username}@localhost/roster")
 app = Bottle()
 plugin = sqlalchemy.Plugin(engine, keyword='db')
 app.install(plugin)
