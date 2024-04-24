@@ -3,7 +3,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup"
+import { yupResolver } from "@hookform/resolvers/yup";
+import ControlledModal from '../components/controlled-modal';
 // import jsonMemberData from './data.json';
 import EmailButton from '../components/email-button';
 import Select from 'react-select';
@@ -17,6 +18,7 @@ export default function Email() {
   const [showForm, setShowForm] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [members, setMembers] = useState([]);
+  const [showSent, setShowSent] = useState(false);
   let pleaseRunOnceFlag = false;
 
   const schema = yup.object({
@@ -219,7 +221,20 @@ export default function Email() {
 
           <button className="purple-button" type="submit" style={{float: 'right'}} data-toggle="modal" data-target="#confirmEmailSentModal">Send Email</button>
 
-          {/* Confirmation Email Sent Modal */}
+          {/* Email Send Confirmation Modal */}
+          <ControlledModal
+            modalTitle="Email Sent!"
+            showClose={true}
+            closeText="Okay"
+            showDelete={true}
+            showSave={true}
+            showConfirm={true}
+            showButton={false}
+            show={showSent}
+            setShow={setShowSent}
+          />
+
+          {/* Confirmation Email Sent Modal 
           <div className="modal fade" id="confirmEmailSentModal" data-bs-backdrop="static" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
@@ -237,6 +252,7 @@ export default function Email() {
                 </div>
             </div>
           </div>
+          */}
 
         </form>
       ) : <></>}

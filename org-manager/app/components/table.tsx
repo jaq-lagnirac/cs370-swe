@@ -103,6 +103,7 @@ const RosterTable: React.FC<TableProps> = ({setDeleteRowIndex, columns, tableDat
       />
       {/* delete modal */}
       <ControlledModal
+        modalTitle={"Are you sure you want to delete?"}
         showButton={false}
         showSave={false}
         showDelete={true}
