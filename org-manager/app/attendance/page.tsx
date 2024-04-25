@@ -18,6 +18,7 @@ export default function Attendance() {
   const [deleteRowIndex, setDeleteRowIndex] = useState(-1);
   const [cachedResponse, setCachedResponse] =  useState<any>();
   let pleaseRunOnceFlag = false;
+  const SERVER_URL = "http://sand.truman.edu:41703";
 
   const readEntries = (newEntries: any) => {
       console.log("Reading members, response body is: " + JSON.stringify(newEntries));
@@ -54,7 +55,7 @@ function sendRequest(url: any) {
   }
   useEffect(() => {
   if (!pleaseRunOnceFlag) {
-    const testPromise = sendRequest("http://127.0.0.1:8080/api/attendance");
+    const testPromise = sendRequest(SERVER_URL + "/api/attendance");
       testPromise.then(response => response.json())
       .then(readEntries, console.log);
     pleaseRunOnceFlag = true;
@@ -95,7 +96,7 @@ function dbEventToLocal(dbEvent: any) {
       "date": dbDate(startDate),
       "attendees": [],
     }
-    fetch("http://127.0.0.1:8080/api/attendance", {
+    fetch(SERVER_URL + "/api/attendance", {
       method: "POST",
       mode: "cors",
       cache: "default",
@@ -112,7 +113,7 @@ function dbEventToLocal(dbEvent: any) {
   }
 
   const deleteSession = () => {
-    fetch("http://127.0.0.1:8080/api/attendance", {
+    fetch(SERVER_URL + "/api/attendance", {
       method: "DELETE",
       mode: "cors",
       cache: "default",
@@ -138,7 +139,7 @@ function dbEventToLocal(dbEvent: any) {
               <DatePicker selected={startDate} showTimeSelect onChange={(date: any) => setStartDate(date)} />
               <br></br>
               {linkToggle ?
-              <CopyText url={"http://127.0.0.1:8080/signin?date=".concat(urlDate(startDate))}/> :
+              <CopyText url={SERVER_URL + "/signin?date=".concat(urlDate(startDate))}/> :
               <></>
               }
               <div id="qrcode" className="mb-2">

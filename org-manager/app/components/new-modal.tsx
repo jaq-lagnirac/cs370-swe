@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 
@@ -42,9 +41,9 @@ const NewModal: React.FC<NewModalProps> = ({ modalTitle, modalBody, showSave, sh
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <button onClick={handleShow}>
         {openText || "Open"}
-      </Button>
+      </button>
 
       <Modal show={show} onHide={() => {setShow(onHide ? onHide() : false)}}>
         <Modal.Header closeButton>
@@ -53,25 +52,25 @@ const NewModal: React.FC<NewModalProps> = ({ modalTitle, modalBody, showSave, sh
         <Modal.Body>{modalBody}</Modal.Body>
         <Modal.Footer>
           {showClose ?
-            <Button variant="secondary" onClick={() => {setShow(onClose ? onClose() : false)}}>
+            <button onClick={() => {setShow(onClose ? onClose() : false)}}>
               {closeText || "Close"}
-            </Button>
+            </button>
           : <></>
           }
           {showDelete ? 
             showConfirm ?
-            <Button variant="primary" onClick={beginDeleteConfirmation}>
+            <button onClick={beginDeleteConfirmation}>
               {deleteText || "Delete"}
-            </Button>
+            </button>
             :
-            <Button variant="dangerous" onClick={() => {setShow(onDelete ? onDelete() : false)}}>
+            <button onClick={() => {setShow(onDelete ? onDelete() : false)}}>
               {deleteText || "Delete"}
-            </Button>
+            </button>
           : <></>}
           {showSave ? 
-            <Button variant={buttonVariant || "primary"} onClick={() => {setShow(onSave ? onSave() : false)}}>
+            <button onClick={() => {setShow(onSave ? onSave() : false)}}>
               {saveText || "Save"}
-            </Button>
+            </button>
           : <></>}
         </Modal.Footer>
       </Modal>
@@ -82,12 +81,12 @@ const NewModal: React.FC<NewModalProps> = ({ modalTitle, modalBody, showSave, sh
                   <Modal.Title>{confirmTitle}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <Button variant="secondary" onClick={() => {setShowConfirmation(false)}}>
+                  <button onClick={() => {setShowConfirmation(false)}}>
                     No, take me back!
-                  </Button>
-                  <Button variant="dangerous" onClick={() => {setShow(onDelete ? onDelete() : false)}}>
+                  </button>
+                  <button onClick={() => {setShow(onDelete ? onDelete() : false)}}>
                     Yes
-                  </Button>
+                  </button>
                 </Modal.Body>
               </Modal>
             </>

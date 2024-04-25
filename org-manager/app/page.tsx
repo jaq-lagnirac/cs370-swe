@@ -33,6 +33,7 @@ export default function Roster() {
   const [loadingGate, setLoadingGate] = useState(false);
   const [showAddMember, setShowAddMember] = useState(false);
   let pleaseRunOnceFlag = false;
+  const SERVER_URL = "http://sand.truman.edu:41703";
   
   const schema = yup.object({
     name: yup.string().min(1, "Name required").required("Name required"),
@@ -140,7 +141,7 @@ export default function Roster() {
 
   useEffect(() => {
   if (!pleaseRunOnceFlag) {
-    const testPromise = sendRequest("http://127.0.0.1:8080/api/members");
+    const testPromise = sendRequest(SERVER_URL + "/api/members");
     testPromise.then(response => response.json())
     .then(readMembers, console.log);
     // Update default values when role changes
@@ -198,7 +199,7 @@ export default function Roster() {
         "role": roleTextToInt(role),
         "note": "",
       };
-      fetch("http://127.0.0.1:8080/api/members", {
+      fetch(SERVER_URL + "/api/members", {
         method: "POST",
         mode: "cors",
         cache: "default",
@@ -219,7 +220,7 @@ export default function Roster() {
     console.log("Deleting member: " + bannerId);
     console.log("deleteRowIndex ", deleteRowIndex);
     setRosterMembers(rosterMembers.slice(0, deleteRowIndex).concat(rosterMembers.slice(deleteRowIndex + 1, rosterMembers.length)));    console.log("Deleting member: " + bannerId);
-    fetch("http://127.0.0.1:8080/api/members", {
+    fetch(SERVER_URL + "/api/members", {
       method: "PUT",
       mode: "cors",
       cache: "default",
@@ -246,7 +247,7 @@ export default function Roster() {
       "role": roleTextToInt(role),
       "note": "",
     };
-    fetch("http://127.0.0.1:8080/api/members", {
+    fetch(SERVER_URL + "/api/members", {
       method: "PUT",
       mode: "cors",
       cache: "default",

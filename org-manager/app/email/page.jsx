@@ -20,6 +20,7 @@ export default function Email() {
   const [members, setMembers] = useState([]);
   const [showSent, setShowSent] = useState(false);
   let pleaseRunOnceFlag = false;
+  const SERVER_URL = "http://sand.truman.edu:41703";
 
   const schema = yup.object({
     recipients: yup.array().of(yup.object()).min(1, "At least one recipient required."),
@@ -122,7 +123,7 @@ export default function Email() {
 
   useEffect(() => {
   if (!pleaseRunOnceFlag) {
-    const testPromise = sendRequest("http://127.0.0.1:8080/api/members");
+    const testPromise = sendRequest(SERVER_URL + "/api/members");
     testPromise.then(response => response.json())
     .then(readMembers, console.log);
     // Update default values when role changes
@@ -176,7 +177,7 @@ export default function Email() {
       "subject": subject,
       "body": body,
     };
-    fetch("http://127.0.0.1:8080/api/email", {
+    fetch(SERVER_URL + "/api/email", {
       method: "POST",
       mode: "cors",
       cache: "default",
