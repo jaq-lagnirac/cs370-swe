@@ -162,7 +162,7 @@ Compilation of the code is system-specific. As we are developing in a Linux envi
 
 2) Run the following command to download Windows-related libraries:
     ```
-    cargo install xwin
+    cargo install cargo-xwin
     ```
 
 3) Run the following command to make the libraries available:
@@ -201,7 +201,7 @@ Compilation of the code is system-specific. As we are developing in a Linux envi
 
 6) To compile an application targeting Windows, run the following command:
     ```
-    cargo tauri build --target x86_64-pc-windows-msvc
+    cargo tauri build --runner cargo-xwin --target x86_64-pc-windows-msvc
     ```
 
 ### Back-End (Server)
