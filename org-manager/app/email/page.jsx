@@ -3,7 +3,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup"
+import { yupResolver } from "@hookform/resolvers/yup";
+import ControlledModal from '../components/controlled-modal';
 // import jsonMemberData from './data.json';
 import EmailButton from '../components/email-button';
 import Select from 'react-select';
@@ -17,7 +18,9 @@ export default function Email() {
   const [showForm, setShowForm] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [members, setMembers] = useState([]);
+  const [showSent, setShowSent] = useState(false);
   let pleaseRunOnceFlag = false;
+  const SERVER_URL = "http://sand.truman.edu:41703";
 
   const schema = yup.object({
     recipients: yup.array().of(yup.object()).min(1, "At least one recipient required."),
@@ -120,7 +123,7 @@ export default function Email() {
 
   useEffect(() => {
   if (!pleaseRunOnceFlag) {
-    const testPromise = sendRequest("http://127.0.0.1:8080/api/members");
+    const testPromise = sendRequest(SERVER_URL + "/api/members");
     testPromise.then(response => response.json())
     .then(readMembers, console.log);
     // Update default values when role changes
@@ -174,7 +177,7 @@ export default function Email() {
       "subject": subject,
       "body": body,
     };
-    fetch("http://127.0.0.1:8080/api/email", {
+    fetch(SERVER_URL + "/api/email", {
       method: "POST",
       mode: "cors",
       cache: "default",
@@ -217,9 +220,22 @@ export default function Email() {
           <textarea className="email-input"  {...register("body")} placeholder="*Email Body" value={body} onChange={(e) => setBody(e.target.value)} />
           <p className="red-text">{errors.body?.message}</p>
 
-          <button className="purple-button" type="submit" style={{float: 'right'}} data-toggle="modal" data-target="#confirmEmailSentModal">Send Email</button>
+          <button className="purple-button" type="submit" style={{float: 'right'}} onClick={() => {setShowSent(true)}}>Send Email</button>
 
-          {/* Confirmation Email Sent Modal */}
+          {/* Email Send Confirmation Modal */}
+          <ControlledModal
+            modalTitle="Email Sent!"
+            showClose={true}
+            closeText="Okay"
+            showDelete={false}
+            showSave={false}
+            showConfirm={false}
+            showButton={false}
+            show={showSent}
+            setShow={setShowSent}
+          />
+
+          {/* Confirmation Email Sent Modal 
           <div className="modal fade" id="confirmEmailSentModal" data-bs-backdrop="static" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
@@ -237,6 +253,7 @@ export default function Email() {
                 </div>
             </div>
           </div>
+          */}
 
         </form>
       ) : <></>}
