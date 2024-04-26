@@ -22,7 +22,6 @@ interface NewModalProps {
     saveText?: string,
     deleteText?: string,
     confirmTitle?: string,
-    buttonVariant?: string,
     onShow?: () => boolean;
     onSave?: () => boolean;
     onDelete?: () => boolean;
@@ -30,7 +29,7 @@ interface NewModalProps {
     onHide?: () => boolean;
   }
 
-const NewModal: React.FC<NewModalProps> = ({ modalTitle, modalBody, showSave, showDelete, showConfirm, showClose, openText, closeText, saveText, deleteText, confirmTitle, buttonVariant, onShow, onDelete, onSave, onClose, onHide}) => {
+const NewModal: React.FC<NewModalProps> = ({ modalTitle, modalBody, showSave, showDelete, showConfirm, showClose, openText, closeText, saveText, deleteText, confirmTitle, onShow, onDelete, onSave, onClose, onHide}) => {
   const [show, setShow] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
@@ -41,7 +40,7 @@ const NewModal: React.FC<NewModalProps> = ({ modalTitle, modalBody, showSave, sh
 
   return (
     <>
-      <button onClick={handleShow}>
+      <button className="large-purple-button" onClick={handleShow}>
         {openText || "Open"}
       </button>
 
@@ -52,23 +51,23 @@ const NewModal: React.FC<NewModalProps> = ({ modalTitle, modalBody, showSave, sh
         <Modal.Body>{modalBody}</Modal.Body>
         <Modal.Footer>
           {showClose ?
-            <button onClick={() => {setShow(onClose ? onClose() : false)}}>
+            <button className="btn btn-default" onClick={() => {setShow(onClose ? onClose() : false)}}>
               {closeText || "Close"}
             </button>
           : <></>
           }
           {showDelete ? 
             showConfirm ?
-            <button onClick={beginDeleteConfirmation}>
+            <button className="delete-button me-2" onClick={beginDeleteConfirmation}>
               {deleteText || "Delete"}
             </button>
             :
-            <button onClick={() => {setShow(onDelete ? onDelete() : false)}}>
+            <button className="delete-button me-2" onClick={() => {setShow(onDelete ? onDelete() : false)}}>
               {deleteText || "Delete"}
             </button>
           : <></>}
           {showSave ? 
-            <button onClick={() => {setShow(onSave ? onSave() : false)}}>
+            <button className="large-purple-button" onClick={() => {setShow(onSave ? onSave() : false)}}>
               {saveText || "Save"}
             </button>
           : <></>}
@@ -81,10 +80,10 @@ const NewModal: React.FC<NewModalProps> = ({ modalTitle, modalBody, showSave, sh
                   <Modal.Title>{confirmTitle}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <button onClick={() => {setShowConfirmation(false)}}>
+                  <button className="btn btn-default" onClick={() => {setShowConfirmation(false)}}>
                     No, take me back!
                   </button>
-                  <button onClick={() => {setShow(onDelete ? onDelete() : false)}}>
+                  <button className="delete-button me-2" onClick={() => {setShow(onDelete ? onDelete() : false)}}>
                     Yes
                   </button>
                 </Modal.Body>
