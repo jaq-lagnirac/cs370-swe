@@ -2,7 +2,8 @@
 import React from 'react';
 import ImgDl from '../components/img-dl';
 import Table from '../components/table';
-import Modal from '../components/modal';
+import CustomModal from '../components/modal';
+import NewModal from '../components/new-modal';
 import CopyText from '../components/copy-text';
 import { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
@@ -17,6 +18,7 @@ export default function Attendance() {
   const [deleteRowIndex, setDeleteRowIndex] = useState(-1);
   const [cachedResponse, setCachedResponse] =  useState<any>();
   let pleaseRunOnceFlag = false;
+  const SERVER_URL = "http://sand.truman.edu:41703";
 
   const readEntries = (newEntries: any) => {
       console.log("Reading members, response body is: " + JSON.stringify(newEntries));
@@ -53,7 +55,7 @@ function sendRequest(url: any) {
   }
   useEffect(() => {
   if (!pleaseRunOnceFlag) {
-    const testPromise = sendRequest("http://127.0.0.1:8080/api/attendance");
+    const testPromise = sendRequest(SERVER_URL + "/api/attendance");
       testPromise.then(response => response.json())
       .then(readEntries, console.log);
     pleaseRunOnceFlag = true;
@@ -94,7 +96,7 @@ function dbEventToLocal(dbEvent: any) {
       "date": dbDate(startDate),
       "attendees": [],
     }
-    fetch("http://127.0.0.1:8080/api/attendance", {
+    fetch(SERVER_URL + "/api/attendance", {
       method: "POST",
       mode: "cors",
       cache: "default",
@@ -107,10 +109,11 @@ function dbEventToLocal(dbEvent: any) {
     cachedResponse["attendance"].push(newEvent);
     setTableData([...tableData, dbEventToLocal(newEvent)]);
     setLinkToggle(true);
+    return false;
   }
 
   const deleteSession = () => {
-    fetch("http://127.0.0.1:8080/api/attendance", {
+    fetch(SERVER_URL + "/api/attendance", {
       method: "DELETE",
       mode: "cors",
       cache: "default",
@@ -122,36 +125,37 @@ function dbEventToLocal(dbEvent: any) {
     cachedResponse["attendance"].splice(deleteRowIndex, 1);
 
     setTableData(tableData.slice(0, deleteRowIndex).concat(tableData.slice(deleteRowIndex + 1, tableData.length)));
+    return false;
   }
 
 
   return (
     <div>
       <h1>Attendance</h1>
-        <Modal
+        <NewModal
           modalTitle="Create New Attendance Session"
           modalBody={
             <>
               <DatePicker selected={startDate} showTimeSelect onChange={(date: any) => setStartDate(date)} />
               <br></br>
               {linkToggle ?
-              <CopyText url={"http://127.0.0.1:8080/signin?date=".concat(urlDate(startDate))}/> :
+              <CopyText url={SERVER_URL + "/signin?date=".concat(urlDate(startDate))}/> :
               <></>
               }
-              {/*
               <div id="qrcode" className="mb-2">
                 <ImgDl/>
               </div>
-              */}
             </>
           }
-          saveButton="Done"
-          onClickSave={saveSession}
-          toggleText="Create Session"
-          toggleClass="large-purple-button mb-4 float-left"
-          modalId="newAttendance"
+          showSave={true}
+          saveText="Done"
+          onSave={saveSession}
+          showDelete={false}
+          showConfirm={false}
+          showClose={true}
+          openText="Create Session"
         />
-      {(loadingGate &&  tableData.length > 0) ?
+     {(loadingGate &&  tableData.length > 0) ?
         <> <div className="mb-3">
             <Table
               setDeleteRowIndex={setDeleteRowIndex}

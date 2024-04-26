@@ -106,6 +106,11 @@ You will have to enter your password here.
     ```
     You can use your system package manager to download and install Rust but this may result in errors. If the TLSv1.2 flag (`--tlsv1.2`) causes issues, you can attempt the installation by removing it.
 
+    ***Note:*** Rust is still accepting pull requests, so if you are running on an older version of Rust and Rust was installed using `rustup`, please execute the following command to update your Rust installation:
+    ```
+    rustup update
+    ```
+
 #### Set up Node and PNPM
 
 There is no supported normal way to install Node onto Ubuntu. You must use a Node manager or add the NodeSource repository to your package manager. Fast Node Manager (FNM) and Performant Node Package Manager (PNPM) is covered in detail here. PNPM is an alternative to the default
@@ -162,7 +167,7 @@ Compilation of the code is system-specific. As we are developing in a Linux envi
 
 2) Run the following command to download Windows-related libraries:
     ```
-    cargo install xwin
+    cargo install cargo-xwin
     ```
 
 3) Run the following command to make the libraries available:
@@ -201,7 +206,11 @@ Compilation of the code is system-specific. As we are developing in a Linux envi
 
 6) To compile an application targeting Windows, run the following command:
     ```
-    cargo tauri build --target x86_64-pc-windows-msvc
+    cargo tauri build --runner cargo-xwin --target x86_64-pc-windows-msvc
+    ```
+    ***Note:*** An error was occured during testing of this feature. Please refer to [Install Rust and Cargo](#install-rust-and-cargo) and the [following bug report](https://github.com/tauri-apps/tauri/issues/7816) in order to ensure that you are correctly able to compile for Windows. In short, run the following command to ensure a successful compilation:
+    ```
+    rustup update
     ```
 
 ### Back-End (Server)
@@ -224,12 +233,12 @@ Our database-of-choice was [MySQL](https://www.mysql.com/). Specifically, a popu
     ```
     Complete the installation process by answering the following questions as they appear:
 	- Enter the current password for root: `[Press ENTER to skip]`
-	- Switch to unix socket authentication: `n`
-	- Change the root password?: `n`
-	- Remove anonymous users?: `n`
-	- Disallow root login remotely?: `y`
-	- Remove test database and access to it?: `y`
-	- Reload privilege tables now?: `y`
+	- Switch to unix socket authentication? `n`
+	- Change the root password? `n`
+	- Remove anonymous users? `n`
+	- Disallow root login remotely? `y`
+	- Remove test database and access to it? `y`
+	- Reload privilege tables now? `y`
 4) Enter the MySQL database with the following command:
     ```
     sudo mysql
