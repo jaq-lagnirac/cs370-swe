@@ -27,9 +27,10 @@ interface NewModalProps {
     onDelete?: () => boolean;
     onClose?: () => boolean;
     onHide?: () => boolean;
+    buttonClass?: string,
   }
 
-const NewModal: React.FC<NewModalProps> = ({ modalTitle, modalBody, showSave, showDelete, showConfirm, showClose, openText, closeText, saveText, deleteText, confirmTitle, onShow, onDelete, onSave, onClose, onHide}) => {
+const NewModal: React.FC<NewModalProps> = ({ modalTitle, modalBody, showSave, showDelete, showConfirm, showClose, openText, closeText, saveText, deleteText, confirmTitle, onShow, onDelete, onSave, onClose, onHide, buttonClass}) => {
   const [show, setShow] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
@@ -40,7 +41,7 @@ const NewModal: React.FC<NewModalProps> = ({ modalTitle, modalBody, showSave, sh
 
   return (
     <>
-      <button className="large-purple-button" onClick={handleShow}>
+      <button className={buttonClass || "large-purple-button"} onClick={handleShow}>
         {openText || "Open"}
       </button>
 

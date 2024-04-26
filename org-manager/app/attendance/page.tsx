@@ -154,6 +154,7 @@ function dbEventToLocal(dbEvent: any) {
           showConfirm={false}
           showClose={true}
           openText="Create Session"
+          buttonClass="attendance-button"
         />
      {(loadingGate &&  tableData.length > 0) ?
         <> <div className="mb-3">

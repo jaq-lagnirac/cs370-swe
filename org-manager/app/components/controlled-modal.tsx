@@ -31,9 +31,10 @@ interface ControlledModalProps {
     show: boolean,
     setShow: React.Dispatch<React.SetStateAction<boolean>>,
     showButton: boolean,
+    buttonClass: string,
   }
 
-const ControlledModal: React.FC<ControlledModalProps> = ({ modalTitle, modalBody, showSave, showDelete, showConfirm, showClose, openText, closeText, saveText, deleteText, confirmTitle, onShow, onDelete, onSave, onClose, onHide, show, setShow, showButton}) => {
+const ControlledModal: React.FC<ControlledModalProps> = ({ modalTitle, modalBody, showSave, showDelete, showConfirm, showClose, openText, closeText, saveText, deleteText, confirmTitle, onShow, onDelete, onSave, onClose, onHide, show, setShow, showButton, buttonClass}) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   const handleShow = () => setShow(typeof onShow === 'function' ? onShow : true);
@@ -44,7 +45,7 @@ const ControlledModal: React.FC<ControlledModalProps> = ({ modalTitle, modalBody
   return (
     <>
     {showButton ? 
-      <button className="large-purple-button" onClick={handleShow}>
+      <button className={buttonClass || "large-purple-button"} onClick={handleShow}>
         {openText || "Open"}
       </button>
     : <></>}
