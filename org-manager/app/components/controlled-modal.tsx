@@ -31,7 +31,7 @@ interface ControlledModalProps {
     show: boolean,
     setShow: React.Dispatch<React.SetStateAction<boolean>>,
     showButton: boolean,
-    buttonClass: string,
+    buttonClass?: string,
   }
 
 const ControlledModal: React.FC<ControlledModalProps> = ({ modalTitle, modalBody, showSave, showDelete, showConfirm, showClose, openText, closeText, saveText, deleteText, confirmTitle, onShow, onDelete, onSave, onClose, onHide, show, setShow, showButton, buttonClass}) => {
