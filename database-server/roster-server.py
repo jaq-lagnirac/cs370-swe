@@ -6,6 +6,10 @@ NOTE_LENGTH = 500
 LOCAL_ONLY = False
 CONFIG_FILE = "config.json"
 
+#Constants
+INACTIVE = 3
+MEMBER = 2
+
 from bottle import Bottle, get, post, put, delete, request, abort, response, template
 from bottle.ext import sqlalchemy
 from sqlalchemy import create_engine, Column, BigInteger, SmallInteger, String, DateTime
@@ -134,7 +138,7 @@ def read_json(names, types):
 
 #Define access methods
 @app.get("/api/members/all")
-def get_members(db):
+def get_all_members(db):
 	"""
 	Queries the members table and returns the data in a dict.
 	Dicts are automatically converted to JSON by Bottle
@@ -156,7 +160,7 @@ def get_members(db):
 	table_data = db.query(members)
 	results = []
 	for x in table_data:
-		if x.role != 3:
+		if x.role != INACTIVE:
 			results.append({ "id":x.id, "name":x.name, "email":x.email, "role":x.role, "note":x.note })
 	results.sort(key=lambda x: x["role"])
 	return {"members" : results}
@@ -176,7 +180,7 @@ def post_members(db):
 	#This behavior enables restoring an inactive member
 	query = db.query(members).filter_by(id=id).all()
 	if query != []:
-		if query[0].role == 3:
+		if query[0].role == INACTIVE:
 			return put_members(db)
 		else:
 			abort(409, f"A row with primary key {id} already exists. Use PUT to update a row")
@@ -393,7 +397,7 @@ def post_signup(db):
 	id = request.forms.get("id")
 	name = request.forms.get("name")
 	email = request.forms.get("email")
-	role = 2 #Member role value
+	role = MEMBER
 	note = request.forms.get("note")
 
 	if id == "" or name == "" or email == "":
