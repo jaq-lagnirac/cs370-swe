@@ -169,8 +169,18 @@ def post_members(db):
 	Returns the updated table by calling get_members
 	"""
 	id, name, email, role, note = read_json(["id", "name", "email", "role", "note"], [int, str, str, int, str])
-	if db.query(members).filter_by(id = id).all() != []:
-		abort(409, f"A row with primary key {id} already exists. Use PUT to update a row")
+
+	#If the row already exists, check the role
+	#If the preexisting row has role 3, update it with the new role by calling put
+	#Otherwise, this is a collision.
+	#This behavior enables restoring an inactive member
+	query = db.query(members).filter_by(id=id).all()
+	if query != []:
+		if query[0].role == 3:
+			return put_members(db)
+		else:
+			abort(409, f"A row with primary key {id} already exists. Use PUT to update a row")
+
 	new_row = members(id = id, name = name, email = email, role = role, note = note)
 	db.add(new_row)
 	db.commit()
