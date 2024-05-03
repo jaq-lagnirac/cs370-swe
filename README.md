@@ -113,7 +113,7 @@ You will have to enter your password here.
 
 #### Set up Node and PNPM
 
-There is no supported normal way to install Node onto Ubuntu. You must use a Node manager or add the NodeSource repository to your package manager. Fast Node Manager (FNM) and Performant Node Package Manager (PNPM) is covered in detail here. PNPM is an alternative to the default
+There is no supported normal way to install Node onto Ubuntu. You must use a Node manager or add the NodeSource repository to your package manager. Fast Node Manager (FNM) and Performant Node Package Manager (PNPM) are covered in detail here. PNPM is an alternative to the default
 Node package manager that is faster and more storage-efficient. For more information about NodeSource, please [click here](https://github.com/nodesource/distributions).
 
 1) Run the following command to run the FNM install script:
@@ -208,7 +208,7 @@ Compilation of the code is system-specific. As we are developing in a Linux envi
     ```
     cargo tauri build --runner cargo-xwin --target x86_64-pc-windows-msvc
     ```
-    ***Note:*** An error was occured during testing of this feature. Please refer to [Install Rust and Cargo](#install-rust-and-cargo) and the [following bug report](https://github.com/tauri-apps/tauri/issues/7816) in order to ensure that you are correctly able to compile for Windows. In short, run the following command to ensure a successful compilation:
+    ***Note:*** An error occurred during testing of this feature. Please refer to [Install Rust and Cargo](#install-rust-and-cargo) and the [following bug report](https://github.com/tauri-apps/tauri/issues/7816) in order to ensure that you are correctly able to compile for Windows. In short, run the following command to ensure a successful compilation:
     ```
     rustup update
     ```
