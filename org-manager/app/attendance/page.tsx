@@ -142,9 +142,11 @@ function dbEventToLocal(dbEvent: any) {
               <CopyText url={SERVER_URL + "/signin?date=".concat(urlDate(startDate))}/> :
               <></>
               }
+              {/*
               <div id="qrcode" className="mb-2">
                 <ImgDl/>
               </div>
+              */}
             </>
           }
           showSave={true}
