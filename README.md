@@ -83,7 +83,7 @@ You will have to enter your password here.
 
 #### Install Rust and Cargo
 
-[Tauri](https://tauri.app/) is a Rust tool to run web applications locally by using operating system WebView APIs (similar to Electron). (Note that there is a recent [known Tauri issue](https://github.com/tauri-apps/tauri/issues/9662) with Ubuntu 24.04 Noble. The current fix is to use earlier Ubuntu versions.) Cargo is the Rust package manager. To install the front-end pages, do the following:
+[Tauri](https://tauri.app/) is a Rust tool to run web applications locally by using operating system WebView APIs (similar to Electron). (Note that there is a recent [known Tauri issue](https://github.com/tauri-apps/tauri/issues/9662) with Ubuntu 24.04 Noble. The current fix is to use earlier Ubuntu versions.) Cargo is the Rust package manager. To install the software required to build the frontend desktop app, do the following:
 
 1) Install the required packages on Ubuntu by running the following commands:
     ```
