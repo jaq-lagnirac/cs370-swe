@@ -109,7 +109,7 @@ function dbEventToLocal(dbEvent: any) {
     cachedResponse["attendance"].push(newEvent);
     setTableData([...tableData, dbEventToLocal(newEvent)]);
     setLinkToggle(true);
-    return false;
+    return true;
   }
 
   const deleteSession = () => {
@@ -148,7 +148,7 @@ function dbEventToLocal(dbEvent: any) {
             </>
           }
           showSave={true}
-          saveText="Done"
+          saveText="Save"
           onSave={saveSession}
           showDelete={false}
           showConfirm={false}
