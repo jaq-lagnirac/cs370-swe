@@ -138,6 +138,7 @@ function dbEventToLocal(dbEvent: any) {
             <>
               <DatePicker selected={startDate} showTimeSelect onChange={(date: any) => setStartDate(date)} />
               <br></br>
+              <br></br>
               {linkToggle ?
               <CopyText url={SERVER_URL + "/signin?date=".concat(urlDate(startDate))}/> :
               <></>
