@@ -25,5 +25,7 @@
 
 %if error == "id":
 	<p>Error: A member already exists with that banner ID</p>
+%elif error == "email":
+	<p>Error: A member already exists with that email address</p>
 %elif error == "empty":
 	<p>Error: All required fields (*) must be filled</p>
