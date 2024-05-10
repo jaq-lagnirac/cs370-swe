@@ -367,7 +367,7 @@ def post_signin(db):
 		return template("signin", date=date, email=email, error="email")
 
 	if db.query(dates).filter_by(date=date).all() == []:
-		return template("signin", date=date, name=name, error="date")
+		return template("signin", date=date, email=email, error="date")
 
 	#Get the member's id based on the email provided
 	#Duplicated emails should not exist
