@@ -342,15 +342,16 @@ def get_signin(db):
 	When the HTML form is filled, the data is received by the POST method
 	"""
 
-	#Get the date from the URL, or the most recent one
-	date = request.query.date or str(db.query(dates).all()[-1].date)
+	#Check if there are any dates yet
+	query = db.query(dates).all()
+	if query == []:
+		abort(404, "No dates exist yet!")
 
-	#This should only happen if a date isn't provided AND no dates exist in the db
-	if date == None:
-		abort(400, "No dates exist yet!")
+	#Get the date from the URL, or the most recent one
+	date = request.query.date or str(query[-1].date)
 
 	#HTML for a basic form
-	return template("signin", date=date, name="", error=None)
+	return template("signin", date=date, email="", error=None)
 
 @app.post("/signin")
 def post_signin(db):
@@ -359,18 +360,20 @@ def post_signin(db):
 	I don't expect anyone to call this function otherwise
 	"""
 	date = request.forms.get("date")
-	name = request.forms.get("name")
+	email = request.forms.get("email")
 
 	#Check that the provided name and date are valid
-	if db.query(members).filter_by(name=name).all() == []:
-		return template("signin", date=date, name=name, error="name")
+	if db.query(members).filter_by(email=email).all() == []:
+		return template("signin", date=date, email=email, error="email")
 
 	if db.query(dates).filter_by(date=date).all() == []:
-		return template("signin", date=date, name=name, error="date")
+		return template("signin", date=date, email=email, error="date")
 
-	#Get the member's id based on the name provided
-	#What to do about duplicate names?
-	id = db.query(members).filter_by(name=name).first().id
+	#Get the member's id based on the email provided
+	#Duplicated emails should not exist
+	result = db.query(members).filter_by(email=email).first()
+	id = result.id
+	name = result.name
 
 	#Only sign them in if they weren't already
 	if db.query(attendance).filter_by(date=date, id=id).all() == []:
@@ -378,7 +381,7 @@ def post_signin(db):
 		db.add(new_row)
 		db.commit()
 
-	return f"<p>Attendance recorded for {name} on {date}</p>"
+	return f"<p>Attendance recorded for {name} ({email}) on {date}</p>"
 
 @app.get("/signup")
 def get_signup(db):
@@ -403,12 +406,49 @@ def post_signup(db):
 	if id == "" or name == "" or email == "":
 		return template("signup", error="empty")
 
-	if db.query(members).filter_by(id=id).all() != []:
+	query = db.query(members)
+
+	if query.filter_by(id=id, role=role).all() != []:
 		return template("signup", error="id")
 
-	new_row = members(id=id, name=name, email=email, role=role, note=note)
-	db.add(new_row)
+	if query.filter_by(email=email, role=role).all() != []:
+		return template("signup", error="email")
+
+	#Check if this person is rejoining
+	if query.filter_by(id=id).all() != []:
+		row = query.filter_by(id=id).first()
+		row.name, row.email, row.role, row.note = name, email, role, note
+	else:
+		new_row = members(id=id, name=name, email=email, role=role, note=note)
+		db.add(new_row)
+
 	db.commit()
 	return f"<p>{name} is now a member!</p>"
+
+@app.get("/leave")
+def get_leave(db):
+	"""
+	URL for members to leave the club
+	When the HTML form is filled, the data will be received by the POST method below
+	"""
+	return template("leave", email="", error=None)
+
+@app.post("/leave")
+def post_leave(db):
+	"""
+	This function is called when the leave form is submitted
+	Nobody else should call this function
+	"""
+	email = request.forms.get("email")
+
+	query = db.query(members).filter_by(email=email)
+
+	if query.all() == []:
+		return template("leave", email=email, error="email")
+
+	row = query.first()
+	row.role = INACTIVE
+	db.commit()
+	return f"<p>{email} is no longer on the mailing list</p>"
 
 app.run(host = "127.0.0.1" if LOCAL_ONLY else "0.0.0.0", port=port)
