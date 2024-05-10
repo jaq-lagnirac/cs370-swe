@@ -1,12 +1,13 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+/*
 fn main() {
   tauri::Builder::default()
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
-/* 
+*/
 use tauri::{Manager, window::WindowBuilder, WindowUrl};
 use tauri::ipc::RemoteDomainAccessScope;
 
@@ -22,12 +23,11 @@ fn main() {
       );
 
       let url = format!("http://localhost:{}", port).parse().unwrap();
-      WindowBuilder::new(app, "main".to_string(), WindowUrl::External(url))
-        .title("Localhost Example")
+      WindowBuilder::new(app, "pleasework".to_string(), WindowUrl::External(url))
+        .title("Student Organization Manager")
         .build()?;
       Ok(())
     })
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
-*/
