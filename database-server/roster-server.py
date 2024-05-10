@@ -446,8 +446,8 @@ def post_leave(db):
 	if query.all() == []:
 		return template("leave", email=email, error="email")
 
-	row = query.first()
-	row.role = INACTIVE
+	for row in query.all():
+		row.role = INACTIVE
 	db.commit()
 	return f"<p>{email} is no longer on the mailing list</p>"
 
