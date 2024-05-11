@@ -222,7 +222,7 @@ export default function Email() {
 
           <button className="purple-button" type="submit" style={{float: 'right'}} onClick={() => {setShowSent(true)}}>Send Email</button>
 
-          {/* Email Send Confirmation Modal 
+          {/* Email Send Confirmation Modal
           <ControlledModal
             modalTitle="Email Sent!"
             showClose={true}

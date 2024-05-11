@@ -52,14 +52,6 @@
     "updater": {
       "active": false
     },
-    "windows": [
-      {
-        "fullscreen": false,
-        "height": 600,
-        "resizable": true,
-        "title": "Student Organization Manager",
-        "width": 800
-      }
-    ]
+    "windows": []
   }
 }
