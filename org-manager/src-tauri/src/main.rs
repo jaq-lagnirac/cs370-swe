@@ -7,8 +7,8 @@ fn main() {
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
+*/
 
-/*
 use tauri::{Manager, window::WindowBuilder, WindowUrl};
 use tauri::ipc::RemoteDomainAccessScope;
 
@@ -32,4 +32,3 @@ fn main() {
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
-*/
