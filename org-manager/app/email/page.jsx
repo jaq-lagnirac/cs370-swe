@@ -4,7 +4,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import ControlledModal from '../components/controlled-modal';
+// import ControlledModal from '../components/controlled-modal';
 // import jsonMemberData from './data.json';
 import EmailButton from '../components/email-button';
 import Select from 'react-select';
@@ -222,7 +222,7 @@ export default function Email() {
 
           <button className="purple-button" type="submit" style={{float: 'right'}} onClick={() => {setShowSent(true)}}>Send Email</button>
 
-          {/* Email Send Confirmation Modal */}
+          {/* Email Send Confirmation Modal
           <ControlledModal
             modalTitle="Email Sent!"
             showClose={true}
